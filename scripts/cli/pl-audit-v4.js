@@ -258,6 +258,325 @@ function runT1Hard(htmlFiles, facts, ctx) {
   return { pass, checks, fails, composite: pass ? 100 : 0 };
 }
 
+// ─── Upstream truth loader (core-extract + site-ctx) ────────────────────
+// Phase-1 detectors (codex R54) cross-check RENDERED values against the
+// frozen upstream facts. ctx.facts (facts.json) is often absent for editorial
+// clients, so we load core-extract.json + site-ctx.json directly here.
+function loadUpstreamTruth(slug) {
+  if (!slug) return { json: {}, text: '' };
+  const files = [
+    `clients/${slug}/v2/site-ctx.json`,
+    `clients/${slug}/v2/core-extract.json`,
+  ];
+  let text = '';
+  const json = {};
+  for (const rel of files) {
+    const abs = path.resolve(REPO, rel);
+    if (!fs.existsSync(abs)) continue;
+    const raw = fs.readFileSync(abs, 'utf8');
+    text += '\n' + raw;
+    try { json[path.basename(rel, '.json')] = JSON.parse(raw); } catch { /* keep text only */ }
+  }
+  return { json, text };
+}
+
+const digitsOnly = (s) => (s || '').replace(/\D/g, '');
+
+// ─── Phase-1 D2.11 · Facts cross-check (deterministic · codex R54) ──────
+// Compares high-trust RENDERED facts (ABN, warranty term) against frozen
+// upstream truth. Emits P0 on conflict (core-info 0-error rule). Conservative:
+// only fires when BOTH a rendered value and an upstream value exist and differ.
+function runFactsCrossCheck(htmlFiles, ctx) {
+  const findings = [];
+  const up = loadUpstreamTruth(ctx.slug);
+
+  // -- ABN conflict --
+  const upAbn = digitsOnly((up.text.match(/"abn"\s*:\s*"([\d ]{11,17})"/i) || [])[1]
+    || (up.text.match(/\bABN[:\s]*([\d]{2}\s?\d{3}\s?\d{3}\s?\d{3})/i) || [])[1]);
+  if (upAbn.length === 11) {
+    for (const f of htmlFiles) {
+      const html = readHtml(f);
+      const m = html.match(/\bABN[:\s]*([\d]{2}\s?\d{3}\s?\d{3}\s?\d{3})/i);
+      if (!m) continue;
+      const renAbn = digitsOnly(m[1]);
+      if (renAbn.length === 11 && renAbn !== upAbn) {
+        findings.push({
+          severity: 'P0', dim: 'D2.11_facts_cross_check', page: path.basename(f),
+          where: `footer/legal ABN`,
+          what: `Rendered ABN ${m[1].trim()} conflicts with upstream verified ABN ${upAbn.replace(/(\d{2})(\d{3})(\d{3})(\d{3})/, '$1 $2 $3 $4')}`,
+          why: 'Core legal identifier mismatch · core-info 0-error rule (P0)',
+          fix: 'Correct ABN in compose upstream (core-extract/site-ctx) so rendered legal block matches the verified ABN',
+        });
+      }
+    }
+  }
+
+  // -- Warranty / guarantee term conflict --
+  // Tight adjacency only: "<N>-year [written/workmanship] warranty|guarantee"
+  // or "warranty|guarantee of <N> years". Avoids cross-sentence false pairs.
+  const WARR_YEAR = /\b(\d{1,2})[\s-]year[s]?\s+(?:written\s+|workmanship\s+|full\s+|comprehensive\s+){0,2}(?:warrant|guarant)/gi;
+  const WARR_YEAR2 = /\b(?:warrant|guarant)[a-z]*\s+(?:of\s+|up\s+to\s+){0,1}(\d{1,2})[\s-]year/gi;
+  const collectWarrYears = (s) => {
+    const out = new Set();
+    for (const mm of s.matchAll(WARR_YEAR)) out.add(Number(mm[1]));
+    for (const mm of s.matchAll(WARR_YEAR2)) out.add(Number(mm[1]));
+    return out;
+  };
+  const upYears = collectWarrYears(up.text);
+  if (upYears.size > 0) {
+    for (const f of htmlFiles) {
+      const html = stripHtml(readHtml(f));
+      const renYears = collectWarrYears(html);
+      const conflicting = [...renYears].filter(y => !upYears.has(y));
+      if (conflicting.length > 0) {
+        findings.push({
+          severity: 'P0', dim: 'D2.11_facts_cross_check', page: path.basename(f),
+          where: `warranty/guarantee claim`,
+          what: `Rendered claims ${conflicting.map(y => y + '-year').join('/')} warranty/guarantee · upstream verified ${[...upYears].map(y => y + '-year').join('/')}`,
+          why: 'Warranty term mismatch in high-trust position · core-info 0-error rule (P0)',
+          fix: 'Align rendered warranty term with upstream verified value (fix compose upstream, not template)',
+        });
+      }
+    }
+  }
+
+  return { status: 'wired', dim: 'D2.11_facts_cross_check', findings };
+}
+
+// ─── Phase-1 D2.9 · Provenance fabricated flag (deterministic · codex R54) ─
+// Flags AI-fabricated / unverified content shown in high-trust positions
+// (reviews, ratings, testimonials). Emits P0. Two signals:
+//   (a) upstream review_count == 0 / no real quotes, but rendered shows a star
+//       rating or "N Reviews" with N>0  → fabricated proof.
+//   (b) rendered leaks an "AI placeholder" / "ai-fabricated" marker in body.
+function runProvenanceFabricatedFlag(htmlFiles, ctx) {
+  const findings = [];
+  const up = loadUpstreamTruth(ctx.slug);
+  const sc = up.json['site-ctx'] || {};
+  const ce = up.json['core-extract'] || {};
+  const upReviewCount = Number(
+    sc.review_count ?? sc.reviewCount ?? ce.review_count ?? ce.reviewCount ?? NaN,
+  );
+  // codex R55: judge real-ness by PROVENANCE label, not by structure existence.
+  // Only verified/gbp/customer/imported quotes count as real; ai-fabricated /
+  // ai-inferred / synthetic / generated / placeholder do NOT suppress the check.
+  const FABRICATED_SRC = /ai|fabricat|synthetic|generat|placeholder|infer|mock/i;
+  const reviewsArr = [sc.reviews, sc.testimonials, ce.reviews, ce.testimonials]
+    .flatMap((a) => (Array.isArray(a) ? a : []));
+  const realQuotes = reviewsArr.filter((rv) => {
+    if (!rv || typeof rv !== 'object') return false;
+    const src = String(rv._source || rv.source || rv.provenance || '').toLowerCase();
+    const quote = String(rv.quote || rv.text || rv.body || '').trim();
+    return quote.length > 15 && !FABRICATED_SRC.test(src);
+  });
+  const hasRealQuotes = realQuotes.length > 0;
+
+  for (const f of htmlFiles) {
+    const html = readHtml(f);
+    const text = stripHtml(html);
+    const reasons = [];
+
+    // (a) fabricated rating/review-count: rendered shows proof but no real upstream reviews
+    const starM = text.match(/(\d(?:\.\d)?)\s*★/) || html.match(/(\d(?:\.\d)?)\s*★/);
+    const revCountM = text.match(/(\d{1,4})\s*reviews?\b/i);
+    const renderedReviewSignal = (starM && Number(starM[1]) > 0) || (revCountM && Number(revCountM[1]) > 0);
+    const noRealReviews = !hasRealQuotes && (!Number.isFinite(upReviewCount) || upReviewCount === 0);
+    if (renderedReviewSignal && noRealReviews) {
+      reasons.push(`rendered shows ${starM ? starM[1] + '★ ' : ''}${revCountM ? revCountM[1] + ' reviews' : 'rating proof'} but no real upstream reviews (review_count=${Number.isFinite(upReviewCount) ? upReviewCount : 'n/a'}, real_quotes=0)`);
+    }
+
+    // (b) AI-placeholder / fabricated marker leaked into rendered body
+    const aiMarkers = (text.match(/AI placeholder|ai[-_ ]?fabricated|synthetic review/gi) || []).length;
+    if (aiMarkers > 0) {
+      reasons.push(`${aiMarkers}× "AI placeholder"/fabricated marker in public body`);
+    }
+
+    if (reasons.length > 0) {
+      findings.push({
+        severity: 'P0', dim: 'D2.9_provenance', page: path.basename(f),
+        where: 'reviews / testimonials / trust block',
+        what: `Fabricated social proof shown as real: ${reasons.join(' · ')}`,
+        why: 'AI-fabricated/unverified proof in high-trust position · core-trust 0-error rule (P0)',
+        fix: 'Suppress rating + testimonials until real GBP reviews exist; gate review block behind provenance=real',
+      });
+    }
+  }
+
+  return { status: 'wired', dim: 'D2.9_provenance', findings };
+}
+
+// ─── Phase-1 D2.9b · Instruction / editorial leak (deterministic · codex R55) ─
+// Flags editorial/meta-instructions that leaked into PUBLIC copy (draft notes
+// the copywriter left in). P0. Patterns are tight, anchored to construction
+// meta-language that never belongs in published copy — NOT generic CTA words.
+const INSTRUCTION_LEAK_PATTERNS = [
+  /\bin the new site\b/i,
+  /\bshould be rewritten\b/i,
+  /\b(rewrite|rephrase|reword) (this|the) (copy|section|paragraph|page)\b/i,
+  /\bshould lead the (about|home|homepage|services|contact)\b/i,
+  /\bonce the exact\b[^.]{0,60}\bis verified\b/i,
+  /\b(this|that) (should|needs to) (be|read|say|lead)\b[^.]{0,40}\b(page|site|section|copy)\b/i,
+  /\bplaceholder (copy|text|content)\b/i,
+  /\b(TODO|FIXME|XXX)\b[:\- ]/,
+];
+function runInstructionLeak(htmlFiles, ctx) {
+  const findings = [];
+  for (const f of htmlFiles) {
+    const text = stripHtml(readHtml(f));
+    const hits = [];
+    for (const re of INSTRUCTION_LEAK_PATTERNS) {
+      const m = text.match(re);
+      if (m) hits.push(m[0].trim().slice(0, 60));
+    }
+    if (hits.length > 0) {
+      findings.push({
+        severity: 'P0', dim: 'D2.9b_instruction_leak', page: path.basename(f),
+        where: 'body copy (editorial draft note)',
+        what: `Editorial/meta instruction leaked into public copy: ${[...new Set(hits)].map(h => `"${h}…"`).join(' · ')}`,
+        why: 'Draft/source instruction visible to visitors · credibility failure (P0)',
+        fix: 'Strip editorial notes from compose upstream copy; never publish "rewrite/verify/new site" meta-language',
+      });
+    }
+  }
+  return { status: 'wired', dim: 'D2.9b_instruction_leak', findings };
+}
+
+// ─── Phase-1 #4 · Service card empty body (deterministic · codex R56) ────
+// service section <article class="story"> has a title (h3) but empty <p> body.
+function runServiceCardEmptyBody(htmlFiles) {
+  const findings = [];
+  for (const f of htmlFiles) {
+    let $; try { $ = cheerioLoad(readHtml(f)); } catch { continue; }
+    const empties = [];
+    $('#services article.story, .story-grid article.story').each((_, el) => {
+      const $el = $(el);
+      const title = $el.find('h3').first().text().trim();
+      const body = $el.find('.story-body p').map((__, p) => $(p).text().trim()).get().join('').trim();
+      if (title && body.length === 0) empties.push(title);
+    });
+    if (empties.length > 0) {
+      findings.push({
+        severity: 'P1', dim: 'D2.13_service_card_empty_body', page: path.basename(f),
+        where: 'services section',
+        what: `${empties.length} service card(s) have a heading but empty body: ${empties.slice(0, 6).join(', ')}`,
+        why: 'Empty service descriptions reduce comprehension & conversion (P1)',
+        fix: 'Populate {{body}} for each services.items entry upstream (services.json / core-extract)',
+      });
+    }
+  }
+  return { status: 'wired', dim: 'D2.13_service_card_empty_body', findings };
+}
+
+// ─── Phase-1 #5 · Unresolved placeholder (deterministic · codex R56) ─────
+function runUnresolvedPlaceholder(htmlFiles) {
+  const findings = [];
+  for (const f of htmlFiles) {
+    const html = readHtml(f);
+    const text = stripHtml(html);
+    const hits = [];
+    if (/\[object Object\]/.test(html)) hits.push('[object Object]');
+    if (/\{\{[^}]{1,40}\}\}|\[\[[^\]]{1,40}\]\]/.test(html)) hits.push('unrendered template token');
+    if (/\bEst\.\s*<\//i.test(html) || /\bEst\.\s*(?:&nbsp;|\s)*<\/(?:span|p|li|div|dd|strong|small)/i.test(html)) hits.push('empty "Est."');
+    if (/\bFile No\.?\s*<\//i.test(html) || /\bFile No\.?\s*(?:&nbsp;|\s)*<\/(?:span|p|li|div|dd|strong|small)/i.test(html)) hits.push('empty "File No."');
+    if (/\b(TBD|TBC|N\/A|TODO)\b/.test(text)) hits.push('TBD/TBC/N\/A');
+    const dashCells = (html.match(/>\s*(?:&mdash;|—|–)\s*</g) || []).length;
+    if (dashCells >= 2) hits.push(`${dashCells} dash-only field(s)`);
+    if (hits.length > 0) {
+      findings.push({
+        severity: 'P1', dim: 'D2.13_unresolved_placeholder', page: path.basename(f),
+        where: 'trust strip / body',
+        what: `Unresolved placeholders rendered: ${[...new Set(hits)].join(' · ')}`,
+        why: 'Visible template/serialization failures undermine credibility (P1)',
+        fix: 'Fix upstream serialization ([object Object] = object rendered as string); guard empty fields with template conditionals',
+      });
+    }
+  }
+  return { status: 'wired', dim: 'D2.13_unresolved_placeholder', findings };
+}
+
+// ─── Phase-1 #6 · Trust-field presence (deterministic · codex R56) ───────
+// Conservative: only flags when upstream has a VERIFIED value but the rendered
+// footer/legal region omits it. Scoped to footer to avoid site-wide FP.
+function runTrustFieldPresence(htmlFiles, ctx) {
+  const findings = [];
+  const up = loadUpstreamTruth(ctx.slug);
+  const upAbn = digitsOnly((up.text.match(/"abn"\s*:\s*"([\d ]{11,17})"/i) || [])[1]);
+  const upInsured = /fully insured|public liability|"insured"\s*:\s*true/i.test(up.text);
+  const upGuaranteeYear = (up.text.match(/\b(\d{1,2})[\s-]year\s+(?:guarantee|warranty)/i) || [])[1];
+  for (const f of htmlFiles) {
+    const html = readHtml(f);
+    const footM = html.match(/<footer[\s\S]*?<\/footer>/i);
+    if (!footM) continue;
+    const foot = footM[0];
+    const footText = stripHtml(foot);
+    // TRIGGER = ABN entirely absent from footer (most objective legal field).
+    // "present but wrong" ABN is facts-cross-check's job, not a presence gap →
+    // this avoids the vicwest FP (footer shows a (wrong) ABN, so not "missing").
+    const footerHasAnyAbn = /\bABN[\s:]*\d/i.test(foot);
+    if (!(upAbn.length === 11 && !footerHasAnyAbn)) continue;
+    const extra = [];
+    if (upInsured && !/insured|public liability/i.test(footText)) extra.push('insured wording');
+    if (upGuaranteeYear && !new RegExp(`${upGuaranteeYear}[\\s-]year`, 'i').test(footText)) extra.push(`${upGuaranteeYear}-year guarantee`);
+    findings.push({
+      severity: 'P1', dim: 'D2.13_trust_field_presence', page: path.basename(f),
+      where: 'footer / legal block',
+      what: `Footer omits verified ABN (upstream ${upAbn.replace(/(\d{2})(\d{3})(\d{3})(\d{3})/, '$1 $2 $3 $4')})${extra.length ? ' + ' + extra.join(', ') : ''}`,
+      why: 'Verified legal/trust identifier absent from footer (P1)',
+      fix: 'Surface verified ABN (+ insured/guarantee) in footer trust block from upstream facts',
+    });
+  }
+  return { status: 'wired', dim: 'D2.13_trust_field_presence', findings };
+}
+
+// ─── Phase-1 #7 · Service accuracy (deterministic · codex R57) ──────────
+// Compares rendered service-card titles against upstream VERIFIED service set
+// (site-ctx.services with real_facts/verified source). Flags "wrong service
+// set" only when BOTH: ≥50% of verified services are missing from the page
+// AND ≥2 rendered services are unverified. The AND-gate clears clean clients
+// (e.g. vicwest, which adds a couple reasonable services but keeps its
+// verified specialty visible) and catches a-j/mark (verified specialty buried).
+const SVC_STOP = new Set(['roof', 'roofing', 'service', 'services', 'the', 'and', 'for', 'work', 'your']);
+function svcTokens(name) {
+  return new Set(String(name || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').split(/\s+/)
+    .map((w) => w.replace(/s$/, '')).filter((w) => w.length >= 3 && !SVC_STOP.has(w)));
+}
+function svcMatch(a, b) {
+  const ta = svcTokens(a); const tb = svcTokens(b);
+  for (const w of ta) if (tb.has(w)) return true;
+  return false;
+}
+function runServiceAccuracy(htmlFiles, ctx) {
+  const findings = [];
+  const up = loadUpstreamTruth(ctx.slug);
+  const sc = up.json['site-ctx'] || {};
+  // codex R58: read only site-ctx.services (canonical verified set) for parity with sign-off口径.
+  const svcArr = Array.isArray(sc.services) ? sc.services : [];
+  const verified = svcArr.filter((s) => {
+    const src = String(s && (s._source || s.source) || '').toLowerCase();
+    return s && s.name && /real_facts|verified|gbp|customer|imported/.test(src);
+  }).map((s) => s.name);
+  if (verified.length < 3) return { status: 'wired', dim: 'D2.11_service_accuracy', findings }; // no reliable verified set
+
+  for (const f of htmlFiles) {
+    let $; try { $ = cheerioLoad(readHtml(f)); } catch { continue; }
+    const titles = $('#services article.story h3, .story-grid article.story h3').map((_, e) => $(e).text().trim()).get().filter(Boolean);
+    if (titles.length === 0) continue;
+    const unverified = titles.filter((t) => !verified.some((v) => svcMatch(t, v)));
+    const missing = verified.filter((v) => !titles.some((t) => svcMatch(t, v)));
+    const missingRatio = missing.length / verified.length;
+    if (missingRatio >= 0.5 && unverified.length >= 2) {
+      findings.push({
+        severity: 'P1', dim: 'D2.11_service_accuracy', page: path.basename(f),
+        where: 'services section',
+        what: `Service set diverges from upstream verified: ${unverified.length}/${titles.length} rendered are unverified (${unverified.slice(0, 4).join(', ')}); ${missing.length}/${verified.length} verified specialties missing (${missing.slice(0, 4).join(', ')})`,
+        why: 'Rendered presents unverified services as primary & buries the verified specialty (P1)',
+        fix: 'Align services.items with upstream verified service backbone (site-ctx.services real_facts)',
+      });
+    }
+  }
+  return { status: 'wired', dim: 'D2.11_service_accuracy', findings };
+}
+
 // ─── T2 · Brand contract (WIRED · 5 dims · deterministic) ───────────────
 function runT2BrandContract(htmlFiles, brandSpec, ctx) {
   const dims = {};
@@ -992,6 +1311,16 @@ function collectIssues(tiers) {
       }
     }
   }
+  // Phase-1 deterministic detector findings (codex R54) · D2.11 facts + D2.9 provenance
+  for (const t of [tiers.FactsCrossCheck, tiers.ProvenanceCheck, tiers.InstructionLeak, tiers.ServiceCardEmptyBody, tiers.UnresolvedPlaceholder, tiers.TrustFieldPresence, tiers.ServiceAccuracy]) {
+    for (const find of (t?.findings || [])) {
+      issues.push({
+        id: nextId(), tier: t.dim, severity: find.severity, dim: find.dim,
+        page: find.page, where: find.where,
+        what: find.what, why: find.why, fix: find.fix,
+      });
+    }
+  }
   // T4d voice violations (codex R21 Q-DD-3 yes · P1)
   for (const v of (tiers.T4d?.violations || [])) {
     issues.push({
@@ -1045,6 +1374,14 @@ async function main() {
   if (runT3) tiers.T3 = await runT3VisionAudit(ctx.htmlFiles, ctx);
   if (runT4) tiers.T4 = await runT4DesignerReview(ctx.htmlFiles, ctx);
   if (runT4d) tiers.T4d = runT4VoiceDeterministic(ctx.htmlFiles, ctx);
+  // Phase-1 deterministic detectors (codex R54) · D2.11 facts cross-check + D2.9 provenance
+  if (runT1) tiers.FactsCrossCheck = runFactsCrossCheck(ctx.htmlFiles, ctx);
+  if (runT1) tiers.ProvenanceCheck = runProvenanceFabricatedFlag(ctx.htmlFiles, ctx);
+  if (runT1) tiers.InstructionLeak = runInstructionLeak(ctx.htmlFiles, ctx);
+  if (runT1) tiers.ServiceCardEmptyBody = runServiceCardEmptyBody(ctx.htmlFiles);
+  if (runT1) tiers.UnresolvedPlaceholder = runUnresolvedPlaceholder(ctx.htmlFiles);
+  if (runT1) tiers.TrustFieldPresence = runTrustFieldPresence(ctx.htmlFiles, ctx);
+  if (runT1) tiers.ServiceAccuracy = runServiceAccuracy(ctx.htmlFiles, ctx);
   // Content richness deterministic (D2.14 proof variety + D2.11 facts cross-check) · SOP-AUDIT-STANDARD-V2 §9
   if (runT4d) tiers.ContentRichness = runContentRichnessDeterministic(ctx.htmlFiles, ctx);
   // M1 mobile gate · mechanical vetos · SOP-AUDIT-STANDARD-V2 §4
@@ -1095,6 +1432,13 @@ async function main() {
     tier_3: tiers.T3 || null,
     tier_4: tiers.T4 || null,
     tier_4d_voice: tiers.T4d || null,
+    facts_cross_check: tiers.FactsCrossCheck || null,
+    provenance_check: tiers.ProvenanceCheck || null,
+    instruction_leak: tiers.InstructionLeak || null,
+    service_card_empty_body: tiers.ServiceCardEmptyBody || null,
+    unresolved_placeholder: tiers.UnresolvedPlaceholder || null,
+    trust_field_presence: tiers.TrustFieldPresence || null,
+    service_accuracy: tiers.ServiceAccuracy || null,
     content_richness_deterministic: tiers.ContentRichness || null,
     mobile_gate: tiers.M1Mobile || null,
     t2_copy_quality_llm: tiers.T2CopyLLM || null,

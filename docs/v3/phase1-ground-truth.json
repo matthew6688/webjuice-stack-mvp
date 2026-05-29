@@ -1,0 +1,200 @@
+{
+  "schema_version": "phase1-ground-truth/1",
+  "frozen_pack_ref": "phase1-ground-truth-freeze-pack.md",
+  "artifact_hashes": {
+    "vicwest-roofing": "3efa6d980d249c07aceab9b6ecb8165bc4c3f8ac819996fa4f39fa2eeeff730e",
+    "a-j-roofing-solutions": "c45f9dc4d1069db32b64732f64b923f12a14afbf744e8e093c6b70b7d77237de",
+    "mark-squire-roof-restorations": "3bf79758a07ed7a6ea643ccf8d68129fde4a2f770306e6e00db8c9d6eecb328b"
+  },
+  "defects": [
+    {
+      "id": "GT-vicwest-roofing-001",
+      "slug": "vicwest-roofing",
+      "severity": "P0",
+      "dim_hint": "P0_content_accuracy",
+      "where": "footer colophon-bar, clients/vicwest-roofing/v2/editorial-output/index.html:727",
+      "what": "Rendered footer publishes ABN 34 134 811 831 for Vicwest Roofing, while frozen upstream facts identify Vicwest ABN as 69 622 718 361.",
+      "source": "codex",
+      "in_ground_truth": true,
+      "rationale": "ABN is a legal/business identity field. Publishing another client's ABN is a material accuracy and trust defect."
+    },
+    {
+      "id": "GT-vicwest-roofing-002",
+      "slug": "vicwest-roofing",
+      "severity": "P1",
+      "dim_hint": "P0_content_accuracy",
+      "where": "brand folio, hero, strap, about heading; clients/vicwest-roofing/v2/editorial-output/index.html:372,393,415,482",
+      "what": "Rendered copy states or implies 'Est. 2003' and '23+ years since 2003'. Frozen upstream guidance says the owned site supports 'over 20 years' experience' and ABN active since 2017, but exact founding history should not be asserted unless confirmed.",
+      "source": "codex",
+      "in_ground_truth": true,
+      "rationale": "This is a concrete unverified date claim repeated in prominent trust positions. It is less severe than the wrong ABN because it may be directionally plausible, but still should be ground truth."
+    },
+    {
+      "id": "GT-vicwest-roofing-003",
+      "slug": "vicwest-roofing",
+      "severity": "P1",
+      "dim_hint": "P0_content_accuracy",
+      "where": "about body, clients/vicwest-roofing/v2/editorial-output/index.html:490",
+      "what": "About copy claims Geelong workshops, one of the largest roofing contractors in Western Victoria, no subcontracting, own fleet/scaffolding, 48-hour site visits, 24-hour written quotes, and over 500 likely completed projects.",
+      "source": "codex",
+      "in_ground_truth": true,
+      "rationale": "Several high-specificity operational and scale claims are not safe as customer-facing facts in the frozen inputs. The phrase 'likely completed' is especially unsuitable for published proof."
+    },
+    {
+      "id": "GT-vicwest-roofing-004",
+      "slug": "vicwest-roofing",
+      "severity": "P2",
+      "dim_hint": "copy_quality",
+      "where": "meta description, clients/vicwest-roofing/v2/editorial-output/index.html:7",
+      "what": "Meta description ends with the truncated fragment 'gutter work ac'.",
+      "source": "codex",
+      "in_ground_truth": true,
+      "rationale": "This is not a visible page-body defect, but it is objectively broken output and weakens search/share presentation."
+    },
+    {
+      "id": "GT-a-j-roofing-solutions-001",
+      "slug": "a-j-roofing-solutions",
+      "severity": "P0",
+      "dim_hint": "P0_content_accuracy",
+      "where": "hero chips and reviews section, clients/a-j-roofing-solutions/v2/editorial-output/index.html:355,449-469",
+      "what": "Rendered page claims '4.8★ · 35 Reviews' and displays three 5-star Google-style testimonials, while frozen upstream facts show review_count 0 and no usable review quotes.",
+      "source": "codex",
+      "in_ground_truth": true,
+      "rationale": "Fabricated or contradictory review proof is a core trust and compliance failure. It directly affects conversion claims and must be P0."
+    },
+    {
+      "id": "GT-a-j-roofing-solutions-002",
+      "slug": "a-j-roofing-solutions",
+      "severity": "P0",
+      "dim_hint": "copy_quality",
+      "where": "about body, clients/a-j-roofing-solutions/v2/editorial-output/index.html:438",
+      "what": "About section leaks editorial/source instructions into public copy, including 'Those two facts should lead the About page', 'In the new site, that should be rewritten', 'once the exact licence information is verified', and a broken trailing 'au to discuss...'.",
+      "source": "codex",
+      "in_ground_truth": true,
+      "rationale": "This is public-facing draft/instruction leakage and broken copy in a primary credibility section. It is severe enough to block shipment."
+    },
+    {
+      "id": "GT-a-j-roofing-solutions-003",
+      "slug": "a-j-roofing-solutions",
+      "severity": "P1",
+      "dim_hint": "content_richness",
+      "where": "services cards, clients/a-j-roofing-solutions/v2/editorial-output/index.html:389-422",
+      "what": "All five service cards have empty paragraph bodies under their headings.",
+      "source": "codex",
+      "in_ground_truth": true,
+      "rationale": "The rendered service catalogue is structurally present but content-empty, reducing comprehension and conversion. It is not a P0 because headings remain visible."
+    },
+    {
+      "id": "GT-a-j-roofing-solutions-004",
+      "slug": "a-j-roofing-solutions",
+      "severity": "P1",
+      "dim_hint": "P0_content_accuracy",
+      "where": "services and service selector, clients/a-j-roofing-solutions/v2/editorial-output/index.html:389-422,587-591",
+      "what": "Rendered service set leads with roof restoration, roof repair, gutter replacement, gutter guard, and metal roofing, while frozen upstream guidance says the verified service backbone is metal roofing, ceiling/wall cladding, residential roofing, and commercial roofing; gutters/repairs/restorations require confirmation.",
+      "source": "codex",
+      "in_ground_truth": true,
+      "rationale": "The page presents unverified services as primary customer options and omits verified cladding differentiation. This is a service-scope accuracy defect."
+    },
+    {
+      "id": "GT-a-j-roofing-solutions-005",
+      "slug": "a-j-roofing-solutions",
+      "severity": "P1",
+      "dim_hint": "copy_quality",
+      "where": "brand folio, hero eyebrow, strap, coverage list; clients/a-j-roofing-solutions/v2/editorial-output/index.html:327,347,370,535",
+      "what": "Rendered output contains unresolved placeholders: empty 'Est.', empty 'File No.', three dash-only strap cells, and '[object Object]' in the service-area list.",
+      "source": "codex",
+      "in_ground_truth": true,
+      "rationale": "These are deterministic serialization/template failures visible to users. '[object Object]' is especially clear evidence of broken rendering."
+    },
+    {
+      "id": "GT-a-j-roofing-solutions-006",
+      "slug": "a-j-roofing-solutions",
+      "severity": "P2",
+      "dim_hint": "conversion",
+      "where": "contact details and footer hours, clients/a-j-roofing-solutions/v2/editorial-output/index.html:556,670-672",
+      "what": "Contact card renders an empty Hours value and the footer only shows 'Sun · closed', omitting useful operating hours.",
+      "source": "codex",
+      "in_ground_truth": true,
+      "rationale": "This is a conversion/trust gap and malformed contact output, but less severe because phone contact remains available."
+    },
+    {
+      "id": "GT-mark-squire-roof-restorations-001",
+      "slug": "mark-squire-roof-restorations",
+      "severity": "P0",
+      "dim_hint": "P0_content_accuracy",
+      "where": "reviews section, clients/mark-squire-roof-restorations/v2/editorial-output/index.html:468-486",
+      "what": "Rendered page displays three 5-star Google-style testimonials with names and suburbs, but labels them 'AI placeholder' and upstream facts show no usable review quotes have been retrieved.",
+      "source": "codex",
+      "in_ground_truth": true,
+      "rationale": "Fabricated testimonials shown as Google reviews are a core trust defect even when a placeholder marker is present. This should block shipment."
+    },
+    {
+      "id": "GT-mark-squire-roof-restorations-002",
+      "slug": "mark-squire-roof-restorations",
+      "severity": "P0",
+      "dim_hint": "P0_content_accuracy",
+      "where": "hero chips and strap, clients/mark-squire-roof-restorations/v2/editorial-output/index.html:374,389",
+      "what": "Rendered page claims a 10-year warranty and 'written workmanship warranty on replacements', while frozen upstream facts support a 15-year guarantee on full roof restorations.",
+      "source": "codex",
+      "in_ground_truth": true,
+      "rationale": "The guarantee term, applicable service type, and warranty framing are materially wrong in high-trust positions."
+    },
+    {
+      "id": "GT-mark-squire-roof-restorations-003",
+      "slug": "mark-squire-roof-restorations",
+      "severity": "P1",
+      "dim_hint": "content_richness",
+      "where": "services cards, clients/mark-squire-roof-restorations/v2/editorial-output/index.html:408-441",
+      "what": "All five service cards have empty paragraph bodies under their headings.",
+      "source": "codex",
+      "in_ground_truth": true,
+      "rationale": "The service catalogue lacks explanatory content and loses the specific restoration/de-mossing/repointing proof available upstream."
+    },
+    {
+      "id": "GT-mark-squire-roof-restorations-004",
+      "slug": "mark-squire-roof-restorations",
+      "severity": "P1",
+      "dim_hint": "copy_quality",
+      "where": "brand folio, hero eyebrow, strap; clients/mark-squire-roof-restorations/v2/editorial-output/index.html:346,366,389",
+      "what": "Rendered output contains unresolved placeholders: empty 'Est.', empty 'File No.', and two dash-only strap cells.",
+      "source": "codex",
+      "in_ground_truth": true,
+      "rationale": "These are visible template completion failures in the first viewport/trust strip."
+    },
+    {
+      "id": "GT-mark-squire-roof-restorations-005",
+      "slug": "mark-squire-roof-restorations",
+      "severity": "P1",
+      "dim_hint": "P0_content_accuracy",
+      "where": "hero lead, service cards, about, service selector; clients/mark-squire-roof-restorations/v2/editorial-output/index.html:368,408-441,457,606-610",
+      "what": "Rendered page presents metal roofing, gutter replacement, and gutter guard as primary services and says 'Mark Squire handles it', while frozen upstream facts frame those broader roofing needs as coordinated or associated services subject to confirmation, with restoration/cleaning/de-mossing/repointing/painting as the verified core.",
+      "source": "codex",
+      "in_ground_truth": true,
+      "rationale": "This overstates the direct primary service scope and buries the client's strongest verified specialization."
+    },
+    {
+      "id": "GT-mark-squire-roof-restorations-006",
+      "slug": "mark-squire-roof-restorations",
+      "severity": "P1",
+      "dim_hint": "brand_fidelity",
+      "where": "contact details and footer, clients/mark-squire-roof-restorations/v2/editorial-output/index.html:575,677-691",
+      "what": "Rendered contact/footer omits key verified trust signals: ABN 49 809 953 319, established 1996, 15-year restoration guarantee, fully insured wording, and weekday/Saturday hours; the contact Hours field is empty and footer only says Sunday closed.",
+      "source": "codex",
+      "in_ground_truth": true,
+      "rationale": "The page leaves out the strongest verified local-business proof while showing weaker or incorrect proof elsewhere. This harms brand fidelity and conversion."
+    },
+    {
+      "id": "GT-a-j-roofing-solutions-007",
+      "slug": "a-j-roofing-solutions",
+      "severity": "P1",
+      "dim_hint": "brand_fidelity",
+      "where": "footer / legal block",
+      "what": "Footer omits the verified ABN 34 134 811 831 entirely (and insured wording); the same ABN is incorrectly shown on vicwest footer (cross-client leak).",
+      "source": "codex",
+      "in_ground_truth": true,
+      "rationale": "codex R57 arbitration: upstream has verified ABN but a-j footer shows none — real public-page trust omission. Added post-hoc; not a detector drift."
+    }
+  ],
+  "severity_arbiter": "codex (representing Matthew · R53)",
+  "notes": "Codex first read the three frozen rendered index.html artifacts without reading existing audit-v4 outputs. Frozen upstream compose inputs were then used only to arbitrate objective factual conflicts. Playwright rendered inspection was attempted but blocked by the local macOS sandbox, so no screenshot-only visual findings are included."
+}
