@@ -11,6 +11,7 @@
     "pl:build-single-page-brief": "node --env-file-if-exists=.env.local scripts/cli/pl-build-single-page-brief.js",
     "pl:geo-suburbs": "node --env-file-if-exists=.env.local scripts/cli/pl-geo-suburbs.js",
     "pl:provenance-map": "node --env-file-if-exists=.env.local scripts/cli/pl-provenance-map.js",
+    "pl:provenance-annotate": "node --env-file-if-exists=.env.local scripts/cli/pl-provenance-annotate.js",
     "pl:validate-single-page-brief": "node --env-file-if-exists=.env.local scripts/cli/pl-validate-single-page-brief.js",
     "pl:fixture-check": "node scripts/cli/pl-fixture-check.js",
     "dev": "astro dev",
