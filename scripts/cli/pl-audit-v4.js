@@ -45,6 +45,7 @@ import crypto from 'node:crypto';
 import { spawn } from 'node:child_process';
 import { load as cheerioLoad } from 'cheerio';
 import { runHeroJudge } from '../../core/audit/hero-judge.js';
+import { runDesignerReview } from '../../core/audit/designer-review.js';
 
 const REPO = process.cwd();
 const SCRIPT_VERSION = 'pl-audit-v4/0.1.0-skeleton';
@@ -1485,7 +1486,7 @@ function collectIssues(tiers) {
     }
   }
   // Phase-1 deterministic detector findings (codex R54) · D2.11 facts + D2.9 provenance
-  for (const t of [tiers.FactsCrossCheck, tiers.ProvenanceCheck, tiers.InstructionLeak, tiers.ServiceCardEmptyBody, tiers.UnresolvedPlaceholder, tiers.TrustFieldPresence, tiers.ServiceAccuracy, tiers.HeroRubric, tiers.VisualGeometry, tiers.HeroJudge]) {
+  for (const t of [tiers.FactsCrossCheck, tiers.ProvenanceCheck, tiers.InstructionLeak, tiers.ServiceCardEmptyBody, tiers.UnresolvedPlaceholder, tiers.TrustFieldPresence, tiers.ServiceAccuracy, tiers.HeroRubric, tiers.VisualGeometry, tiers.HeroJudge, tiers.T4]) {
     for (const find of (t?.findings || [])) {
       issues.push({
         id: nextId(), tier: t.dim, severity: find.severity, dim: find.dim,
@@ -1549,7 +1550,6 @@ async function main() {
   if (runT4d) tiers.VisualGeometry = await runVisualGeometry(ctx.htmlFiles, ctx);
   if (runT3) tiers.T3 = await runT3VisionAudit(ctx.htmlFiles, ctx, tiers.VisualGeometry?.facts || null);
   if (runT3) tiers.HeroJudge = await runHeroJudge(ctx.htmlFiles, ctx, tiers.VisualGeometry?.facts || null);
-  if (runT4) tiers.T4 = await runT4DesignerReview(ctx.htmlFiles, ctx);
   if (runT4d) tiers.T4d = runT4VoiceDeterministic(ctx.htmlFiles, ctx);
   // Phase-1 deterministic detectors (codex R54) · D2.11 facts cross-check + D2.9 provenance
   if (runT1) tiers.FactsCrossCheck = runFactsCrossCheck(ctx.htmlFiles, ctx);
@@ -1560,6 +1560,10 @@ async function main() {
   if (runT1) tiers.TrustFieldPresence = runTrustFieldPresence(ctx.htmlFiles, ctx);
   if (runT1) tiers.ServiceAccuracy = runServiceAccuracy(ctx.htmlFiles, ctx);
   if (runT1) tiers.HeroRubric = runHeroRubric(ctx.htmlFiles, ctx);
+  if (runT4) {
+    const knownIds = [tiers.FactsCrossCheck, tiers.ProvenanceCheck, tiers.InstructionLeak, tiers.ServiceCardEmptyBody, tiers.UnresolvedPlaceholder, tiers.TrustFieldPresence, tiers.ServiceAccuracy, tiers.HeroRubric].flatMap(t => (t?.findings || []).map(f => f.rule || f.dim));
+    tiers.T4 = await runDesignerReview(ctx.htmlFiles, ctx, tiers.VisualGeometry?.facts || null, [...new Set(knownIds)]);
+  }
   // Content richness deterministic (D2.14 proof variety + D2.11 facts cross-check) · SOP-AUDIT-STANDARD-V2 §9
   if (runT4d) tiers.ContentRichness = runContentRichnessDeterministic(ctx.htmlFiles, ctx);
   // M1 mobile gate · mechanical vetos · SOP-AUDIT-STANDARD-V2 §4

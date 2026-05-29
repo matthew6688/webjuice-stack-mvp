@@ -83,6 +83,12 @@ const DEFAULT_COMBOS = {
     fallback: { tier: 'T1b', tool: 'claude', model: 'claude-haiku-4-5', vision: true },
     backup: { tier: 'T0', tool: 'ollama', model: 'gemma3:27b', vision: true },
   },
+  // codex R66 · T4 site-level designer-craft review (full-page rhythm/consistency/imagery/mobile/ai-slop · facts injected)
+  'eval_design_review': {
+    primary: { tier: 'T1b', tool: 'claude', model: 'claude-sonnet-4-5', vision: true },
+    fallback: { tier: 'T1b', tool: 'claude', model: 'claude-haiku-4-5', vision: true },
+    backup: { tier: 'T0', tool: 'ollama', model: 'gemma3:27b', vision: true },
+  },
 };
 
 function loadCombos() {
