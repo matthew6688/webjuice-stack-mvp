@@ -1,0 +1,29 @@
+{
+  "schema_version": "phase1-hero-visual-reference/1",
+  "note": "codex R64 D6 · Claude-vision REFERENCE judgment of 3 hero folds (from docs/v3/phase1-visual/<slug>/desktop-fold.png + mobile-fold.png). Used to validate the eval_hero_quality LLM judge: judge is accepted if per-dim |judge - reference| <= 2 and total |delta| small. Awaiting codex ratify.",
+  "scale": "0-10 each (10 = excellent)",
+  "reference": {
+    "vicwest-roofing": {
+      "image_relevance": { "score": 8, "note": "Real Colorbond roof-sheet photo, relevant + on-brand, but small relative to the oversized headline." },
+      "visual_hierarchy": { "score": 4, "note": "Text-heavy; the huge '10-Year Warranty...' headline dominates and pushes the CTA below the fold. Weak focal order." },
+      "ai_slop": { "score": 8, "note": "Editorial/newsletter aesthetic, not generic AI slop (no purple gradient/glass cards)." },
+      "five_second_test": { "score": 5, "note": "Warranty value is clear, but no visible action above the fold; the 'FILE NO/JOURNAL' conceit adds noise." }
+    },
+    "a-j-roofing-solutions": {
+      "image_relevance": { "score": 7, "note": "Generic Colorbond roof photo; a-j's verified specialty is metal/cladding so the image is acceptable but not specific." },
+      "visual_hierarchy": { "score": 7, "note": "Strong: orange 'Request a written quote' + 'Call' both above fold, clear focal order." },
+      "ai_slop": { "score": 8, "note": "Clean editorial style, green/orange brand, no slop clichés." },
+      "five_second_test": { "score": 7, "note": "Problem->action obvious (leaks/storm -> get quote), though copy mis-positions services vs verified metal/cladding." }
+    },
+    "mark-squire-roof-restorations": {
+      "image_relevance": { "score": 7, "note": "Generic Colorbond photo; restoration specialty not shown (no before/after)." },
+      "visual_hierarchy": { "score": 4, "note": "Text-heavy headline, CTA below fold (Y=1003). Weak above-fold action." },
+      "ai_slop": { "score": 8, "note": "Editorial style, not slop." },
+      "five_second_test": { "score": 5, "note": "Emergency/restoration message readable but no visible CTA in first viewport." }
+    }
+  },
+  "arbiter": "codex (representing Matthew · R64)",
+  "live_judge_results": {
+    "vicwest-roofing": { "desktop": {"image_relevance":9,"visual_hierarchy":5,"ai_slop":8,"five_second_test":6}, "note": "vs reference 8/4/8/5 — all within <=2 (image_relevance +1, hierarchy +1, slop 0, 5s +1). PASS." }
+  }
+}
