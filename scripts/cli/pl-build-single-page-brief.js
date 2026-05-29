@@ -46,6 +46,28 @@ try {
 
 const gaps = [];
 const review = [];
+
+// codex R80: entity.json is the SSOT for the official-registry licence lookup
+// (pl-license-lookup writes entity.license). Read it directly — it outranks core-extract's
+// second-hand real_facts for the licence number.
+// codex R81 read gate: only trust a CONFIRMED, strong-anchor licence. A weak/fuzzy
+// match (token_prefix/fts · or ABN-mismatch) must NOT flow into the brief — omit instead.
+const HIGH_CONF_TIER = /^(abn_exact|licence_number_exact|name_exact_normalized)/;
+let entityLicense = null;
+try {
+  const bid = String(fm.business_id || '').trim();
+  if (bid) {
+    const ent = readJson(`data/leads/entities/${bid}.json`);
+    const L = ent?.license;
+    const confirmed = L && (L.confidence === 'confirmed' || HIGH_CONF_TIER.test(L.lookup_tier || ''));
+    if (L && confirmed && (L.licence_number || L.number) && /active|current/i.test(L.status || '')) {
+      entityLicense = { authority: L.authority || null, number: L.licence_number || L.number, status: 'active', _provenance: `official_registry:${L.lookup_tier || 'confirmed'}` };
+    } else if (L && L.needs_manual_license_confirm) {
+      review.push('license: entity has an UNCONFIRMED candidate (low-confidence lookup) — omitted from brief · needs_manual_license_confirm');
+    }
+  }
+} catch { /* optional */ }
+
 const gap = (field, why) => { gaps.push(`${field}: ${why}`); return null; };
 
 // ── phone ──
@@ -81,12 +103,18 @@ const AUTHORITY = { VIC: 'VBA', QLD: 'QBCC', NSW: 'NSW-FT', WA: 'BC-WA', SA: 'CB
 const ln = rf.license_numbers || {};
 const licNumber = ln.VBA || ln.vba || ln.QBCC || ln.qbcc || ln.other_state_license || ln.state_license_number ||
   (Array.isArray(ln.state_license_numbers) && ln.state_license_numbers[0]) || null;
-// codex R79: no displayable licence number → status='omit' (valid · ABN-only trade ·
-// renderer shows ABN only). NOT a hard gap — it's the correct contract for these trades.
-const license = licNumber
-  ? { authority: state ? AUTHORITY[state] : null, number: licNumber, status: 'active' }
-  : { authority: state ? AUTHORITY[state] : null, number: null, status: 'omit' };
-if (!licNumber) review.push(`license: status='omit' (no displayable licence number · claim="${ln.licence_claim || ln.license_claim || 'n/a'}") — footer shows ABN only`);
+// License priority (codex R80): entity.license (official registry · SSOT) > core-extract
+// real_facts > omit. status='omit' is valid for genuine ABN-only trades (no displayable number).
+let license;
+if (entityLicense) {
+  license = { authority: entityLicense.authority || (state ? AUTHORITY[state] : null), number: entityLicense.number, status: 'active' };
+  review.push(`license: from entity.json official_registry lookup (${license.authority} ${license.number})`);
+} else if (licNumber) {
+  license = { authority: state ? AUTHORITY[state] : null, number: licNumber, status: 'active' };
+} else {
+  license = { authority: state ? AUTHORITY[state] : null, number: null, status: 'omit' };
+  review.push(`license: status='omit' (no licence number in entity.json or core-extract · claim="${ln.licence_claim || ln.license_claim || 'n/a'}") — footer shows ABN only · consider pl:license-lookup backfill`);
+}
 
 // ── suburbs (publish gate = verified ≥8 · codex R79: NEVER pad with ai-inferred) ──
 const suburbs = (rf.suburbs_served || []).filter((s) => s && String(s).length >= 2);

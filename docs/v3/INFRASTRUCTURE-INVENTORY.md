@@ -4,7 +4,10 @@
 >
 > **TRIGGER**: open this file BEFORE proposing any new infrastructure. CLAUDE.md §7 existing-work-discovery 5-look mandatory · this doc is look #0 (do it first).
 >
-> **MAINTAIN**: anytime you build / discover / deprecate a module · update the relevant section.
+> **MAINTAIN (SOP · codex R80)**: any structural pipeline/tool/provenance change MUST update
+> this file in the SAME tranche — record writer, reader, SSOT, cache/output path, and known
+> disconnects. Treat it as a phase-seal checklist item. Origin: "lots of work built but not
+> connected" — capabilities existed (license lookup) but the data never flowed to the brief.
 
 ---
 
@@ -363,6 +366,17 @@ anti_patterns: [{ id, why }]
 
 - **2026-05-29 (this doc)** · Initial · written after missing pl-publish-* in earlier research · captures CF Pages + Resend + skills + audit modules.
 - **2026-05-29 (R42 evening)** · Lead-capture E2E wired. NEW: `functions/api/client-contact.ts` · `pl-cf-env-bootstrap.js` · `pl-publish-dir --with-functions` flag. Both templates POST forms to /api/client-contact. Verified: vicwest-roofing-test.pages.dev curl POST → Resend → matthewkiata@gmail.com. SOP-TEMPLATE-INVENTORY §6.5 (Stage 4.5) mandatory checklist for future templates. CANONICAL v1.4.
+
+- **2026-05-29 (R70–R81 · Phase-1 audit-loop + brief builder)** · Major session. Canonical standard consolidated → `docs/v3/SOP-AUDIT-STANDARD-V2.md` (SSOT · §0.1 resolves the "T4 three-meanings" tier collision). NEW modules:
+  - `scripts/cli/pl-compose-loop.js` — audit→feedback→fix→re-audit loop (GATE-B/C · dry-run default · backup/rollback · fact-guard · copy_provider_fallback flag). PHASE-1 SEAL: `docs/v3/PHASE-1-SEAL.md`.
+  - `core/audit/compose-feedback.js` — audit issue → executable `compose_feedback` routed to the TRUE writer (resolveTrueWriter · never the derived site-ctx). Blocks: source_unlocated/set_level_change/layout_lever_needed.
+  - `core/audit/hero-judge.js` · `core/audit/designer-review.js` — LLM hero + T4 designer review (fact-injected · vision_confidence-gated).
+  - `scripts/cli/pl-build-single-page-brief.js` — **deterministic** render-contract builder (core-extract.real_facts > master.md frontmatter > null/data_gap · NO LLM · validator hard gate). Fills the missing writer for `single-page-brief.yaml` (was hand-authored · only vicwest).
+  - **pl-audit-v4**: LOW_CONFIDENCE_VISION guard (local-fallback vision can't alone SHIP) + D3.7 fold tolerance (≤60px → P2 layout_lever_needed).
+  - **DISCONNECTS FIXED**: (1) `entity.license` (official registry · pl-license-lookup) now FLOWS into the brief — brief-builder reads `entity.json.license` (was orphaned in entity layer · a-j licence never reached brief). (2) `pl-license-lookup` confidence-gate (codex R81): only abn_exact/licence_exact/name_exact_normalized write canonical `entity.license`; token_prefix/fts → `_candidates` + `needs_manual_license_confirm` (caught a false "Mark Squire"→"Mark Prain Builders" token match · ABN cross-check added). brief-builder mirrors the read-gate.
+  - **STILL DISCONNECTED (open)**: `address → geocode → suburbs-within-radius` is documented ("radius-inferred ~25km") but NOT built (`core/leads/geocode.js` does city→lat/lng only · no haversine · no AU suburb gazetteer). Planned: new `geo_derived` provenance tier (verified > official_registry > geo_derived > ai_inferred). a-j blocked on suburbs (3<8 · needs_enrichment). Spec target: `docs/v3/SPEC-AUDIT-TECH.md` sibling.
+  - Flow (license): `state CSV registers → data/licenses/_index.sqlite (pl:license-csv-sync) → pl-license-lookup → entity.json.license (CONFIRMED only) → pl-build-single-page-brief → single-page-brief.yaml → composer footer (brief.abn||licNum.ABN)`.
+  - Deferred-tech contract: `docs/v3/SPEC-AUDIT-TECH.md` (pl-audit-tech · Lighthouse/schema/SEO/GEO · advisory · NOT Phase-1 gate).
 
 ---
 

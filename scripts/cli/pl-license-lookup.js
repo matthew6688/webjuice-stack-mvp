@@ -273,15 +273,42 @@ const license = toLicense(result.best);
 license.lookup_tier = result.hit_tier;
 license.candidate_count = result.candidates.length;
 
-// ─── If --slug, write back to entity.license ────────────────────────────
+// ─── codex R81: confidence gate ──────────────────────────────────────────
+// Canonical entity.license may ONLY come from a STRONG identity anchor. Weak/fuzzy
+// matches (token_prefix / fts) are discovery, not fact — they would pollute the fact
+// chain (e.g. "Mark Squire" token-matched an unrelated "Mark Prain Builders" licence).
+const tier = result.hit_tier || '';
+const entAbn = cleanAbn(abn);
+const matchAbn = cleanAbn(license.abn);
+const abnConflict = entAbn && matchAbn && entAbn !== matchAbn;
+const abnMatch = entAbn && matchAbn && entAbn === matchAbn;
+let confidence;
+if (/^(abn_exact|licence_number_exact)/.test(tier)) confidence = 'confirmed';        // self-anchored
+else if (/^name_exact_normalized/.test(tier)) confidence = abnConflict ? 'unconfirmed' : 'confirmed';
+else confidence = abnMatch ? 'confirmed' : 'unconfirmed';                              // token_prefix / fts_fuzzy → need ABN anchor
+license.confidence = confidence;
+
+// ─── If --slug, write back to entity.license (GATED) ─────────────────────
 if (args.slug && entity) {
   const entityKey = entity.entityKey;
   const file = path.join(ENTITIES_DIR, `${entityKey}.json`);
-  entity.license = license;
-  // also keep all candidate rows for review (for fuzzy matches especially)
-  entity.license._candidates_top5 = result.candidates.slice(0, 5).map(toLicense);
-  fs.writeFileSync(file, JSON.stringify(entity, null, 2));
-  console.log(`✓ Updated ${entityKey}.license · status=${license.status} · tier=${result.hit_tier}`);
+  const top5 = result.candidates.slice(0, 5).map(toLicense);
+  if (confidence === 'confirmed' && license.status !== 'not_found') {
+    entity.license = license;
+    entity.license._candidates_top5 = top5;
+    fs.writeFileSync(file, JSON.stringify(entity, null, 2));
+    console.log(`✓ Updated ${entityKey}.license (CONFIRMED · tier=${tier}) · ${license.authority} ${license.licence_number}`);
+  } else {
+    // low-confidence → NEVER write canonical number/status; park candidates for human review.
+    entity.license = {
+      status: 'unconfirmed', needs_manual_license_confirm: true,
+      lookup_tier: tier, confidence,
+      reason: abnConflict ? `ABN mismatch (entity ${entAbn} ≠ match ${matchAbn})` : (entAbn ? 'weak match · no ABN anchor' : 'weak match · entity has no ABN to anchor'),
+      _candidates_top5: top5,
+    };
+    fs.writeFileSync(file, JSON.stringify(entity, null, 2));
+    console.log(`⚠️  ${entityKey}: LOW-CONFIDENCE (tier=${tier}${abnConflict ? ' · ABN mismatch' : ''}) → NOT written as canonical · _candidates parked · needs_manual_license_confirm`);
+  }
 }
 
 // ─── Console summary ────────────────────────────────────────────────────

@@ -91,7 +91,12 @@ services:
 _generated_by: pl-build-single-page-brief (deterministic · core-extract.real_facts > master.md frontmatter · codex R78)
 _data_gaps: []
 _needs_review:
-  - 'license: status=''omit'' (no displayable licence number · claim="n/a") — footer shows ABN only'
+  - >-
+    license: entity has an UNCONFIRMED candidate (low-confidence lookup) — omitted from brief ·
+    needs_manual_license_confirm
+  - >-
+    license: status='omit' (no licence number in entity.json or core-extract · claim="n/a") — footer shows ABN only ·
+    consider pl:license-lookup backfill
   - 'primary_segment: defaulted to planned-upgrade — confirm vs urgency mix'
   - 'urgency_mix: defaulted to scheduled-heavy (no emergency SLA fact)'
   - 'pricing_disclosure_mode: defaulted to per_quote_only'
