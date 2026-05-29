@@ -120,13 +120,57 @@ export function toComposeFeedback(issue, ctx = {}) {
   };
 }
 
+// codex R70: site-ctx.json is a DERIVED middle contract (pl:extract-site-ctx
+// regenerates it) — the loop must NEVER write it. Redirect any site-ctx-targeted
+// feedback to the TRUE writer file, else block. Keeps the SSOT single-writer rule.
+function resolveTrueWriter(cf, slug) {
+  if (!cf.loop_action || cf.target_artifact !== 'site-ctx') return cf;
+  const field = (cf.target_field || '').toLowerCase();
+  const exists = (rel) => { try { return fs.existsSync(path.resolve(`clients/${slug}/v2/${rel}`)); } catch { return false; } };
+  const redirect = (artifact, rel, target_field, note) => ({ ...cf, target_artifact: artifact, target_path: `clients/${slug}/v2/${rel}`, target_field, re_extract: note?.re_extract || false, writer_note: note?.msg });
+
+  if (field.includes('hero')) {
+    const cdir = `clients/${slug}/v2/handoff/od-package/content`;
+    if (exists('handoff/od-package/content/hero-copy.json')) {
+      // codex R70: compute the chosen index EXACTLY like the composer's readPreparedHero()
+      // — content-selection.hero_index (when hero_approved) → hero-copy.recommended_index → 0.
+      let idx = 0;
+      try { idx = JSON.parse(fs.readFileSync(path.resolve(`${cdir}/hero-copy.json`), 'utf8')).recommended_index ?? 0; } catch {}
+      try {
+        if (fs.existsSync(path.resolve(`${cdir}/content-selection.json`))) {
+          const sel = JSON.parse(fs.readFileSync(path.resolve(`${cdir}/content-selection.json`), 'utf8'));
+          if (sel.hero_approved && sel.hero_index != null) idx = sel.hero_index;
+        }
+      } catch {}
+      return redirect('hero-copy.json', 'handoff/od-package/content/hero-copy.json', `candidates[${idx}].headline/subheadline`);
+    }
+    return redirect('core-extract', 'core-extract.json', 'brief.narrative.hero_copy_options', { re_extract: true });
+  }
+  if (field.includes('service')) {
+    if (exists('handoff/od-package/content/services.json')) return redirect('services.json', 'handoff/od-package/content/services.json', 'services[].short_desc/desc');
+    return redirect('core-extract', 'core-extract.json', 'brief.real_facts.service_list', { re_extract: true });
+  }
+  if (field.includes('footer') || field.includes('abn')) {
+    // codex R70: composer footer reads `brief?.abn || licNum.ABN`. The only safe,
+    // render-read writer is single-page-brief.yaml:abn. core-extract is NOT a reliable
+    // fallback (a-j/mark store lowercase license_numbers.abn which the footer never reads,
+    // and re-extract won't synthesize the canonical brief) → block when no brief exists.
+    if (exists('single-page-brief.yaml')) return redirect('single-page-brief.yaml', 'single-page-brief.yaml', 'abn', { msg: 'composer footer reads brief.abn' });
+    return { loop_action: null, blocking_reason: 'missing canonical render brief (single-page-brief.yaml) for footer.abn — composer footer reads brief.abn || licNum.ABN; needs a brief-generation step before this is loop-actionable', evidence: cf.evidence, source_dim: cf.source_dim, severity: cf.severity };
+  }
+  // unknown site-ctx field · cannot safely redirect → block
+  return { loop_action: null, blocking_reason: `site-ctx is derived; no true-writer mapping for field "${cf.target_field}" — would be overwritten by re-extract`, evidence: cf.evidence, source_dim: cf.source_dim, severity: cf.severity };
+}
+
 /** Attach compose_feedback to every issue · returns {issues, actionable, blocked}. */
 export function attachComposeFeedback(issues, ctx = {}) {
   let actionable = 0, blocked = 0;
   const out = (issues || []).map((iss) => {
-    const cf = toComposeFeedback(iss, ctx);
+    const cf = resolveTrueWriter(toComposeFeedback(iss, ctx), ctx.slug || '<slug>');
     if (cf.loop_action) actionable++; else blocked++;
     return { ...iss, compose_feedback: cf };
   });
   return { issues: out, actionable, blocked };
 }
+
+export { resolveTrueWriter as _resolveTrueWriter };
