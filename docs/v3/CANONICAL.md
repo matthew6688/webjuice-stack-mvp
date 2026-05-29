@@ -57,6 +57,7 @@
 | **`templates/roofing/modules/`** (V2 composer module library) | Deprecated per CANONICAL §1 V2 module library row · pl-compose-site is deprecated · pl-compose-editorial is canonical | Same as V2 module library | `_deprecated-2026-05-29/modules-v2-composer-library/` |
 | **`dissection/`** (early weatherproof template wireframe extraction) | Early Phase A artifact · superseded by editorial-newsletter direct template | None planned | `_deprecated-2026-05-29/dissection/` |
 | **V5/V6/V7 OD variants in `_compare/`** | OD daemon outputs (editorial · bento · warm-editorial) · OD already deprecated | OD revival | `_deprecated-2026-05-29/v{5,6,7}-od-*/` |
+| **Per-client deprecated render-output dirs** (`clients/<slug>/v2/{llm-render-output,od-output-c,composed-output-single-page,composed-output}/`) | Outputs of deprecated render paths (Path C LLM render · OD daemon · V2 composer) left in active client folders · carried STALE contaminated data (vicwest had a-j's old ABN baked into their audit JSONs) · `pl-audit-v4` could fall back to `od-output-c` if editorial-output absent | Same as the deprecated path that produced them (none planned) | `_deprecated-2026-05-29/clients/<slug>/v2/<dir>/` (codex R96 · 2026-05-29 · quarantined off active path · gitignored) |
 
 ---
 
