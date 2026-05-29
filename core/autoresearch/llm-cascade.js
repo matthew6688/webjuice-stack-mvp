@@ -145,6 +145,11 @@ async function callClaude({ prompt, model = 'claude-sonnet-4-5', imagePath = nul
       const latency = Date.now() - start;
       if (code !== 0) return resolve({ ok: false, latency, reason: `exit ${code}: ${stderr.slice(0, 200)}` });
       if (!stdout) return resolve({ ok: false, latency, reason: 'empty stdout' });
+      // codex R68 fix: claude CLI exits 0 even on auth/quota errors, printing the
+      // error to stdout. Treat those as failures so the cascade falls through with
+      // a clear reason instead of swallowing the error text as a valid "output".
+      const m = stdout.match(/(?:API Error:\s*)?(401|403|429|5\d\d)\b|authentication[_ ]error|Invalid authentication|usage limit|rate.?limit|quota/i);
+      if (m && stdout.length < 600) return resolve({ ok: false, latency, reason: `claude CLI error: ${stdout.trim().slice(0, 160)}` });
       resolve({ ok: true, output: stdout, latency });
     });
     p.on('error', (err) => { clearTimeout(timer); resolve({ ok: false, latency: Date.now() - start, reason: err.message }); });
