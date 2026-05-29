@@ -1,0 +1,620 @@
+{
+  "slug": "a-j-roofing-solutions",
+  "schema_version": "provenance-map/1",
+  "standard": "docs/v3/SOP-PROVENANCE.md",
+  "summary": {
+    "verified": 11,
+    "geo_derived": 40,
+    "ai_inferred": 16,
+    "ai_placeholder": 0,
+    "stock_placeholder": 0,
+    "replace_required": 0,
+    "confirm": 16,
+    "none": 51
+  },
+  "sections": [
+    {
+      "section": "facts",
+      "field": "business_name",
+      "tier": "verified",
+      "source_kind": "gbp",
+      "replace_policy": "none",
+      "raw_source": "GBP",
+      "value_preview": "\"A & J Roofing Solutions\""
+    },
+    {
+      "section": "facts",
+      "field": "phone",
+      "tier": "verified",
+      "source_kind": "gbp",
+      "replace_policy": "none",
+      "raw_source": "GBP",
+      "value_preview": "[\"07 4035 6187\"]"
+    },
+    {
+      "section": "facts",
+      "field": "address",
+      "tier": "verified",
+      "source_kind": "gbp",
+      "replace_policy": "none",
+      "raw_source": "GBP",
+      "value_preview": "\"98 Buchan St, Portsmith QLD 4870\""
+    },
+    {
+      "section": "facts",
+      "field": "abn",
+      "tier": "verified",
+      "source_kind": "customer_intake",
+      "replace_policy": "none",
+      "raw_source": "master-md",
+      "value_preview": "{\"number\":\"34 134 811 831\",\"entity_type\""
+    },
+    {
+      "section": "facts",
+      "field": "founded_year",
+      "tier": "verified",
+      "source_kind": "customer_intake",
+      "replace_policy": "none",
+      "raw_source": "master-md",
+      "value_preview": "\"Not stated exactly; current site/audit "
+    },
+    {
+      "section": "facts",
+      "field": "email",
+      "tier": "verified",
+      "source_kind": "gbp",
+      "replace_policy": "none",
+      "raw_source": "GBP",
+      "value_preview": "[\"admin@anjroofing.com.au\"]"
+    },
+    {
+      "section": "facts",
+      "field": "license_numbers",
+      "tier": "verified",
+      "source_kind": "customer_intake",
+      "replace_policy": "none",
+      "raw_source": "master-md",
+      "value_preview": "{\"abn\":\"34 134 811 831\",\"licence_claim\":"
+    },
+    {
+      "section": "hero",
+      "field": "candidate[0].headline/subheadline",
+      "tier": "ai_inferred",
+      "source_kind": "llm",
+      "replace_policy": "confirm",
+      "raw_source": "ai-completed:ollama:deepseek-r1:14b",
+      "value_preview": "18 Years Repairing Cairns Roofs – 4.8★ Rating"
+    },
+    {
+      "section": "services",
+      "field": "Roof Restoration",
+      "tier": "ai_inferred",
+      "source_kind": "niche_template",
+      "replace_policy": "confirm",
+      "raw_source": "[niche typical]",
+      "value_preview": "全面屋顶翻新 · 高压清洁 + 修补 + 重涂 + 防水"
+    },
+    {
+      "section": "services",
+      "field": "Roof Repair",
+      "tier": "ai_inferred",
+      "source_kind": "niche_template",
+      "replace_policy": "confirm",
+      "raw_source": "[niche typical]",
+      "value_preview": "漏水修复 · 屋瓦更换 · 紧急维修"
+    },
+    {
+      "section": "services",
+      "field": "Gutter Replacement",
+      "tier": "ai_inferred",
+      "source_kind": "niche_template",
+      "replace_policy": "confirm",
+      "raw_source": "[niche typical]",
+      "value_preview": "排水沟更换 · Colorbond / Zincalume"
+    },
+    {
+      "section": "services",
+      "field": "Gutter Guard",
+      "tier": "ai_inferred",
+      "source_kind": "niche_template",
+      "replace_policy": "confirm",
+      "raw_source": "[niche typical]",
+      "value_preview": "防堵排水沟方案 · 长期维护"
+    },
+    {
+      "section": "services",
+      "field": "Metal Roofing",
+      "tier": "ai_inferred",
+      "source_kind": "niche_template",
+      "replace_policy": "confirm",
+      "raw_source": "[niche typical]",
+      "value_preview": "Specialist metal roofing for Cairns and Far North Queensland"
+    },
+    {
+      "section": "suburbs",
+      "field": "Cairns",
+      "tier": "verified",
+      "source_kind": "unspecified",
+      "replace_policy": "none",
+      "raw_source": "verified",
+      "value_preview": "Cairns"
+    },
+    {
+      "section": "suburbs",
+      "field": "Portsmith",
+      "tier": "verified",
+      "source_kind": "unspecified",
+      "replace_policy": "none",
+      "raw_source": "verified",
+      "value_preview": "Portsmith"
+    },
+    {
+      "section": "suburbs",
+      "field": "Far North Queensland",
+      "tier": "verified",
+      "source_kind": "unspecified",
+      "replace_policy": "none",
+      "raw_source": "verified",
+      "value_preview": "Far North Queensland"
+    },
+    {
+      "section": "suburbs",
+      "field": "Cairns Central",
+      "tier": "geo_derived",
+      "source_kind": "centroid_radius",
+      "replace_policy": "none",
+      "raw_source": "geo_derived(centroid_radius,r=25km)",
+      "value_preview": "Cairns Central 0km"
+    },
+    {
+      "section": "suburbs",
+      "field": "Portsmith",
+      "tier": "geo_derived",
+      "source_kind": "centroid_radius",
+      "replace_policy": "none",
+      "raw_source": "geo_derived(centroid_radius,r=25km)",
+      "value_preview": "Portsmith 0km"
+    },
+    {
+      "section": "suburbs",
+      "field": "North Cairns",
+      "tier": "geo_derived",
+      "source_kind": "centroid_radius",
+      "replace_policy": "none",
+      "raw_source": "geo_derived(centroid_radius,r=25km)",
+      "value_preview": "North Cairns 0km"
+    },
+    {
+      "section": "suburbs",
+      "field": "Lamb Range",
+      "tier": "geo_derived",
+      "source_kind": "centroid_radius",
+      "replace_policy": "none",
+      "raw_source": "geo_derived(centroid_radius,r=25km)",
+      "value_preview": "Lamb Range 0km"
+    },
+    {
+      "section": "suburbs",
+      "field": "Cairns City",
+      "tier": "geo_derived",
+      "source_kind": "centroid_radius",
+      "replace_policy": "none",
+      "raw_source": "geo_derived(centroid_radius,r=25km)",
+      "value_preview": "Cairns City 0.09km"
+    },
+    {
+      "section": "suburbs",
+      "field": "Martynvale",
+      "tier": "geo_derived",
+      "source_kind": "centroid_radius",
+      "replace_policy": "none",
+      "raw_source": "geo_derived(centroid_radius,r=25km)",
+      "value_preview": "Martynvale 0.09km"
+    },
+    {
+      "section": "suburbs",
+      "field": "Manoora",
+      "tier": "geo_derived",
+      "source_kind": "centroid_radius",
+      "replace_policy": "none",
+      "raw_source": "geo_derived(centroid_radius,r=25km)",
+      "value_preview": "Manoora 1.2km"
+    },
+    {
+      "section": "suburbs",
+      "field": "Whitfield",
+      "tier": "geo_derived",
+      "source_kind": "centroid_radius",
+      "replace_policy": "none",
+      "raw_source": "geo_derived(centroid_radius,r=25km)",
+      "value_preview": "Whitfield 1.34km"
+    },
+    {
+      "section": "suburbs",
+      "field": "Kanimbla",
+      "tier": "geo_derived",
+      "source_kind": "centroid_radius",
+      "replace_policy": "none",
+      "raw_source": "geo_derived(centroid_radius,r=25km)",
+      "value_preview": "Kanimbla 1.96km"
+    },
+    {
+      "section": "suburbs",
+      "field": "Brinsmead",
+      "tier": "geo_derived",
+      "source_kind": "centroid_radius",
+      "replace_policy": "none",
+      "raw_source": "geo_derived(centroid_radius,r=25km)",
+      "value_preview": "Brinsmead 2.01km"
+    },
+    {
+      "section": "suburbs",
+      "field": "Edge Hill",
+      "tier": "geo_derived",
+      "source_kind": "centroid_radius",
+      "replace_policy": "none",
+      "raw_source": "geo_derived(centroid_radius,r=25km)",
+      "value_preview": "Edge Hill 2.02km"
+    },
+    {
+      "section": "suburbs",
+      "field": "Manunda",
+      "tier": "geo_derived",
+      "source_kind": "centroid_radius",
+      "replace_policy": "none",
+      "raw_source": "geo_derived(centroid_radius,r=25km)",
+      "value_preview": "Manunda 2.1km"
+    },
+    {
+      "section": "suburbs",
+      "field": "Stratford",
+      "tier": "geo_derived",
+      "source_kind": "centroid_radius",
+      "replace_policy": "none",
+      "raw_source": "geo_derived(centroid_radius,r=25km)",
+      "value_preview": "Stratford 2.65km"
+    },
+    {
+      "section": "suburbs",
+      "field": "Cairns North",
+      "tier": "geo_derived",
+      "source_kind": "centroid_radius",
+      "replace_policy": "none",
+      "raw_source": "geo_derived(centroid_radius,r=25km)",
+      "value_preview": "Cairns North 2.89km"
+    },
+    {
+      "section": "suburbs",
+      "field": "Freshwater",
+      "tier": "geo_derived",
+      "source_kind": "centroid_radius",
+      "replace_policy": "none",
+      "raw_source": "geo_derived(centroid_radius,r=25km)",
+      "value_preview": "Freshwater 3.14km"
+    },
+    {
+      "section": "suburbs",
+      "field": "Mooroobool",
+      "tier": "geo_derived",
+      "source_kind": "centroid_radius",
+      "replace_policy": "none",
+      "raw_source": "geo_derived(centroid_radius,r=25km)",
+      "value_preview": "Mooroobool 3.18km"
+    },
+    {
+      "section": "suburbs",
+      "field": "Aeroglen",
+      "tier": "geo_derived",
+      "source_kind": "centroid_radius",
+      "replace_policy": "none",
+      "raw_source": "geo_derived(centroid_radius,r=25km)",
+      "value_preview": "Aeroglen 3.23km"
+    },
+    {
+      "section": "suburbs",
+      "field": "Westcourt",
+      "tier": "geo_derived",
+      "source_kind": "centroid_radius",
+      "replace_policy": "none",
+      "raw_source": "geo_derived(centroid_radius,r=25km)",
+      "value_preview": "Westcourt 3.39km"
+    },
+    {
+      "section": "suburbs",
+      "field": "Parramatta Park",
+      "tier": "geo_derived",
+      "source_kind": "centroid_radius",
+      "replace_policy": "none",
+      "raw_source": "geo_derived(centroid_radius,r=25km)",
+      "value_preview": "Parramatta Park 3.74km"
+    },
+    {
+      "section": "suburbs",
+      "field": "Cairns",
+      "tier": "geo_derived",
+      "source_kind": "centroid_radius",
+      "replace_policy": "none",
+      "raw_source": "geo_derived(centroid_radius,r=25km)",
+      "value_preview": "Cairns 4.01km"
+    },
+    {
+      "section": "suburbs",
+      "field": "Bungalow",
+      "tier": "geo_derived",
+      "source_kind": "centroid_radius",
+      "replace_policy": "none",
+      "raw_source": "geo_derived(centroid_radius,r=25km)",
+      "value_preview": "Bungalow 4.25km"
+    },
+    {
+      "section": "suburbs",
+      "field": "Redlynch",
+      "tier": "geo_derived",
+      "source_kind": "centroid_radius",
+      "replace_policy": "none",
+      "raw_source": "geo_derived(centroid_radius,r=25km)",
+      "value_preview": "Redlynch 4.35km"
+    },
+    {
+      "section": "suburbs",
+      "field": "Earlville",
+      "tier": "geo_derived",
+      "source_kind": "centroid_radius",
+      "replace_policy": "none",
+      "raw_source": "geo_derived(centroid_radius,r=25km)",
+      "value_preview": "Earlville 4.45km"
+    },
+    {
+      "section": "suburbs",
+      "field": "Kamerunga",
+      "tier": "geo_derived",
+      "source_kind": "centroid_radius",
+      "replace_policy": "none",
+      "raw_source": "geo_derived(centroid_radius,r=25km)",
+      "value_preview": "Kamerunga 5.02km"
+    },
+    {
+      "section": "suburbs",
+      "field": "Woree",
+      "tier": "geo_derived",
+      "source_kind": "centroid_radius",
+      "replace_policy": "none",
+      "raw_source": "geo_derived(centroid_radius,r=25km)",
+      "value_preview": "Woree 5.12km"
+    },
+    {
+      "section": "suburbs",
+      "field": "Machans Beach",
+      "tier": "geo_derived",
+      "source_kind": "centroid_radius",
+      "replace_policy": "none",
+      "raw_source": "geo_derived(centroid_radius,r=25km)",
+      "value_preview": "Machans Beach 5.56km"
+    },
+    {
+      "section": "suburbs",
+      "field": "Bayview Heights",
+      "tier": "geo_derived",
+      "source_kind": "centroid_radius",
+      "replace_policy": "none",
+      "raw_source": "geo_derived(centroid_radius,r=25km)",
+      "value_preview": "Bayview Heights 6.18km"
+    },
+    {
+      "section": "suburbs",
+      "field": "Holloways Beach",
+      "tier": "geo_derived",
+      "source_kind": "centroid_radius",
+      "replace_policy": "none",
+      "raw_source": "geo_derived(centroid_radius,r=25km)",
+      "value_preview": "Holloways Beach 7.26km"
+    },
+    {
+      "section": "suburbs",
+      "field": "Caravonica",
+      "tier": "geo_derived",
+      "source_kind": "centroid_radius",
+      "replace_policy": "none",
+      "raw_source": "geo_derived(centroid_radius,r=25km)",
+      "value_preview": "Caravonica 7.31km"
+    },
+    {
+      "section": "suburbs",
+      "field": "Barron Gorge",
+      "tier": "geo_derived",
+      "source_kind": "centroid_radius",
+      "replace_policy": "none",
+      "raw_source": "geo_derived(centroid_radius,r=25km)",
+      "value_preview": "Barron Gorge 7.37km"
+    },
+    {
+      "section": "suburbs",
+      "field": "Barron",
+      "tier": "geo_derived",
+      "source_kind": "centroid_radius",
+      "replace_policy": "none",
+      "raw_source": "geo_derived(centroid_radius,r=25km)",
+      "value_preview": "Barron 8.47km"
+    },
+    {
+      "section": "suburbs",
+      "field": "White Rock",
+      "tier": "geo_derived",
+      "source_kind": "centroid_radius",
+      "replace_policy": "none",
+      "raw_source": "geo_derived(centroid_radius,r=25km)",
+      "value_preview": "White Rock 8.68km"
+    },
+    {
+      "section": "suburbs",
+      "field": "Mount Sheridan",
+      "tier": "geo_derived",
+      "source_kind": "centroid_radius",
+      "replace_policy": "none",
+      "raw_source": "geo_derived(centroid_radius,r=25km)",
+      "value_preview": "Mount Sheridan 9.1km"
+    },
+    {
+      "section": "suburbs",
+      "field": "Smithfield",
+      "tier": "geo_derived",
+      "source_kind": "centroid_radius",
+      "replace_policy": "none",
+      "raw_source": "geo_derived(centroid_radius,r=25km)",
+      "value_preview": "Smithfield 10.11km"
+    },
+    {
+      "section": "suburbs",
+      "field": "East Trinity",
+      "tier": "geo_derived",
+      "source_kind": "centroid_radius",
+      "replace_policy": "none",
+      "raw_source": "geo_derived(centroid_radius,r=25km)",
+      "value_preview": "East Trinity 10.14km"
+    },
+    {
+      "section": "suburbs",
+      "field": "Bentley Park",
+      "tier": "geo_derived",
+      "source_kind": "centroid_radius",
+      "replace_policy": "none",
+      "raw_source": "geo_derived(centroid_radius,r=25km)",
+      "value_preview": "Bentley Park 11.31km"
+    },
+    {
+      "section": "suburbs",
+      "field": "Speewah",
+      "tier": "geo_derived",
+      "source_kind": "centroid_radius",
+      "replace_policy": "none",
+      "raw_source": "geo_derived(centroid_radius,r=25km)",
+      "value_preview": "Speewah 11.51km"
+    },
+    {
+      "section": "suburbs",
+      "field": "Yorkeys Knob",
+      "tier": "geo_derived",
+      "source_kind": "centroid_radius",
+      "replace_policy": "none",
+      "raw_source": "geo_derived(centroid_radius,r=25km)",
+      "value_preview": "Yorkeys Knob 11.66km"
+    },
+    {
+      "section": "suburbs",
+      "field": "Trinity Park",
+      "tier": "geo_derived",
+      "source_kind": "centroid_radius",
+      "replace_policy": "none",
+      "raw_source": "geo_derived(centroid_radius,r=25km)",
+      "value_preview": "Trinity Park 11.77km"
+    },
+    {
+      "section": "suburbs",
+      "field": "Mount Peter",
+      "tier": "geo_derived",
+      "source_kind": "centroid_radius",
+      "replace_policy": "none",
+      "raw_source": "geo_derived(centroid_radius,r=25km)",
+      "value_preview": "Mount Peter 12.3km"
+    },
+    {
+      "section": "suburbs",
+      "field": "Bungalow",
+      "tier": "ai_inferred",
+      "source_kind": "llm",
+      "replace_policy": "confirm",
+      "raw_source": "ai-inferred",
+      "value_preview": "Bungalow"
+    },
+    {
+      "section": "suburbs",
+      "field": "Parramatta Park",
+      "tier": "ai_inferred",
+      "source_kind": "llm",
+      "replace_policy": "confirm",
+      "raw_source": "ai-inferred",
+      "value_preview": "Parramatta Park"
+    },
+    {
+      "section": "suburbs",
+      "field": "Westcourt",
+      "tier": "ai_inferred",
+      "source_kind": "llm",
+      "replace_policy": "confirm",
+      "raw_source": "ai-inferred",
+      "value_preview": "Westcourt"
+    },
+    {
+      "section": "suburbs",
+      "field": "Manunda",
+      "tier": "ai_inferred",
+      "source_kind": "llm",
+      "replace_policy": "confirm",
+      "raw_source": "ai-inferred",
+      "value_preview": "Manunda"
+    },
+    {
+      "section": "suburbs",
+      "field": "Earlville",
+      "tier": "ai_inferred",
+      "source_kind": "llm",
+      "replace_policy": "confirm",
+      "raw_source": "ai-inferred",
+      "value_preview": "Earlville"
+    },
+    {
+      "section": "suburbs",
+      "field": "Woree",
+      "tier": "ai_inferred",
+      "source_kind": "llm",
+      "replace_policy": "confirm",
+      "raw_source": "ai-inferred",
+      "value_preview": "Woree"
+    },
+    {
+      "section": "suburbs",
+      "field": "Edmonton",
+      "tier": "ai_inferred",
+      "source_kind": "llm",
+      "replace_policy": "confirm",
+      "raw_source": "ai-inferred",
+      "value_preview": "Edmonton"
+    },
+    {
+      "section": "suburbs",
+      "field": "Smithfield",
+      "tier": "ai_inferred",
+      "source_kind": "llm",
+      "replace_policy": "confirm",
+      "raw_source": "ai-inferred",
+      "value_preview": "Smithfield"
+    },
+    {
+      "section": "suburbs",
+      "field": "Redlynch",
+      "tier": "ai_inferred",
+      "source_kind": "llm",
+      "replace_policy": "confirm",
+      "raw_source": "ai-inferred",
+      "value_preview": "Redlynch"
+    },
+    {
+      "section": "suburbs",
+      "field": "Gordonvale",
+      "tier": "ai_inferred",
+      "source_kind": "llm",
+      "replace_policy": "confirm",
+      "raw_source": "ai-inferred",
+      "value_preview": "Gordonvale"
+    },
+    {
+      "section": "footer.license",
+      "field": "license",
+      "tier": "verified",
+      "source_kind": "official_registry",
+      "replace_policy": "none",
+      "raw_source": "official_registry",
+      "value_preview": "QBCC 1161095"
+    }
+  ]
+}

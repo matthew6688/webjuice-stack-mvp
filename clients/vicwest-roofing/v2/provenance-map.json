@@ -1,0 +1,305 @@
+{
+  "slug": "vicwest-roofing",
+  "schema_version": "provenance-map/1",
+  "standard": "docs/v3/SOP-PROVENANCE.md",
+  "summary": {
+    "verified": 25,
+    "geo_derived": 0,
+    "ai_inferred": 7,
+    "ai_placeholder": 0,
+    "stock_placeholder": 0,
+    "replace_required": 0,
+    "confirm": 7,
+    "none": 25
+  },
+  "sections": [
+    {
+      "section": "facts",
+      "field": "business_name",
+      "tier": "verified",
+      "source_kind": "gbp",
+      "replace_policy": "none",
+      "raw_source": "GBP",
+      "value_preview": "\"Vicwest Roofing\""
+    },
+    {
+      "section": "facts",
+      "field": "phone",
+      "tier": "verified",
+      "source_kind": "gbp",
+      "replace_policy": "none",
+      "raw_source": "GBP",
+      "value_preview": "[\"0403 554 592\"]"
+    },
+    {
+      "section": "facts",
+      "field": "address",
+      "tier": "verified",
+      "source_kind": "gbp",
+      "replace_policy": "none",
+      "raw_source": "GBP",
+      "value_preview": "\"Shed 3/31 Icon Dr, Delacombe VIC 3356, "
+    },
+    {
+      "section": "facts",
+      "field": "abn",
+      "tier": "verified",
+      "source_kind": "abn_register",
+      "replace_policy": "none",
+      "raw_source": "abn",
+      "value_preview": "{\"number\":\"69 622 718 361\",\"entity_name\""
+    },
+    {
+      "section": "facts",
+      "field": "founded_year",
+      "tier": "verified",
+      "source_kind": "abn_register",
+      "replace_policy": "none",
+      "raw_source": "abn",
+      "value_preview": "{\"abn_effective_from\":\"2017-11-09\",\"publ"
+    },
+    {
+      "section": "facts",
+      "field": "email",
+      "tier": "verified",
+      "source_kind": "gbp",
+      "replace_policy": "none",
+      "raw_source": "GBP",
+      "value_preview": "[\"info@vicwestroofing.com.au\",\"estimatin"
+    },
+    {
+      "section": "facts",
+      "field": "license_numbers",
+      "tier": "verified",
+      "source_kind": "abn_register",
+      "replace_policy": "none",
+      "raw_source": "abn",
+      "value_preview": "{\"ABN\":\"69 622 718 361\",\"ACN\":\"622 718 3"
+    },
+    {
+      "section": "hero",
+      "field": "candidate[1].headline/subheadline",
+      "tier": "ai_inferred",
+      "source_kind": "llm",
+      "replace_policy": "confirm",
+      "raw_source": "ai-completed:claude:claude-sonnet-4-5",
+      "value_preview": "Colorbond® Roof Replacement Ballarat—10-Year Warranty"
+    },
+    {
+      "section": "services",
+      "field": "Roof Replacement",
+      "tier": "ai_inferred",
+      "source_kind": "unknown",
+      "replace_policy": "confirm",
+      "raw_source": "verified:scraped:index.md",
+      "value_preview": "Remove old roof, install new Colorbond metal system with 10-"
+    },
+    {
+      "section": "services",
+      "field": "New Roof Installation",
+      "tier": "ai_inferred",
+      "source_kind": "unknown",
+      "replace_policy": "confirm",
+      "raw_source": "verified:scraped:index.md",
+      "value_preview": "Design and fit Colorbond metal roofs for new builds and exte"
+    },
+    {
+      "section": "services",
+      "field": "Gutter & Pipe Replacement",
+      "tier": "ai_inferred",
+      "source_kind": "unknown",
+      "replace_policy": "confirm",
+      "raw_source": "verified:scraped:index.md",
+      "value_preview": "Supply and fit Colorbond gutters, fascia, downpipes with lea"
+    },
+    {
+      "section": "services",
+      "field": "Roof Repairs",
+      "tier": "ai_inferred",
+      "source_kind": "unknown",
+      "replace_policy": "confirm",
+      "raw_source": "verified:scraped:index.md",
+      "value_preview": "Fix storm damage, replace broken tiles, seal valleys and pen"
+    },
+    {
+      "section": "services",
+      "field": "Colorbond Metal Roofing",
+      "tier": "ai_inferred",
+      "source_kind": "unknown",
+      "replace_policy": "confirm",
+      "raw_source": "verified:scraped:index.md",
+      "value_preview": "Install BlueScope Colorbond steel with 36-year coating warra"
+    },
+    {
+      "section": "services",
+      "field": "Commercial Roofing",
+      "tier": "ai_inferred",
+      "source_kind": "unknown",
+      "replace_policy": "confirm",
+      "raw_source": "verified:scraped:index.md",
+      "value_preview": "Large-scale metal roof replacement and new installation for "
+    },
+    {
+      "section": "suburbs",
+      "field": "Ballarat Central",
+      "tier": "verified",
+      "source_kind": "unspecified",
+      "replace_policy": "none",
+      "raw_source": "verified",
+      "value_preview": "Ballarat Central"
+    },
+    {
+      "section": "suburbs",
+      "field": "Sebastopol",
+      "tier": "verified",
+      "source_kind": "unspecified",
+      "replace_policy": "none",
+      "raw_source": "verified",
+      "value_preview": "Sebastopol"
+    },
+    {
+      "section": "suburbs",
+      "field": "Wendouree",
+      "tier": "verified",
+      "source_kind": "unspecified",
+      "replace_policy": "none",
+      "raw_source": "verified",
+      "value_preview": "Wendouree"
+    },
+    {
+      "section": "suburbs",
+      "field": "Lake Wendouree",
+      "tier": "verified",
+      "source_kind": "unspecified",
+      "replace_policy": "none",
+      "raw_source": "verified",
+      "value_preview": "Lake Wendouree"
+    },
+    {
+      "section": "suburbs",
+      "field": "Delacombe",
+      "tier": "verified",
+      "source_kind": "unspecified",
+      "replace_policy": "none",
+      "raw_source": "verified",
+      "value_preview": "Delacombe"
+    },
+    {
+      "section": "suburbs",
+      "field": "Buninyong",
+      "tier": "verified",
+      "source_kind": "unspecified",
+      "replace_policy": "none",
+      "raw_source": "verified",
+      "value_preview": "Buninyong"
+    },
+    {
+      "section": "suburbs",
+      "field": "Mount Pleasant",
+      "tier": "verified",
+      "source_kind": "unspecified",
+      "replace_policy": "none",
+      "raw_source": "verified",
+      "value_preview": "Mount Pleasant"
+    },
+    {
+      "section": "suburbs",
+      "field": "Mount Helen",
+      "tier": "verified",
+      "source_kind": "unspecified",
+      "replace_policy": "none",
+      "raw_source": "verified",
+      "value_preview": "Mount Helen"
+    },
+    {
+      "section": "suburbs",
+      "field": "Black Hill",
+      "tier": "verified",
+      "source_kind": "unspecified",
+      "replace_policy": "none",
+      "raw_source": "verified",
+      "value_preview": "Black Hill"
+    },
+    {
+      "section": "suburbs",
+      "field": "Alfredton",
+      "tier": "verified",
+      "source_kind": "unspecified",
+      "replace_policy": "none",
+      "raw_source": "verified",
+      "value_preview": "Alfredton"
+    },
+    {
+      "section": "suburbs",
+      "field": "Soldiers Hill",
+      "tier": "verified",
+      "source_kind": "unspecified",
+      "replace_policy": "none",
+      "raw_source": "verified",
+      "value_preview": "Soldiers Hill"
+    },
+    {
+      "section": "suburbs",
+      "field": "Brown Hill",
+      "tier": "verified",
+      "source_kind": "unspecified",
+      "replace_policy": "none",
+      "raw_source": "verified",
+      "value_preview": "Brown Hill"
+    },
+    {
+      "section": "suburbs",
+      "field": "Redan",
+      "tier": "verified",
+      "source_kind": "unspecified",
+      "replace_policy": "none",
+      "raw_source": "verified",
+      "value_preview": "Redan"
+    },
+    {
+      "section": "suburbs",
+      "field": "Canadian",
+      "tier": "verified",
+      "source_kind": "unspecified",
+      "replace_policy": "none",
+      "raw_source": "verified",
+      "value_preview": "Canadian"
+    },
+    {
+      "section": "suburbs",
+      "field": "Bonshaw",
+      "tier": "verified",
+      "source_kind": "unspecified",
+      "replace_policy": "none",
+      "raw_source": "verified",
+      "value_preview": "Bonshaw"
+    },
+    {
+      "section": "suburbs",
+      "field": "Miners Rest",
+      "tier": "verified",
+      "source_kind": "unspecified",
+      "replace_policy": "none",
+      "raw_source": "verified",
+      "value_preview": "Miners Rest"
+    },
+    {
+      "section": "footer.license",
+      "field": "license",
+      "tier": "verified",
+      "source_kind": "official_registry",
+      "replace_policy": "none",
+      "raw_source": "official_registry",
+      "value_preview": "VBA CDB-U 65938"
+    },
+    {
+      "section": "reviews",
+      "field": "Sarah K.",
+      "tier": "verified",
+      "source_kind": "unspecified",
+      "replace_policy": "none",
+      "raw_source": "REAL",
+      "value_preview": "Vicwest replaced our 1970s tile roof with Colorbond · neat j"
+    }
+  ]
+}
