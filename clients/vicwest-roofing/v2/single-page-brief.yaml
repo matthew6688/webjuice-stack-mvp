@@ -12,7 +12,7 @@ address:
   state: VIC
   postcode: "3356"
 state: VIC
-abn: 34 134 811 831
+abn: 69 622 718 361  # ABR-verified 2026-05-29: VICWEST GROUP PTY LTD t/a VICWEST ROOFING (VIC). Prior value 34 134 811 831 was a-j-roofing's ABN (A&J ROOFING SOLUTIONS PTY LTD, QLD) — cross-client copy-paste contamination, corrected.
 license:
   authority: VBA
   number: CDB-U 65938
@@ -27,7 +27,7 @@ emergency_response_sla_hours: 4
 emergency_phone: null
 owner_full_name: null
 owner_photo_url: null
-year_founded: 2003
+year_founded: null  # 2026-05-29: prior value 2003 was FABRICATED (zero source · back-calc from "20+ yrs"). Source truth: owned-site claims "over 20 years' experience" (team/founder, not entity age), Localsearch "trading 9 years", ABN active 2017-11-09. No verifiable founding year — keep null per anti-hallucination lock. Strap should render "20+ yrs roofing experience", NOT "since YYYY" (R90 composer fix).
 service_radius_km: 50
 insurance_amount_aud: null
 entity_review_count: 18

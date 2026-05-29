@@ -162,6 +162,26 @@ compatibility_date = "2025-05-01"
 | Content richness | D2.14 proof variety · D2.11 facts cross-check · minimum_content_signal | WIRED |
 | Mobile gate | M1.1 overflow · M1.2 sticky-CTA · M1.3 tap-target ≥44px | WIRED (mechanical vetos) |
 
+### Model-judged metrics · N-run mean + variance (R91 · 2026-05-29 · `pl-audit-v4/0.2.0`)
+Subjective/LLM tiers are noisy across identical-HTML runs (vicwest empirical: T3 vision ±9pt range,
+T4 designer ±14pt range → single-shot composite swings ±4pt). Fix (codex R89/R90/R91):
+- **`--vision-runs N` flag** (default **3** · clamp ≥1 · set 1 for cheap single-shot). Only affects
+  `full`/`premium` tiers (fast/T1/T2 do no vision → no-op). Cost scales linearly: each run = 1 vision +
+  1 hero + 1 designer LLM call (default 3 → ~$0.45/page full · ~$0.90 premium).
+- **Averaged tiers**: T3 vision (`tier_3.score`), T4 designer (`tier_4.score`), hero-judge
+  (`hero_judge.hero_visual_score`). The **MEAN** feeds the composite + thresholds + vision_confidence;
+  the per-run array, `min`/`max`/`range`/`stddev` (population) are recorded under each tier's
+  `score_stats`, with `single_run_score`/`single_run_cost_usd` preserved and `cost_usd` = summed total.
+- **Representative run** kept for findings/dims = run closest to mean (tie → lower score → earlier),
+  so visible issues stay coherent with the averaged score.
+- **Deterministic tiers stay single-run** (T1/T2/T4d/geometry/mobile/facts-cross-check/etc · no LLM).
+- **Helpers**: `computeStats(values)` + `runAveraged(label,n,runFn,getScore,setScore)` inline in
+  `pl-audit-v4.js` (single-use · no shared module per §2). Null/skipped scores tolerated (n=0 → no
+  mean overwrite · failures never become fake zeroes). Top-level `report.vision_runs` surfaces N.
+- **DEFERRED (own round)**: baseline-regression comparator ("no statistically-meaningful regression
+  vs baseline") needs a per-client baseline store + regression test — NOT in R91. Hero-judge is
+  averaged but NOT yet added to composite weights (weights change = separate round per §7 anti-pattern 3/7).
+
 ### Standalone audit modules in `core/audit/` (BUILT but NOT WIRED into pl-audit-v4)
 | File | Purpose | Wire status |
 |---|---|---|
@@ -382,5 +402,18 @@ anti_patterns: [{ id, why }]
 
 
 - **2026-05-29 (R83/R84 · P2-1 provenance)** · Unified real-vs-AI provenance. `docs/v3/SOP-PROVENANCE.md` (canonical tier ladder verified>geo_derived>ai_inferred>ai_placeholder>stock_placeholder · source_kind subtypes · replace_policy none/confirm/replace_required). `pl:provenance-map` (reader · normalizes all _source dialects → `clients/<slug>/v2/provenance-map.json` + missing_sections). `pl:provenance-annotate` (preview post-processor → `index.preview-annotated.html` with data-provenance/data-replace per section · LIVE HARD-OFF · never touches live index.html). Open: 1c client replace-list UI (after reviews/images fill) · field-level service provenance.
+
+- **2026-05-29 (R89 · Task-4 design/copy lift · editorial-newsletter ONLY)** · SEALED (codex R89 + followup + close). Calibrated template `templates/roofing/editorial-newsletter/template.html` surgically lifted; fast-tier composite 91/A brand lock held throughout.
+  - **A** mobile hero: ≤980px now orders the real roof photo ABOVE copy as a shallow 16/10 anchor (fixes I-005 text-only mobile fold). **F** desktop fold: hero-grid padding asymmetric (start space-4/end space-12) pulls CTA above 900px without cramping strap. **E** CTA copy: "Send the brief"→"Get a free quote"/"Get my free quote". **D** footer: icon-led contact rows (inline SVG) + verified trust block (rating + VBA licence). **C** REVERTED (coverage muted-band added no clear separation · codex R89-close).
+  - **Bug fixed (D root cause)**: simple Mustache `{{#client.rating}}` renders ONLY for arrays/objects, NOT primitive numbers → rating row rendered empty. Use the engine's `{{?primitive}}` truthy conditional (render() line 234) for number/string/bool fields. **Template lesson**: `{{#x}}`=array/object only · `{{?x}}`=any-truthy primitive.
+  - **Audit-vision noise discovered**: N=3 full audits on identical HTML → composite 76/78/80 (mean 78), T3 vision range **9pt** (70.5-79.5), hero_judge 90/83/91 (mean 88 · all > baseline 79). Metric too noisy to adjudicate ±4pt composite. Trustworthy signals (T2=91 locked · P0=0 · hero_judge up · T4 flat 77→77.7) → no regression, mobile defect fixed.
+  - **Data fix (out of band · ABR-verified)**: vicwest brief.yaml ABN was a-j-roofing's `34 134 811 831` (cross-client copy-paste). Corrected to `69 622 718 361` (VICWEST GROUP PTY LTD t/a VICWEST ROOFING · ABR official). P0 facts_cross_check cleared (2→0).
+  - **Follow-ups opened**: (1) **R90 design-lift** — pre-existing T4 weaknesses out-of-scope for R89: services-card padding/line-height/title scale · heading serif-vs-sans consistency · strap parent-section relationship. (2) **Task-3 data-provenance** — strap "23+ years since 2003" (brief.yaml year_founded:2003) conflicts with source context (owned-site 20+yr · Localsearch 9yr trading · ABN since 2017); resolve SSOT or annotate, don't amplify. (3) **Audit-gate infra** — gate model-judged metrics (T3 vision/T4) on N=3 MEAN + variance metadata, not single shot; P0 + deterministic stay single-run.
+
+- **2026-05-29 (R90 · design-lift + strap-claim honesty · editorial-newsletter + composer)** · codex R90 implemented (composer + template + test). Two coupled workstreams:
+  - **Strap-claim honesty (anti-hallucination · release-blocker class)**: verified "23+ years since 2003" was FABRICATED (zero source · back-calc). brief.yaml year_founded 2003 → null (annotated). Composer (`pl-compose-editorial.js`): split `yearFounded` (ONLY explicit "since/established/founded YYYY" or brief) vs `experienceYears` (from "X years experience/serving" claims) vs `abnEffectiveYear`; **removed the "X years"→founding-year conversion** (was manufacturing "since 2006" from "20+ yrs experience"). Strap now renders "20+ · Years roofing experience" (no false founding year). `brand_folio` = "City · Est. YYYY" only if real year, else "City · State" (no "Est. null"). Warranty strap/chips source-derived (vicwest 10yr · mark-squire 15yr · a-j NO invented warranty). Prepared hero proof-chips/headlines filtered so fake reviews/warranties can't bypass source checks; fabricated placeholder testimonials suppressed when no real review text. Removed strap "—/—" placeholder cells; strap auto-fit 2-4 cells + quiet "At a glance" parent label. Test: `scripts/test/test-compose-editorial-strap-honesty.mjs` (passing).
+  - **Design-lift (R89-close scoped pre-existing T4)**: service-card padding/line-height/title-scale bump; strap parent-section relationship; (note: a global `section:nth-of-type(even){background:var(--bg-warm)}` alternating-band rule is also in the template).
+  - **Verification (claude env · Playwright works here; codex env could not run vision)**: N=3 full-tier vicwest → composite mean **80.3** (79/80/82 · was 78.0 post-R89 · MEETS Task-4 ≥80), T4 mean **81.7** (was 77.7 · +4), hero ~87, T3 ~78. Brand lock HELD on all 3 calibration clients (vicwest 91 · a-j 89 · mark-squire 93 fast-tier) · P0=0 all · T1=100 all. Metric still noisy (composite range 3, T4 range 14) — confirms the N-run-mean gating need below.
+  - **Open infra item (codex R89/R90)**: audit should gate model-judged metrics (T3 vision / T4 designer) on an **N=3 MEAN + variance metadata**, not a single shot (P0 + deterministic stay single-run). Single-run vision composite swings ≥9pt — too noisy to adjudicate ±4pt deltas.
 
 **Sign-off**: this doc is the institutional memory of existing infrastructure. Read FIRST before grepping. Update when discovering new modules or building new ones.

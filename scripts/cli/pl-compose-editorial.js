@@ -33,10 +33,7 @@ import { load as cheerioLoad } from 'cheerio';
 import {
   loadInferred,
   mergeSuburbs,
-  mergeTestimonials,
   mergeOwnerName,
-  hadInference,
-  inferredFieldNames,
 } from '../../core/handoff/merge-inferred.js';
 import { buildCopy, normalizeFacts } from '../../core/handoff/copy-builders.js';
 
@@ -344,7 +341,6 @@ async function main() {
   // CANONICAL.md §3 anti-gaming: inferred values do NOT promote checkpoint to GREEN.
   // Composer only uses them to fill rendered HTML · PREVIEW banner stays.
   const inferredData = loadInferred(slug, REPO);
-  const hasInferredBackfill = hadInference(inferredData);
   // V5 hybrid · codex R32 Q-MM-2 (c) · read wireframe-home-<llm>.json if --use-wireframe set
   // Wireframe is LLM-generated persona-aware copy (Phase A.1 Step 5 output)
   // Use as PRIMARY copy source for hero block · narrative as fallback
@@ -411,22 +407,52 @@ async function main() {
     ? (_markTokens[0][0] + _markTokens[1][0]).toUpperCase()
     : (businessName.replace(/[^a-zA-Z0-9]/g, '').slice(0, 2) || 'XX').toUpperCase();
   // year_founded priority: brief.yaml (canonical · validated by pl:validate-single-page-brief)
-  // > public_claims (years subtracted from now) > ABN effective (lossy · can be later than real start)
-  // Codex R40 3rd-pass: removed '2003' hallucination fallback · let yearFounded be null when unverified
-  // Builders + downstream consumers handle null gracefully (no "23+ years" claim if unknown)
+  // > explicit public "since/established/founded YYYY" claim only.
+  // Never back-calculate a founding year from "X years experience" or ABN active date.
+  // Those are separate trust signals and must not become entity-age claims.
   let yearFounded = null;
+  let experienceYears = null;
   if (brief?.year_founded) yearFounded = String(brief.year_founded);
-  if (!yearFounded) {
-    const claims = realFacts.founded_year?.public_claims || [];
-    for (const c of claims) {
-      const yrsMatch = String(c).match(/(\d{1,2})\+?\s*years?/i);
-      if (yrsMatch) { yearFounded = String(new Date().getFullYear() - parseInt(yrsMatch[1], 10)); break; }
+  const foundingClaims = [
+    ...(Array.isArray(realFacts.founded_year?.public_claims) ? realFacts.founded_year.public_claims : []),
+    ...(typeof realFacts.founded_year === 'string' ? [realFacts.founded_year] : []),
+  ];
+  for (const c of foundingClaims) {
+    const claim = String(c);
+    if (!yearFounded) {
       const yMatch = String(c).match(/(?:since|established|founded|est\.?|in)\s*(\d{4})/i);
-      if (yMatch) { yearFounded = yMatch[1]; break; }
+      if (yMatch) yearFounded = yMatch[1];
     }
+    const expMatch = claim.match(/(?:over|more than|at least|around|approx(?:imately)?|about)?\s*(\d{1,2})\+?\s*years?(?:'|\u2019)?\s+(?:of\s+)?(?:(?:roofing|local)\s+)?(?:experience|serving|service)/i);
+    if (!experienceYears && expMatch) experienceYears = parseInt(expMatch[1], 10);
+    const serviceAgeMatch = claim.match(/\b(?:servicing|serving)\b[\s\S]{0,80}\b(?:over|more than|at least|around|approx(?:imately)?|about)?\s*(\d{1,2})\+?\s*years?\b/i);
+    if (!experienceYears && serviceAgeMatch) experienceYears = parseInt(serviceAgeMatch[1], 10);
   }
-  if (!yearFounded && realFacts.founded_year?.abn_effective_from) yearFounded = realFacts.founded_year.abn_effective_from.slice(0, 4);
-  // No more '2003' fallback · yearFounded stays null when unverified
+  const abnEffectiveYear = realFacts.founded_year?.abn_effective_from
+    ? String(realFacts.founded_year.abn_effective_from).slice(0, 4)
+    : null;
+  // No fabricated fallback · yearFounded stays null when unverified.
+
+  const warrantyBlob = [
+    realFacts.warranty_years,
+    facts.warranty_years,
+    brief?.warranty_years,
+    realFacts.guarantee,
+    ...(realFacts.service_list || []).map(s => s.brief),
+    narrative.trust_signals_catalog,
+  ].filter(Boolean).join('\n');
+  let warrantyYearsVerified = null;
+  let warrantyKind = 'warranty';
+  const warrantyMatch = warrantyBlob.match(/\b(\d{1,2})\s*[- ]?\s*(?:year|yr)s?\s+(?:workmanship\s+)?(warranty|guarantee)\b/i)
+    || warrantyBlob.match(/\b(warranty|guarantee)\b[^\d]{0,40}\b(\d{1,2})\s*[- ]?\s*(?:year|yr)s?\b/i);
+  if (typeof realFacts.warranty_years === 'number' || typeof facts.warranty_years === 'number' || typeof brief?.warranty_years === 'number') {
+    warrantyYearsVerified = Number(realFacts.warranty_years || facts.warranty_years || brief.warranty_years);
+  } else if (warrantyMatch) {
+    const numPart = /^\d+$/.test(warrantyMatch[1] || '') ? warrantyMatch[1] : warrantyMatch[2];
+    const kindPart = /^\d+$/.test(warrantyMatch[1] || '') ? warrantyMatch[2] : warrantyMatch[1];
+    warrantyYearsVerified = parseInt(numPart, 10);
+    warrantyKind = /guarantee/i.test(kindPart || '') ? 'guarantee' : 'warranty';
+  }
 
   // License (provenance-aware · only show when visible).
   // Priority: brief.yaml.license (canonical · codex R16) > facts.license_numbers (extracted) > narrative (fallback)
@@ -497,13 +523,36 @@ async function main() {
     if (parts.length === 0) parts.push('Roofing');
     return parts.length === 2 ? `${parts[0]} & ${parts[1]}` : parts[0];
   })();
+  function isVerifiedProofText(text) {
+    const s = String(text || '');
+    if (!s.trim()) return false;
+    const sinceMatch = s.match(/\bsince\s+(\d{4})\b/i);
+    if (sinceMatch && String(yearFounded) !== sinceMatch[1]) return false;
+    if (/review|\brating\b|\bstar|★|\/\s*5/i.test(s)) {
+      return !!(facts.rating && facts.review_count)
+        && s.includes(String(facts.review_count))
+        && s.includes(String(facts.rating));
+    }
+    if (/\b(?:warranty|guarantee)\b/i.test(s)) return !!warrantyYearsVerified && s.includes(String(warrantyYearsVerified));
+    const yearsMatch = s.match(/\b(\d{1,2})\+?\s*(?:years|yrs?)\b/i);
+    if (yearsMatch) {
+      const n = parseInt(yearsMatch[1], 10);
+      return n === experienceYears || n === warrantyYearsVerified || (yearFounded && n === new Date().getFullYear() - parseInt(yearFounded, 10));
+    }
+    if (/\b(?:licensed|licence|license|QBCC|VBA|NSW Fair Trading)\b/i.test(s)) return !!_licenseVisibleFinal;
+    if (/\bABN\b/i.test(s)) return !!(brief?.abn || licNum.ABN);
+    return true;
+  }
+  const preparedHeroHeadline = _preparedHero?.headline && isVerifiedProofText(_preparedHero.headline) ? _preparedHero.headline : null;
+  const narrativeHeroHeadline = (narrative.hero_copy_options && (narrative.hero_copy_options[0]?.headline || narrative.hero_copy_options.headline));
+  const safeNarrativeHeroHeadline = narrativeHeroHeadline && isVerifiedProofText(narrativeHeroHeadline) ? narrativeHeroHeadline : null;
   // Editorial path uses wireframe override · direct path IGNORES wireframe (voice mismatch)
   // BUGFIX 2026-05-29 (codex R39-followup): direct profile must not inherit editorial wireframe headline
   // R44: prepared hero-copy.json takes priority for editorial (higher specificity than formula).
   //      Wireframe (--use-wireframe flag) still overrides when explicitly requested.
   const heroHeadlineEditorial = wireframeHeroBlock?.headline
-    || _preparedHero?.headline
-    || (narrative.hero_copy_options && (narrative.hero_copy_options[0]?.headline || narrative.hero_copy_options.headline))
+    || preparedHeroHeadline
+    || safeNarrativeHeroHeadline
     || `A ${city} roof, done properly — and signed off in writing.`;
   const heroHeadlineDirect = `${_serviceKeywords} roofing across ${city} & ${state === 'VIC' ? 'Western Victoria' : state === 'QLD' ? 'Far North Queensland' : 'surrounds'}.`;
   const heroHeadline = templateProfile === 'direct' ? heroHeadlineDirect : heroHeadlineEditorial;
@@ -520,7 +569,9 @@ async function main() {
     if (templateProfile === 'direct') {
       // Trade voice · short · concrete · no poetics · IGNORE wireframe (editorial voice)
       // Drop "since YYYY" when yearFounded unverified (codex R40 3rd-pass hallucination guard)
-      const sinceClause = yearFounded ? ` and on ${city} roofs since ${yearFounded}` : ` and working ${city} roofs`;
+      const sinceClause = yearFounded
+        ? ` and on ${city} roofs since ${yearFounded}`
+        : (experienceYears ? ` with ${experienceYears}+ years' roofing experience` : ` and working ${city} roofs`);
       return `Re-screw, re-coat, replace — written workmanship warranty. ${licClause}, fully insured${sinceClause}.`;
     }
     // editorial (warm-editorial default) · wireframe override valid here
@@ -539,18 +590,21 @@ async function main() {
       }
     }
     // Codex R40 3rd-pass: drop "since YYYY" if unverified; drop "ten-year warranty" hardcode
-    const sinceClause = yearFounded ? ` since ${yearFounded}` : '';
-    return `${licClause} roofers covering ${serviceClause} across ${city}${sinceClause}. Tidy site, daily updates, written workmanship warranty in the client's hands the day we leave. No surprise invoices, no subcontracted crews — we quote on site and stand behind the paperwork.`;
+    const tenureClause = yearFounded
+      ? ` since ${yearFounded}`
+      : (experienceYears ? ` with ${experienceYears}+ years' roofing experience` : '');
+    return `${licClause} roofers covering ${serviceClause} across ${city}${tenureClause}. Tidy site, daily updates, written workmanship warranty in the client's hands the day we leave. No surprise invoices, no subcontracted crews — we quote on site and stand behind the paperwork.`;
   }
   const heroSubhead = buildSubhead();
   // R44: use prepared chips when available (editorial profile only · trade uses formula stats)
   const heroChips = (_preparedHero?.chips?.length && templateProfile === 'editorial')
-    ? [..._preparedHero.chips]
+    ? _preparedHero.chips.filter(isVerifiedProofText)
     : (() => {
         const chips = [];
         if (_licenseVisibleFinal) chips.push(`${licAuthority} ${licNumber}`);
         if (yearFounded) { const yrs = new Date().getFullYear() - parseInt(yearFounded, 10); if (yrs >= 5) chips.push(`${yrs}+ Years Local`); }
-        chips.push('10-Year Warranty');
+        else if (experienceYears) chips.push(`${experienceYears}+ Years Roofing Experience`);
+        if (warrantyYearsVerified) chips.push(`${warrantyYearsVerified}-Year ${warrantyKind === 'guarantee' ? 'Guarantee' : 'Warranty'}`);
         if (facts.rating && facts.review_count) chips.push(`${facts.rating} · ${facts.review_count} Google reviews`);
         return chips;
       })();
@@ -632,11 +686,21 @@ async function main() {
 
   // Strap (4 cells)
   const strapCells = [];
-  if (yearFounded) { const yrs = new Date().getFullYear() - parseInt(yearFounded, 10); strapCells.push({ value: `${yrs}+`, label: `Years roofing ${city} homes since ${yearFounded}` }); }
-  strapCells.push({ value: '10 yr', label: 'Written workmanship warranty on replacements' });
+  if (yearFounded) {
+    const yrs = new Date().getFullYear() - parseInt(yearFounded, 10);
+    strapCells.push({ value: `${yrs}+`, label: `Years roofing ${city} homes since ${yearFounded}` });
+  } else if (experienceYears) {
+    strapCells.push({ value: `${experienceYears}+`, label: 'Years roofing experience' });
+  }
+  if (warrantyYearsVerified) {
+    strapCells.push({
+      value: `${warrantyYearsVerified} yr`,
+      label: warrantyKind === 'guarantee' ? 'Verified roof restoration guarantee' : 'Written workmanship warranty on replacements',
+    });
+  }
   if (_licenseVisibleFinal) strapCells.push({ value: licAuthority, label: `Licensed in ${state === 'VIC' ? 'Victoria' : state} · ${licNumber}` });
   if (facts.rating && facts.review_count) strapCells.push({ value: `${facts.rating} / 5`, label: `Average across ${facts.review_count} Google reviews` });
-  while (strapCells.length < 4) strapCells.push({ value: '—', label: '—' });
+  if (strapCells.length < 4 && abnEffectiveYear) strapCells.push({ value: 'ABN', label: `Active since ${abnEffectiveYear}` });
 
   // About paragraphs now built via copy-builders.js (codex R40 Q-VV-3) · removed old split-based code.
 
@@ -657,24 +721,19 @@ async function main() {
     // Also try real_facts.testimonials if content_assets is thin
     const testimonialFallback = (coreExtract?.brief?.real_facts?.testimonials || []).slice(0, 3);
     const bestReal = realReviews.length >= 3 ? realReviews : testimonialFallback;
-    const mergedTestimonials = mergeTestimonials(bestReal, inferredData, { minReal: 3, cap: 4 });
-    if (mergedTestimonials.length >= 1) {
-      reviewsItems = mergedTestimonials.map(t => ({
+    if (bestReal.length >= 1) {
+      reviewsItems = bestReal.map(t => ({
         stars_aria: '5 out of 5 stars',
         stars_unicode: '★ ★ ★ ★ ★',
         quote: t.quote || '',
         author: t.author || 'Verified customer',
         location: t.location || city,
-        source_label: t.provenance === 'verified' ? 'Google review' : 'Google review · AI placeholder',
+        source_label: 'Google review',
       }));
     } else {
-      reviewsItems = [
-        { stars_aria: '5 out of 5 stars', stars_unicode: '★ ★ ★ ★ ★', quote: 'Tidy site, clear daily update, no surprises on price. Ten-year warranty paperwork in our hands the day they left.', author: 'Karen S.', location: 'Sebastopol', source_label: 'Google review · AI placeholder' },
-        { stars_aria: '5 out of 5 stars', stars_unicode: '★ ★ ★ ★ ★', quote: 'Called Tuesday morning about a leak. Someone here Wednesday, repointed by Friday. Fair quote, friendly crew.', author: 'Mark D.', location: 'Wendouree', source_label: 'Google review · AI placeholder' },
-        { stars_aria: '5 out of 5 stars', stars_unicode: '★ ★ ★ ★ ★', quote: 'After a storm took half our tiles, tarped the same day and walked us through the insurance claim. Replacement done within three weeks.', author: 'Janine M.', location: 'Buninyong', source_label: 'Google review · AI placeholder' },
-      ];
+      reviewsItems = [];
     }
-    reviewsIsPlaceholder = bestReal.length < 3 || hasInferredBackfill;
+    reviewsIsPlaceholder = false;
   }
 
   // Gallery (4 before/after pairs · R-BA-6 draggable slider · 2x2 grid balanced · Matthew 2026-05-29)
@@ -719,7 +778,9 @@ async function main() {
   // SEO
   // Codex R40 3rd-pass: SEO clauses drop "Since YYYY" / "23+ years" when year unverified
   const seoSinceClause = yearFounded ? `Since ${yearFounded} ` : '';
-  const seoYearsClause = yearFounded ? `${new Date().getFullYear() - parseInt(yearFounded, 10)}+ years of ` : '';
+  const seoYearsClause = yearFounded
+    ? `${new Date().getFullYear() - parseInt(yearFounded, 10)}+ years of `
+    : (experienceYears ? `${experienceYears}+ years of ` : '');
   const seoTitle = `${businessName} — ${city} Roofers ${seoSinceClause}| ${licAuthority ? licAuthority + '-Licensed ' : ''}Colorbond, Restoration & Storm Repairs`.replace(/\s+/g, ' ').slice(0, 110);
   const seoDesc = `${businessName} is a ${licAuthority ? `${licAuthority}-licensed ${city} roofer${_licenseVisibleFinal ? ' (' + licNumber + ')' : ''}` : `${city} roofer`} — ${seoYearsClause}Colorbond replacements, terracotta restorations, storm repairs and gutter work across ${city}. Written workmanship warranty.`.slice(0, 160);
 
@@ -731,24 +792,24 @@ async function main() {
   // Codex R40 3rd-pass: yearsTrading is null when yearFounded unverified · downstream consumers guard
   const yearsTrading = yearFounded ? Math.max(1, new Date().getFullYear() - parseInt(yearFounded, 10)) : null;
   const issueNo = yearsTrading;  // e.g. 23 yrs = File No. XXIII
-  const volNo = Math.max(1, Math.ceil(yearsTrading / 8));  // 1 volume per ~8 years
+  const volNo = Math.max(1, Math.ceil((yearsTrading || experienceYears || 1) / 8));  // 1 volume per ~8 years
   // hero eyebrow per profile (editorial = magazine "File No." · direct = simple location chip)
   const heroEyebrow = templateProfile === 'direct'
     ? `${city} · ${state}${_licenseVisibleFinal ? ` · ${licAuthority}-licensed` : ''}`
-    : `File No. ${toRoman(issueNo)} · ${city} Roofing Journal · Vol. ${toRoman(volNo).padStart(2, '0')}`;
+    : `File No. ${issueNo || experienceYears || 1} · ${city} Roofing Journal · Vol. ${toRoman(volNo).padStart(2, '0')}`;
 
   // Build section copy via profile dispatch (codex R40 Q-VV-1 B · Q-VV-5 b)
   // Codex R40 3rd-pass hallucination guards (Q-XX-1, Q-XX-2):
   // - warranty_years_verified · only pass if confirmed by source data · else null (builder uses generic clause)
   // - suburbs_verified · ONLY real-source suburbs · NEVER inferred · used for "We cover X" coverage claim
-  const _warrantyYearsFromSource = realFacts.warranty_years || facts.warranty_years || brief?.warranty_years || null;
   const _normalizedFacts = normalizeFacts({
     business_name: businessName,
     short_name: shortName,
     city, state,
     year_founded: yearFounded,
     years_in_business: yearsTrading,
-    warranty_years_verified: _warrantyYearsFromSource,
+    experience_years: experienceYears,
+    warranty_years_verified: warrantyYearsVerified,
     license_authority: licAuthority,
     license_number: licNumber,
     license_visible: _licenseVisibleFinal,
@@ -776,6 +837,7 @@ async function main() {
       hours_html: hoursHtmlMain,
       hours_lines: hoursLines,
       year_founded: yearFounded,
+      brand_folio: yearFounded ? `${city} · Est. ${yearFounded}` : `${city} · ${state}`,
       abn: brief?.abn || licNum.ABN || null,  // R30: prefer brief.yaml canonical · audit D2.11 caught missing
       license_authority: licAuthority,
       license_number: licNumber,
@@ -865,7 +927,7 @@ async function main() {
     },
     colophon: {
       // Codex R40 3rd-pass: drop "since YYYY" when unverified
-      tagline: `${city} roofers${yearFounded ? ` since ${yearFounded}` : ''}. ${_licenseVisibleFinal ? `${licAuthority}-licensed in ${state === 'VIC' ? 'Victoria' : state} · ${licNumber}. ` : ''}Workshop on ${addrParts[0] || city}.`,
+      tagline: `${city} roofers${yearFounded ? ` since ${yearFounded}` : experienceYears ? ` with ${experienceYears}+ years' roofing experience` : ''}. ${_licenseVisibleFinal ? `${licAuthority}-licensed in ${state === 'VIC' ? 'Victoria' : state} · ${licNumber}. ` : ''}Workshop on ${addrParts[0] || city}.`,
       year: new Date().getFullYear(),
     },
     // ─── Trade-classic template extensions (R38) · additive · editorial-newsletter ignores these ──
@@ -886,7 +948,7 @@ async function main() {
     // Codex R40 3rd-pass: drop years chip when yearsTrading unverified
     trust_bar: {
       chips: [
-        ...(yearsTrading ? [{ value: `${yearsTrading}+`, label: `Years in ${city}` }] : []),
+        ...(yearsTrading ? [{ value: `${yearsTrading}+`, label: `Years in ${city}` }] : (experienceYears ? [{ value: `${experienceYears}+`, label: 'Years roofing experience' }] : [])),
         ...(facts.rating && facts.review_count
           ? [{ value: `${facts.rating}★`, label: `${facts.review_count} Google reviews` }]
           : []),
@@ -900,7 +962,7 @@ async function main() {
   ctx.about.chips = [
     ...(_licenseVisibleFinal ? [`${licAuthority} Licensed`] : []),
     'Fully Insured',
-    '10-yr Warranty',
+    ...(warrantyYearsVerified ? [`${warrantyYearsVerified}-yr ${warrantyKind === 'guarantee' ? 'Guarantee' : 'Warranty'}`] : []),
     ...((brief?.abn || licNum.ABN) ? ['ABN on every invoice'] : []),
     'No subcontractors',
   ];
@@ -908,6 +970,18 @@ async function main() {
   // Codex R44: only override .paragraphs, not section headings/eyebrow
   if (_preparedAbout?.length) {
     ctx.about.paragraphs = _preparedAbout;
+  }
+  const aboutHasInstructionLeak = (ctx.about.paragraphs || []).some(p => /\b(?:should|redesign|new site|website team|supplied corpus|audit corpus|once .*verified|client confirms?|do not|before launch|XXX)\b/i.test(String(p)));
+  if (aboutHasInstructionLeak) {
+    const serviceNames = servicesItems.slice(0, 3).map(s => s.title.toLowerCase());
+    const serviceText = serviceNames.length >= 2
+      ? `${serviceNames.slice(0, -1).join(', ')} and ${serviceNames[serviceNames.length - 1]}`
+      : (serviceNames[0] || 'roofing work');
+    ctx.about.paragraphs = [
+      `${businessName} is a ${city} roofing business${addrParts[0] ? ` based at ${addrParts[0]}` : ''}. ${experienceYears ? `The public record supports ${experienceYears}+ years of roofing experience.` : yearFounded ? `The public record supports operation since ${yearFounded}.` : `The business works across ${city} and nearby service areas.`}`,
+      `The service focus is practical: ${serviceText}. Enquiries are scoped around roof type, access, condition, timing and the details needed for a clear written quote.`,
+      `${_licenseVisibleFinal ? `${licAuthority} ${licNumber} is listed for the business. ` : ''}${brief?.abn || licNum.ABN ? `ABN ${brief?.abn || licNum.ABN}. ` : ''}Call ${phoneDisplay} or send the roof details through the quote form.`,
+    ];
   }
   // Hero raw-html variant for templates that want italics in headline
   ctx.hero.headline_html = ctx.hero.headline;
@@ -923,7 +997,7 @@ async function main() {
   ctx.client.address_full = addrParts.length >= 2 ? addrParts.join(', ') : (facts.address || '');
   ctx.client.suburb = facts.suburb || (addrParts[1] || '').split(/\s+/)[0] || city;
   ctx.client.years_in_business = yearsTrading ? `${yearsTrading}+` : null;
-  ctx.client.warranty_years = '10-year';
+  ctx.client.warranty_years = warrantyYearsVerified ? `${warrantyYearsVerified}-year` : null;
   ctx.client.maps_embed_url = facts.maps_embed_url || (facts.google_maps_url
     ? `https://maps.google.com/maps?q=${encodeURIComponent(ctx.client.address_full || city)}&output=embed`
     : null);
