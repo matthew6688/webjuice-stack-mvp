@@ -10,8 +10,24 @@
     "stock_placeholder": 0,
     "replace_required": 0,
     "confirm": 16,
-    "none": 26
+    "none": 26,
+    "missing_sections": 2,
+    "client_action_required": 2
   },
+  "missing_sections": [
+    {
+      "section": "reviews",
+      "expected": "≥3 real Google reviews",
+      "reason": "no reviews populated",
+      "client_action": "provide_real_content"
+    },
+    {
+      "section": "images",
+      "expected": "real customer job photos",
+      "reason": "no curated photos",
+      "client_action": "provide_real_content"
+    }
+  ],
   "sections": [
     {
       "section": "facts",

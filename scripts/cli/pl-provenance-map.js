@@ -98,16 +98,27 @@ for (const im of (Array.isArray(imgs) ? imgs : [])) {
   add('images', im.category || im.role || im.filename || 'image', isReal ? 'customer-extract' : (im._source || im.source || 'stock'), im.filename || im.description);
 }
 
+// ── missing_sections (codex R84 #2: material GAP · NOT faked as ai_placeholder · separate) ──
+const missing_sections = [];
+const realReviews = (brief?.reviews || []).filter((r) => /^real$/i.test(r._provenance || r.provenance || ''));
+if (realReviews.length === 0) missing_sections.push({ section: 'reviews', expected: '≥3 real Google reviews', reason: (brief?.reviews || []).length ? 'only placeholder reviews present' : 'no reviews populated', client_action: 'provide_real_content' });
+const realImgs = (Array.isArray(imgs) ? imgs : []).filter((im) => /customer|real|upload/i.test(JSON.stringify(im._source || im.source || im.kind || '')));
+if (realImgs.length === 0) missing_sections.push({ section: 'images', expected: 'real customer job photos', reason: (Array.isArray(imgs) && imgs.length) ? 'only stock/AI images present' : 'no curated photos', client_action: 'provide_real_content' });
+
 // ── summary ──
 const summary = { verified: 0, geo_derived: 0, ai_inferred: 0, ai_placeholder: 0, stock_placeholder: 0, replace_required: 0, confirm: 0, none: 0 };
 for (const e of entries) { summary[e.tier]++; summary[e.replace_policy]++; }
+summary.missing_sections = missing_sections.length;
+summary.client_action_required = summary.replace_required + missing_sections.length;
 
-const out = { slug, schema_version: 'provenance-map/1', standard: 'docs/v3/SOP-PROVENANCE.md', summary, sections: entries };
+const out = { slug, schema_version: 'provenance-map/1', standard: 'docs/v3/SOP-PROVENANCE.md', summary, missing_sections, sections: entries };
 if (JSON_OUT) { console.log(JSON.stringify(out, null, 2)); process.exit(0); }
 fs.writeFileSync(path.resolve(`${V2}/provenance-map.json`), JSON.stringify(out, null, 2));
 console.log(`\n=== provenance-map · ${slug} ===`);
 console.log(`entries: ${entries.length} · verified ${summary.verified} · geo_derived ${summary.geo_derived} · ai_inferred ${summary.ai_inferred} · ai_placeholder ${summary.ai_placeholder} · stock ${summary.stock_placeholder}`);
 console.log(`replace_required: ${summary.replace_required} · confirm: ${summary.confirm} · keep(none): ${summary.none}`);
+if (missing_sections.length) console.log(`missing_sections (client must provide real content): ${missing_sections.map((m) => m.section).join(', ')}`);
+console.log(`client_action_required: ${summary.client_action_required} (replace_required ${summary.replace_required} + missing ${missing_sections.length})`);
 const byPolicy = (p) => entries.filter((e) => e.replace_policy === p);
 for (const p of ['replace_required', 'confirm']) {
   const list = byPolicy(p); if (!list.length) continue;

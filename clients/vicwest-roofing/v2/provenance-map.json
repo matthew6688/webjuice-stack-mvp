@@ -10,8 +10,18 @@
     "stock_placeholder": 0,
     "replace_required": 0,
     "confirm": 7,
-    "none": 25
+    "none": 25,
+    "missing_sections": 1,
+    "client_action_required": 1
   },
+  "missing_sections": [
+    {
+      "section": "images",
+      "expected": "real customer job photos",
+      "reason": "no curated photos",
+      "client_action": "provide_real_content"
+    }
+  ],
   "sections": [
     {
       "section": "facts",
