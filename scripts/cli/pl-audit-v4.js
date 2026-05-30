@@ -190,8 +190,12 @@ function resolveInputs() {
   // codex review 2026-05-30: audit only the PUBLISHABLE page. Exclude derived previews
   // (preview-annotated / preview-old) — they are post-processed artifacts that can lag the live
   // index.html and produce stale order/staleness findings. Sort deterministically, index.html first.
+  // codex Round 109 (2026-05-30): ALSO exclude report artifacts written INTO this same dir —
+  // launch-scorecard.html and audit-v4-report.html. They have no hero/footer/sticky-CTA and were
+  // being mis-audited as client pages (false M1.2 mobile veto + false t1_hard P0 on vicwest).
+  const REPORT_ARTIFACT = /preview-old|preview-annotated|launch-scorecard|audit-v4/i;
   const htmlFiles = fs.readdirSync(outputDir)
-    .filter(f => f.endsWith('.html') && !/preview-old|preview-annotated/.test(f))
+    .filter(f => f.endsWith('.html') && !REPORT_ARTIFACT.test(f))
     .sort((a, b) => (a === 'index.html' ? -1 : b === 'index.html' ? 1 : a.localeCompare(b)))
     .map(f => path.join(outputDir, f));
   return { mode: 'slug', htmlFiles, slug, facts, factsPath, brandSpec, outputDir };
