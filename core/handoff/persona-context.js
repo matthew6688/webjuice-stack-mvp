@@ -91,11 +91,25 @@ export function buildPersonaContextBlock(facts = {}, opts = {}) {
   }[section] || '';
 
   // Step-4 recurring buyer gaps (fact-gated — include ONLY when the locked facts/source supply them).
-  const buyerNeeds = [
-    'A concrete PROCESS / what-happens-next sequence (call → inspection/quote → timeline → cleanup → warranty) — ONLY using steps present in the locked facts/source.',
-    'Plain residential framing for a homeowner — avoid corporate-scale boasts ("largest", "large-scale") that make a single home feel too small.',
-    'Specifics the buyer can verify over vague praise — name a checkable thing ONLY when it appears in the locked facts/source; otherwise use a neutral, non-claiming sentence rather than adjectives like "superior" or "quality".',
-  ];
+  // Section-specific: a PROCESS sequence belongs in services (its contract supports it), NOT in About —
+  // the About contract forbids a process/approach paragraph, and steering the model toward one makes weaker
+  // models violate it (observed on the local fallback). Each section gets only the needs that fit its contract.
+  const buyerNeedsBySection = {
+    about: [
+      'Plain residential framing for a homeowner — avoid corporate-scale boasts ("largest", "large-scale") that make a single home feel too small.',
+      'Concrete proof of why to trust THIS business (named materials, real licence, warranty) — ONLY when present in the locked facts/source; never invent to satisfy this.',
+    ],
+    services: [
+      'A concrete PROCESS / what-happens-next sequence (call → inspection/quote → timeline → cleanup → warranty) — ONLY using steps present in the locked facts/source.',
+      'Plain residential framing — speak to a homeowner, not a procurement department.',
+      'Specifics the buyer can verify over vague praise — name a checkable thing ONLY when it appears in the locked facts/source; otherwise a neutral, non-claiming sentence rather than adjectives like "superior" or "quality".',
+    ],
+    hero: [
+      'One promise this buyer actually cares about (their primary job-to-be-done), stated plainly — no corporate-scale boasts.',
+      'Residential framing — speak to a homeowner planning their roof, not a commercial tender.',
+    ],
+  };
+  const buyerNeeds = buyerNeedsBySection[section] || buyerNeedsBySection.about;
 
   return [
     '# BUYER PERSONA CONTEXT (psychology ONLY · LOWER AUTHORITY than the locked facts above)',

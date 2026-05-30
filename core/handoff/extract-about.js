@@ -16,13 +16,14 @@
 import fs from 'node:fs';
 import { runTask, extractJson } from '../autoresearch/llm-cascade.js';
 import { buildLicensingContextBlock, buildForbiddenPhrasesBlock } from './niche-spec-loader.js';
+import { buildPersonaContextBlock } from './persona-context.js';
 import { cleanScrapedText } from './scrape-cleaner.js';
 
 function safeRead(p) {
   try { return cleanScrapedText(fs.readFileSync(p, 'utf8')).clean; } catch { return ''; }
 }
 
-function buildPrompt({ businessName, niche, city, facts, aboutBody, homepageBody, externalMentions, style = 'safe' }) {
+function buildPrompt({ businessName, niche, city, facts, aboutBody, homepageBody, externalMentions, style = 'safe', personaBlock = '' }) {
   // Rich locked facts (services / suburbs / licence / radius / material) make the copy SPECIFIC.
   // R93 finding: a thin factsBlock forces the LLM back onto vague scraped text and it pads.
   const svcNames = (facts.services || []).map((s) => (typeof s === 'string' ? s : s.name)).filter(Boolean);
@@ -83,7 +84,7 @@ ${homepageBody.slice(0, 1400) || '(none)'}
 
 ## External mentions
 ${mentions}
-
+${personaBlock ? '\n' + personaBlock + '\n' : ''}
 # OUTPUT CONTRACT (non-negotiable · identical safety policy for both styles)
 - EXACTLY ${paraCount} · ~${wordBudget} words TOTAL (HARD CEILING 320) · EACH paragraph ≤ 85 words.
 - Do NOT write a closing paragraph about your "approach", "process", "commitment", "flexibility",
@@ -146,6 +147,11 @@ export async function extractAbout(opts) {
     return { ok: false, reason: 'no scraped content available', latency_ms: Date.now() - start };
   }
 
+  // R108 step 6: persona-aware generation (env-gated · default off until step-7 comparison passes).
+  const personaBlock = buildPersonaContextBlock(opts.facts || {}, {
+    brief: opts.brief || {}, section: 'about', enabled: process.env.PERSONA_CONTEXT === '1',
+  });
+
   const prompt = buildPrompt({
     businessName: opts.facts?.business_name,
     niche: opts.facts?.niche,
@@ -155,6 +161,7 @@ export async function extractAbout(opts) {
     homepageBody,
     externalMentions: opts.externalMentions,
     style: opts.style === 'flagship' ? 'flagship' : 'safe',
+    personaBlock,
   });
 
   const res = await runTask('extract_about_narrative', { prompt, timeoutMs: 120_000 });

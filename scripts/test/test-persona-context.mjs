@@ -47,6 +47,13 @@ for (const section of ['about', 'services', 'hero']) {
   ok(!/ABN|licence number|\b04\d{2}\b|QBCC \d/.test(block), `${section}: block emits no business facts`);
 }
 
+// 5b · buyer-needs are section-specific: About must NOT push a process sequence (fights its no-process
+// contract); services MAY. (Observed: process-need made the local model violate the About contract.)
+const aboutBlock = buildPersonaContextBlock({}, { brief: { primary_segment: 'planned-upgrade' }, section: 'about' });
+const servicesBlock = buildPersonaContextBlock({}, { brief: { primary_segment: 'planned-upgrade' }, section: 'services' });
+ok(!/what-happens-next sequence/i.test(aboutBlock), 'About block does NOT push a process sequence');
+ok(/what-happens-next sequence/i.test(servicesBlock), 'services block DOES include the process sequence');
+
 // 6 · disabled → empty
 ok(buildPersonaContextBlock({}, { enabled: false }) === '', 'disabled → empty string');
 

@@ -25,6 +25,7 @@ import path from 'node:path';
 import { runTask, extractJson } from '../autoresearch/llm-cascade.js';
 import { buildLicensingContextBlock, buildForbiddenPhrasesBlock } from './niche-spec-loader.js';
 import { cleanScrapedText } from './scrape-cleaner.js';
+import { buildPersonaContextBlock } from './persona-context.js';
 
 const RELEVANT_PAGE_PATTERNS = [
   /services?/i,
@@ -45,7 +46,7 @@ function readRelevantPages(pagesDir) {
   }).filter((p) => !p.junk);
 }
 
-function buildPrompt({ businessName, niche, city, state, pages, gbpCategories, homepageBody }) {
+function buildPrompt({ businessName, niche, city, state, pages, gbpCategories, homepageBody, personaBlock = '' }) {
   const pageContext = pages.map((p) => `### Page: ${p.file} (${p.bytes} bytes)\n\n${p.body.slice(0, 2500)}`).join('\n\n---\n\n');
   const homepageBlurb = homepageBody ? `### Homepage markdown (Tinyfish · for context)\n\n${homepageBody.slice(0, 2500)}` : '';
   const gbpStr = (gbpCategories || []).join(', ') || '(none)';
@@ -67,7 +68,7 @@ Google Business Profile categories: ${gbpStr}
 ${pageContext}
 
 ${homepageBlurb}
-
+${personaBlock ? '\n' + personaBlock + '\n' : ''}
 # Task
 
 For each REAL service the business offers (based on scraped content + GBP categories), write a complete persuasion-layer content block using the PASTOR framework. Do NOT extract bland facts — write sales copy that converts.
@@ -156,6 +157,11 @@ export async function extractServices(opts) {
     return { ok: false, reason: 'no pages and no homepage md', latency_ms: Date.now() - start };
   }
 
+  // R108 step 6: persona-aware generation (env-gated · default off until step-7 comparison passes).
+  const personaBlock = buildPersonaContextBlock(opts.facts || {}, {
+    brief: opts.brief || {}, section: 'services', enabled: process.env.PERSONA_CONTEXT === '1',
+  });
+
   const prompt = buildPrompt({
     businessName: opts.businessName,
     niche: opts.niche,
@@ -164,6 +170,7 @@ export async function extractServices(opts) {
     pages,
     gbpCategories: opts.gbpCategories,
     homepageBody,
+    personaBlock,
   });
 
   const res = await runTask('extract_services_from_site', { prompt, timeoutMs: 120_000 });
