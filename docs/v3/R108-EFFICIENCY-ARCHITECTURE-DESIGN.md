@@ -94,7 +94,20 @@ team sizes, awards, locations, or licence facts. Fact violations fail determinis
    fought the About contract's no-process-paragraph rule (weak model failed validation) → buyer-needs are now
    SECTION-SPECIFIC (process only in services; About/hero get residential-framing + verifiable-proof). After
    fix, persona-on B2 passes and beats baseline (0 "largest" boasts · residential-first · 122w · identity correct).
-7. ⏳ **Compare baseline vs persona-aware** (`pl:compare-persona` · codex R112 spec · NOT YET BUILT).
+7. 🔨 **Compare baseline vs persona-aware** (`pl:compare-persona` · BUILT 2b7f434f · codex R113 fixes
+   e6635116/31c76754). For each client+variant: regenerate B1/B2/B3 → **bridge content into od-package/content**
+   → re-compose → audit the RENDERED index.html (fact-verify · density · word counts/section · identity
+   fields · persona-copy). Backup/restore keeps the live client clean. `--rescore` re-audits snapshots cheaply.
+   **codex R113 caught a P0**: composer renders from `handoff/od-package/content`, harness had only regenerated
+   `handoff/content` → both variants rendered identical HTML, the "+3" was auditor noise. Fixed (bridge step) +
+   guarded (rendered-md5 identity check → NEEDS_REVIEW if identical). Also: require valid baseline · buyer-
+   critical no-regression (clarity_next_step/trust_levers/decision_enablement) · split
+   `persona_context_candidate` vs `page_contract_clean`.
+   **Verified on vicwest (single run · PROVISIONAL)**: md5 now DIFFERS (707d4dee vs e99a017d · content consumed) ·
+   baseline persona 73 / persona 76 · both fv PASS · density PASS · 0 contract violations · CANDIDATE.
+   ⏳ **REMAINING (deferred · codex R112/R113)**: the AUTHORITATIVE run = repeated paired runs across ≥2/3 of
+   vicwest/a-j/mark-squire, mean delta ≥ +3, on the real cloud tier path (not the local fallback). Do NOT flip
+   `PERSONA_CONTEXT` default-on from a single flaky-tier run. PERSONA_CONTEXT stays default-OFF until then.
    For each of vicwest/a-j/mark-squire, both variants: sandbox-copy the handoff dir → generate B1/B2/B3 into the
    sandbox only → **re-compose the full page → audit the RENDERED index.html** (fact-verify + density + copy-
    audit + persona-copy-audit). Intermediates preserved for debug but NOT the authoritative gate.
