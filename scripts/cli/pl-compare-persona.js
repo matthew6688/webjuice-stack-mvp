@@ -1,5 +1,10 @@
 #!/usr/bin/env node
 /**
+ * ⚠️ STATUS (codex Round 114 · 2026-05-30): SPOT-CHECK TOOL ONLY · ARCHIVE CANDIDATE.
+ * NOT a promotion gate and NOT run routinely. The persona ceremony was retired (buyer awareness is now a static
+ * lens in the B1/B2/B3 contracts; persona-context is opt-in only). Keep this harness for the occasional manual
+ * baseline-vs-persona spot-check, but do NOT institutionalise proving a noisy +N persona-copy delta.
+ *
  * pl-compare-persona · R108 step 7 (codex Round 112 spec).
  *
  * Baseline (PERSONA_CONTEXT off) vs persona-aware (PERSONA_CONTEXT=1) generation, compared on the RENDERED
@@ -29,6 +34,7 @@ import { fileURLToPath } from 'url';
 import { execFileSync } from 'child_process';
 import { load as cheerioLoad } from 'cheerio';
 import { loadBriefFacts, identityFindings, verifyFacts } from '../../core/audit/fact-verify.js';
+import { scanBannedPhrases } from '../../core/handoff/banned-phrase-guard.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const REPO = path.resolve(__dirname, '../..');
@@ -36,11 +42,10 @@ const REPO = path.resolve(__dirname, '../..');
 const DEFAULT_SLUGS = ['vicwest-roofing', 'a-j-roofing-solutions', 'mark-squire-roof-restorations'];
 const PERSONA_DELTA_MIN = 3; // "meaningful" improvement, not noise (advisory threshold)
 // Generic clichés the generator contracts forbid — a rendered-page contract check (deterministic).
-const BANNED_PHRASES = [
-  'quality workmanship', 'trusted partner', 'we pride ourselves', 'tailored solutions', 'tailored to your needs',
-  'best in class', 'innovative solutions', 'welcome to', 'your trusted', 'superior service', 'superior responsiveness',
-  'one of the largest', 'industry-leading', 'industry leading',
-];
+// codex round-01 (2026-05-30): the private list here had drifted from the generator-side contract
+// (it banned 'superior responsiveness' but the generators never enforced it; the generators' list
+// lacked it). Both now read ONE SSOT (FORBIDDEN_PHRASES via scanBannedPhrases), so a phrase the
+// scorer flags is exactly a phrase the writer-side guard would have rejected.
 
 const args = {};
 for (let i = 2; i < process.argv.length; i++) {
@@ -92,7 +97,7 @@ function identityFieldsDetected(html, briefFacts) {
 function contractViolations(html, words) {
   const text = String(html).replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').toLowerCase();
   const violations = [];
-  for (const p of BANNED_PHRASES) if (text.includes(p)) violations.push({ section: 'page', rule: 'banned_phrase', detail: p });
+  for (const p of scanBannedPhrases(text)) violations.push({ section: 'page', rule: 'banned_phrase', detail: p });
   // About no-process-paragraph rule (the conflict that broke step 6): flag an explicit process/approach blurb in About.
   const am = html.match(/id="about-h"[\s\S]*?<\/header>([\s\S]*?)<\/section>/);
   if (am) {

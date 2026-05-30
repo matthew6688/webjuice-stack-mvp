@@ -11,9 +11,15 @@
  */
 import { runTask, extractJson } from '../autoresearch/llm-cascade.js';
 import { buildLicensingContextBlock, buildForbiddenPhrasesBlock } from './niche-spec-loader.js';
-import { buildPersonaContextBlock } from './persona-context.js';
+import { generateWithGuard } from './banned-phrase-guard.js';
 
-function buildPrompt({ businessName, niche, city, state, phone, services, auditFindings, currentHeroText, personaBlock = '' }) {
+// codex R114: buyer awareness folded into the contract as a SHORT static lens (default-on), replacing the
+// env-gated persona-context module (over-built for roofing-only single-page · kept opt-in only).
+const BUYER_LENS_HERO = `# WHO THIS IS FOR (buyer lens)
+You are writing for an Australian homeowner choosing a roofer. Lead with the ONE promise they care about — their
+roof done properly by a licensed pro they can trust. Plain language, concrete proof. Never corporate boasting.`;
+
+function buildPrompt({ businessName, niche, city, state, phone, services, auditFindings, currentHeroText }) {
   const svcLines = (services || []).slice(0, 5).map((s) => `- ${s.name}: ${s.desc}`).join('\n') || '(none)';
   const auditLines = (auditFindings || []).slice(0, 8).map((f) => `- ${f.id} (${f.severity}): ${f.what_observed || ''} → fix: ${f.fix_prescription || ''}`).join('\n') || '(no specific audit issues)';
   const licensingContext = buildLicensingContextBlock({ state });
@@ -42,7 +48,9 @@ ${svcLines}
 ${auditLines}
 
 ${currentHeroText ? `# Existing hero text (current site)\n\n${currentHeroText}\n` : ''}
-${personaBlock ? '\n' + personaBlock + '\n' : ''}
+
+${BUYER_LENS_HERO}
+
 # Requirements
 
 Write 3 hero copy candidates · each following a DIFFERENT conversion psychology framework:
@@ -110,11 +118,7 @@ Output ONLY JSON.`;
 
 export async function extractHeroCopy(opts) {
   const start = Date.now();
-  // R108 step 6: persona-aware generation (env-gated · default off until step-7 comparison passes).
-  const personaBlock = buildPersonaContextBlock(opts.facts || {}, {
-    brief: opts.brief || {}, section: 'hero', enabled: process.env.PERSONA_CONTEXT === '1',
-  });
-  const prompt = buildPrompt({
+  const basePrompt = buildPrompt({
     businessName: opts.facts?.business_name,
     niche: opts.facts?.niche,
     city: opts.facts?.city,
@@ -123,16 +127,29 @@ export async function extractHeroCopy(opts) {
     services: opts.services,
     auditFindings: opts.auditFindings,
     currentHeroText: opts.currentHeroText,
-    personaBlock,
   });
 
-  const res = await runTask('extract_hero_copy', { prompt, timeoutMs: 90_000 });
-  if (!res.ok) return { ok: false, reason: res.reason, latency_ms: Date.now() - start, fallback_chain: res.fallback_chain };
-
-  const parsed = extractJson(res.output);
-  if (!parsed || !Array.isArray(parsed.candidates)) {
-    return { ok: false, reason: 'invalid JSON', raw_output: res.output.slice(0, 500), latency_ms: Date.now() - start };
-  }
+  // Writer-side banned-phrase guard (codex round-01): scan the rendered hero fields (headline /
+  // subheadline / proof chips / CTA labels) across ALL candidates, retry once, then hard-fail.
+  const attempt = await generateWithGuard(async (retrySuffix) => {
+    const res = await runTask('extract_hero_copy', { prompt: basePrompt + retrySuffix, timeoutMs: 90_000 });
+    if (!res.ok) return { ok: false, reason: res.reason, fallback_chain: res.fallback_chain };
+    const parsed = extractJson(res.output);
+    if (!parsed || !Array.isArray(parsed.candidates)) {
+      return { ok: false, reason: 'invalid JSON', raw_output: res.output.slice(0, 500) };
+    }
+    return {
+      ok: true,
+      res,
+      parsed,
+      collectText: () => parsed.candidates.flatMap((c) => [
+        c.headline, c.subheadline, ...(c.proof_chips || []),
+        c.primary_cta?.label, c.secondary_cta?.label,
+      ]).filter(Boolean).join('\n'),
+    };
+  });
+  if (!attempt.ok) return { ...attempt, latency_ms: Date.now() - start };
+  const { res, parsed } = attempt;
 
   // Tag each candidate with provenance
   const candidates = parsed.candidates.map((c) => ({ ...c, _source: res._source }));
@@ -149,6 +166,7 @@ export async function extractHeroCopy(opts) {
       llm_latency_ms: res.latency_ms,
       total_latency_ms: Date.now() - start,
       generated_at: new Date().toISOString(),
+      banned_phrase_guard: attempt._guard,
     },
   };
 }

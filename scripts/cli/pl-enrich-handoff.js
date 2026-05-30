@@ -98,17 +98,6 @@ async function main() {
   const auditFindings = auditFixture?.detailed_audit?.findings || auditFixture?.findings || [];
 
   const clientDir = path.join(REPO, 'clients', slug, 'v2');
-  // R108 step 6: load the locked buyer segment so persona-aware generation can resolve it.
-  // (persona block is env-gated PERSONA_CONTEXT=1 inside each generator · default off.)
-  const brief = (() => {
-    try {
-      const txt = fs.readFileSync(path.join(clientDir, 'single-page-brief.yaml'), 'utf8');
-      const primary = txt.match(/^primary_segment:\s*(.+?)\s*(?:#.*)?$/m)?.[1]?.replace(/^["']|["']$/g, '').trim() || null;
-      const secBlock = txt.match(/^secondary_segments:\s*\n((?:\s*-\s*.+\n?)+)/m)?.[1] || '';
-      const secondary = [...secBlock.matchAll(/^\s*-\s*(.+?)\s*$/gm)].map((m) => m[1].replace(/^["']|["']$/g, '').trim()).filter(Boolean);
-      return { primary_segment: primary, secondary_segments: secondary };
-    } catch { return {}; }
-  })();
   const handoffDir = path.join(clientDir, 'handoff');
   const pagesDir = path.join(clientDir, 'multi-page-crawl/pages');
   const homepageMd = path.join(clientDir, 'enrichment/tinyfish-homepage.md');
@@ -182,7 +171,7 @@ async function main() {
       pagesDir, homepageMdPath: homepageMd,
       businessName: facts.business_name, niche: facts.niche, city: facts.city, state: facts.state,
       gbpCategories,
-      facts, brief,
+      facts,
       debugPath: debugPathB1,
     });
     if (res.ok) {
@@ -204,7 +193,6 @@ async function main() {
       aboutMdPath: aboutMd,
       homepageMdPath: homepageMd,
       facts,
-      brief,
       externalMentions,
       style: args['about-style'] === 'flagship' ? 'flagship' : 'safe',  // codex R103: B-safe default · flagship opt-in
     });
@@ -252,7 +240,7 @@ async function main() {
       services = s.services || [];
     }
     const res = await extractHeroCopy({
-      facts, brief, services, auditFindings,
+      facts, services, auditFindings,
       currentHeroText: null,
     });
     if (res.ok) {

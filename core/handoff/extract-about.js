@@ -16,14 +16,21 @@
 import fs from 'node:fs';
 import { runTask, extractJson } from '../autoresearch/llm-cascade.js';
 import { buildLicensingContextBlock, buildForbiddenPhrasesBlock } from './niche-spec-loader.js';
-import { buildPersonaContextBlock } from './persona-context.js';
 import { cleanScrapedText } from './scrape-cleaner.js';
+import { generateWithGuard } from './banned-phrase-guard.js';
 
 function safeRead(p) {
   try { return cleanScrapedText(fs.readFileSync(p, 'utf8')).clean; } catch { return ''; }
 }
 
-function buildPrompt({ businessName, niche, city, facts, aboutBody, homepageBody, externalMentions, style = 'safe', personaBlock = '' }) {
+// codex R114: buyer awareness folded into the contract as a SHORT static lens (default-on), replacing the
+// env-gated persona-context module (over-built for roofing-only single-page · kept opt-in only).
+const BUYER_LENS_ABOUT = `# WHO THIS IS FOR (buyer lens)
+You are writing for an Australian homeowner choosing a roofer. Answer the one question they're asking: why trust
+THIS business? Lead with checkable PROOF — licence, warranty, materials, real service area — in plain language.
+Cut corporate self-praise ("largest"/"leading"/"superior"); a homeowner wants residential reassurance, not scale.`;
+
+function buildPrompt({ businessName, niche, city, facts, aboutBody, homepageBody, externalMentions, style = 'safe' }) {
   // Rich locked facts (services / suburbs / licence / radius / material) make the copy SPECIFIC.
   // R93 finding: a thin factsBlock forces the LLM back onto vague scraped text and it pads.
   const svcNames = (facts.services || []).map((s) => (typeof s === 'string' ? s : s.name)).filter(Boolean);
@@ -84,7 +91,9 @@ ${homepageBody.slice(0, 1400) || '(none)'}
 
 ## External mentions
 ${mentions}
-${personaBlock ? '\n' + personaBlock + '\n' : ''}
+
+${BUYER_LENS_ABOUT}
+
 # OUTPUT CONTRACT (non-negotiable · identical safety policy for both styles)
 - EXACTLY ${paraCount} · ~${wordBudget} words TOTAL (HARD CEILING 320) · EACH paragraph ≤ 85 words.
 - Do NOT write a closing paragraph about your "approach", "process", "commitment", "flexibility",
@@ -147,12 +156,7 @@ export async function extractAbout(opts) {
     return { ok: false, reason: 'no scraped content available', latency_ms: Date.now() - start };
   }
 
-  // R108 step 6: persona-aware generation (env-gated · default off until step-7 comparison passes).
-  const personaBlock = buildPersonaContextBlock(opts.facts || {}, {
-    brief: opts.brief || {}, section: 'about', enabled: process.env.PERSONA_CONTEXT === '1',
-  });
-
-  const prompt = buildPrompt({
+  const basePrompt = buildPrompt({
     businessName: opts.facts?.business_name,
     niche: opts.facts?.niche,
     city: opts.facts?.city,
@@ -161,17 +165,28 @@ export async function extractAbout(opts) {
     homepageBody,
     externalMentions: opts.externalMentions,
     style: opts.style === 'flagship' ? 'flagship' : 'safe',
-    personaBlock,
   });
 
-  const res = await runTask('extract_about_narrative', { prompt, timeoutMs: 120_000 });
-  if (!res.ok) {
-    return { ok: false, reason: res.reason, latency_ms: Date.now() - start, fallback_chain: res.fallback_chain };
+  // Writer-side banned-phrase guard (codex round-01): scan customer-facing copy after the LLM returns,
+  // retry once echoing the offending phrases, then hard-fail rather than ship leaked puffery.
+  const attempt = await generateWithGuard(async (retrySuffix) => {
+    const res = await runTask('extract_about_narrative', { prompt: basePrompt + retrySuffix, timeoutMs: 120_000 });
+    if (!res.ok) return { ok: false, reason: res.reason, fallback_chain: res.fallback_chain };
+    const parsed = extractJson(res.output);
+    if (!parsed || !Array.isArray(parsed.paragraphs)) {
+      return { ok: false, reason: 'invalid JSON', raw_output: res.output.slice(0, 500) };
+    }
+    return {
+      ok: true,
+      res,
+      parsed,
+      collectText: () => [parsed.summary_line, ...parsed.paragraphs.map((p) => p.text)].filter(Boolean).join('\n'),
+    };
+  });
+  if (!attempt.ok) {
+    return { ...attempt, latency_ms: Date.now() - start };
   }
-  const parsed = extractJson(res.output);
-  if (!parsed || !Array.isArray(parsed.paragraphs)) {
-    return { ok: false, reason: 'invalid JSON', raw_output: res.output.slice(0, 500), latency_ms: Date.now() - start };
-  }
+  const { res, parsed } = attempt;
 
   // Build markdown with frontmatter listing per-paragraph provenance
   const sources = parsed.paragraphs.map((p, i) => ({ idx: i + 1, sources: p.sources || [], label: p._source_label || res._source }));
@@ -215,6 +230,7 @@ export async function extractAbout(opts) {
       per_paragraph_sources: sources,
       demo_placeholders: demoPlaceholders,
       generated_at: new Date().toISOString(),
+      banned_phrase_guard: attempt._guard,
     },
   };
 }

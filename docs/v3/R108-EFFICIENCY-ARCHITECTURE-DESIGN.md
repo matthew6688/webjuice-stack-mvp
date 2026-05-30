@@ -1,5 +1,19 @@
 # R108 · Generation Architecture — DESIGN (REVISED by Matthew 2026-05-30 · in progress)
 
+> ## ⚠️ FINAL SIMPLIFICATION — codex Round 114 (2026-05-30 · Matthew-prompted)
+> Matthew asked: "is this [persona apparatus] necessary, or just let the LLM write the copy directly?" Honest
+> answer (mine + codex agree): the heavy 4-segment persona system + the ~45-min comparison ceremony were
+> OVER-BUILT for roofing-only single-page. **Decision: keep buyer awareness, retire the persona ceremony.**
+> - **DEFAULT-ON now**: a SHORT static "buyer lens" (write for an AU homeowner choosing a roofer · proof not
+>   boasting) folded directly into the B1/B2/B3 contract prompts (`extract-about/services/hero`). No env gate.
+> - **RETIRED to opt-in / archive-candidate**: `core/handoff/persona-context.js` (segment module) +
+>   `scripts/cli/pl-compare-persona.js` (comparison harness · spot-check only, NOT a gate, not run routinely).
+>   `core/audit/personas/*` kept on disk for a future multi-vertical revival.
+> - **KEPT (the real guardrails)**: `fact-verify` (deterministic identity gate) · the R93 fact-locked contract ·
+>   `banned-phrase-guard` SSOT + writer retry · density/grid/mobile deterministic gates · `pl:persona-copy-audit`
+>   stays ADVISORY (a noisy +N must never drive architecture). The PERSONA_CONTEXT env flag is no longer wired.
+> The sections below (steps 5–7 "persona-aware DEFAULT") are SUPERSEDED by this box — kept for history.
+
 > Status: **architecture set by Matthew; implementing steadily with codex.** Earlier draft (deterministic-
 > default, LLM opt-in) was REVERSED by Matthew's decision below — quality-first, LLM persona-aware generation
 > is the DEFAULT. The deterministic formula becomes the fallback/safety-net. Facts stay deterministic.

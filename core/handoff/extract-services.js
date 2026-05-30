@@ -25,7 +25,7 @@ import path from 'node:path';
 import { runTask, extractJson } from '../autoresearch/llm-cascade.js';
 import { buildLicensingContextBlock, buildForbiddenPhrasesBlock } from './niche-spec-loader.js';
 import { cleanScrapedText } from './scrape-cleaner.js';
-import { buildPersonaContextBlock } from './persona-context.js';
+import { generateWithGuard } from './banned-phrase-guard.js';
 
 const RELEVANT_PAGE_PATTERNS = [
   /services?/i,
@@ -46,7 +46,14 @@ function readRelevantPages(pagesDir) {
   }).filter((p) => !p.junk);
 }
 
-function buildPrompt({ businessName, niche, city, state, pages, gbpCategories, homepageBody, personaBlock = '' }) {
+// codex R114: buyer awareness is now a SHORT static lens folded into the contract (default-on), replacing
+// the heavier env-gated persona-context module (over-built for roofing-only single-page · kept opt-in only).
+const BUYER_LENS_SERVICES = `# WHO THIS IS FOR (buyer lens)
+You are writing for an Australian homeowner choosing a roofer. They fear being ripped off and fear a botched job;
+they want clarity on materials, warranty, quote and timing. Address that fear with concrete PROOF — named
+materials, licence, warranty, real process — in plain language. Never corporate boasting ("largest"/"leading"/"superior").`;
+
+function buildPrompt({ businessName, niche, city, state, pages, gbpCategories, homepageBody }) {
   const pageContext = pages.map((p) => `### Page: ${p.file} (${p.bytes} bytes)\n\n${p.body.slice(0, 2500)}`).join('\n\n---\n\n');
   const homepageBlurb = homepageBody ? `### Homepage markdown (Tinyfish · for context)\n\n${homepageBody.slice(0, 2500)}` : '';
   const gbpStr = (gbpCategories || []).join(', ') || '(none)';
@@ -68,7 +75,9 @@ Google Business Profile categories: ${gbpStr}
 ${pageContext}
 
 ${homepageBlurb}
-${personaBlock ? '\n' + personaBlock + '\n' : ''}
+
+${BUYER_LENS_SERVICES}
+
 # Task
 
 For each REAL service the business offers (based on scraped content + GBP categories), write a complete persuasion-layer content block using the PASTOR framework. Do NOT extract bland facts — write sales copy that converts.
@@ -157,12 +166,7 @@ export async function extractServices(opts) {
     return { ok: false, reason: 'no pages and no homepage md', latency_ms: Date.now() - start };
   }
 
-  // R108 step 6: persona-aware generation (env-gated · default off until step-7 comparison passes).
-  const personaBlock = buildPersonaContextBlock(opts.facts || {}, {
-    brief: opts.brief || {}, section: 'services', enabled: process.env.PERSONA_CONTEXT === '1',
-  });
-
-  const prompt = buildPrompt({
+  const basePrompt = buildPrompt({
     businessName: opts.businessName,
     niche: opts.niche,
     city: opts.city,
@@ -170,42 +174,52 @@ export async function extractServices(opts) {
     pages,
     gbpCategories: opts.gbpCategories,
     homepageBody,
-    personaBlock,
   });
 
-  const res = await runTask('extract_services_from_site', { prompt, timeoutMs: 120_000 });
+  // Writer-side banned-phrase guard (codex round-01): scan the rendered service-card copy
+  // (name / short_desc / long_desc / persuasion) after the LLM returns, retry once, then hard-fail.
+  const attempt = await generateWithGuard(async (retrySuffix) => {
+    const res = await runTask('extract_services_from_site', { prompt: basePrompt + retrySuffix, timeoutMs: 120_000 });
+    if (!res.ok) return { ok: false, reason: res.reason || 'LLM cascade failed', fallback_chain: res.fallback_chain };
 
-  if (!res.ok) {
-    return { ok: false, reason: res.reason || 'LLM cascade failed', latency_ms: Date.now() - start, fallback_chain: res.fallback_chain };
-  }
-
-  const parsed = extractJson(res.output);
-  if (!parsed || !Array.isArray(parsed.services)) {
-    // Write full raw output to debug file so future failures are diagnosable instead of silently
-    // truncating to 500 chars. Path mirrors run-level _enrich-handoff-run.json colocation.
-    const debugPath = opts.debugPath || null;
-    if (debugPath) {
-      try {
-        const fs = await import('node:fs');
-        fs.writeFileSync(debugPath, JSON.stringify({
-          step: 'B1.extract-services',
-          at: new Date().toISOString(),
-          parseFailed: true,
-          rawOutput: res.output,
-          parsedShape: parsed ? Object.keys(parsed) : null,
-          latency_ms: Date.now() - start,
-        }, null, 2));
-      } catch { /* ignore */ }
+    const parsed = extractJson(res.output);
+    if (!parsed || !Array.isArray(parsed.services)) {
+      // Write full raw output to debug file so future failures are diagnosable instead of silently
+      // truncating to 500 chars. Path mirrors run-level _enrich-handoff-run.json colocation.
+      const debugPath = opts.debugPath || null;
+      if (debugPath) {
+        try {
+          const fs = await import('node:fs');
+          fs.writeFileSync(debugPath, JSON.stringify({
+            step: 'B1.extract-services',
+            at: new Date().toISOString(),
+            parseFailed: true,
+            rawOutput: res.output,
+            parsedShape: parsed ? Object.keys(parsed) : null,
+            latency_ms: Date.now() - start,
+          }, null, 2));
+        } catch { /* ignore */ }
+      }
+      return {
+        ok: false,
+        reason: parsed ? 'parsed but services[] missing or non-array' : 'output not valid JSON',
+        raw_output: res.output.slice(0, 500),
+        raw_full_path: debugPath,
+        parsed_shape: parsed ? Object.keys(parsed) : null,
+      };
     }
     return {
-      ok: false,
-      reason: parsed ? 'parsed but services[] missing or non-array' : 'output not valid JSON',
-      raw_output: res.output.slice(0, 500),
-      raw_full_path: debugPath,
-      parsed_shape: parsed ? Object.keys(parsed) : null,
-      latency_ms: Date.now() - start,
+      ok: true,
+      res,
+      parsed,
+      collectText: () => parsed.services.flatMap((s) => [
+        s.name, s.short_desc, s.long_desc, s.desc,
+        ...(s.persuasion && typeof s.persuasion === 'object' ? Object.values(s.persuasion) : []),
+      ]).filter((v) => typeof v === 'string').join('\n'),
     };
-  }
+  });
+  if (!attempt.ok) return { ...attempt, latency_ms: Date.now() - start };
+  const { res, parsed } = attempt;
 
   // Tag each service's provenance
   const services = parsed.services.map((s, idx) => {
@@ -244,6 +258,7 @@ export async function extractServices(opts) {
       llm_latency_ms: res.latency_ms,
       total_latency_ms: Date.now() - start,
       generated_at: new Date().toISOString(),
+      banned_phrase_guard: attempt._guard,
     },
   };
 }

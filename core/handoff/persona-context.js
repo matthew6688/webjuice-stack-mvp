@@ -1,4 +1,11 @@
 /**
+ * ⚠️ STATUS (codex Round 114 · 2026-05-30): EXPERIMENTAL / OPT-IN · ARCHIVE CANDIDATE.
+ * Removed from the default roofing production path. Buyer awareness is now a SHORT static "buyer lens" folded
+ * directly into the B1/B2/B3 contract prompts (extract-about/services/hero · default-on). This 4-segment module
+ * was over-built for roofing-only single-page (buyer variance too low to justify the surface area + the 45-min
+ * comparison ceremony). Kept on disk for a future multi-vertical revival (plumber/electrician buyers differ);
+ * not wired into generation today. Decision: "keep buyer awareness, retire the persona ceremony."
+ *
  * core/handoff/persona-context.js · R108 step 5 (codex Round 110 ordered).
  *
  * Shared persona prompt-block builder for the LLM copy generators (B1 services / B2 about / B3 hero).
