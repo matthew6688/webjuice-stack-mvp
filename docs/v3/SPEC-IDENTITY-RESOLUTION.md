@@ -65,6 +65,12 @@ resolveIdentity(entity, candidate, opts):
 6. **扩 gold set + 调阈值/prompt**。
 7. **SOP + canonical**：门过后写 `docs/v3/SOP-IDENTITY-RESOLUTION.md` + CANONICAL §0 行。
 
+## 5.5 · ⚠️ 源感知守护（codex R125 · 必须在 resolveIdentity 落实）
+`name_exact+state` 这个确定性 verifier **只对官方注册来源**（license / ABR）安全——注册名在一州内基本唯一。
+**对任意 web/search/page 候选不安全**（那里的 state 是弱/推断的，GBP 商业名可能和别家注册名碰巧归一相等）。
+→ `resolveIdentity` 必须**源感知**：只有 `source ∈ {license, abr}` 的候选才允许走 `name_exact+state` 确定性提升；
+`source ∈ {web, search, page}` 的候选**不得**靠 name+state 单独提升，必须走 tier1/tier2 LLM 判官。
+
 ## 6 · 现状（extend, don't rebuild）
 - ✅ tier0 `core/enrichment/identity-match.js`（codex R121 批准 · 25 测试）→ 将移入/被 `identity/resolve-identity.js` 编排。
 - ✅ tier1 `core/llm/match-judge.js judgeEnrichmentMatches`（Matthew 2026-05-14 spec · yes/maybe/no）。

@@ -66,11 +66,14 @@ ok(matchIdentity(anchors, { address: '9 X St VIC 3356', state: 'VIC', abrScore: 
 // 8d · name-EXACT + state verifies EVEN when registered-office postcode ≠ shopfront (the 115 false-discards)
 const qld = matchIdentity(
   { name: 'Queensland Roofing Pty Ltd', state: 'QLD', address: '19/10 Eagle St, Brisbane City QLD 4000' },
-  { name: 'QUEENSLAND ROOFING PTY LTD', state: 'QLD', address: 'Reg Office QLD 4509' });
-ok(qld.status === 'verified' && qld.reason === 'name_exact+state', 'name-exact+state verifies despite registered-office postcode conflict');
-// 8e · L.J./LJ punctuation/spacing variant → name-exact verified
-const lj = matchIdentity({ name: 'L.J. Ellery Roofing Pty Ltd', state: 'NSW' }, { name: 'LJ Ellery Roofing Pty Ltd', state: 'NSW' });
+  { source: 'license', name: 'QUEENSLAND ROOFING PTY LTD', state: 'QLD', address: 'Reg Office QLD 4509' });
+ok(qld.status === 'verified' && qld.reason === 'name_exact+state', 'registry name-exact+state verifies despite registered-office postcode conflict');
+// 8e · L.J./LJ punctuation/spacing variant → name-exact verified (registry source)
+const lj = matchIdentity({ name: 'L.J. Ellery Roofing Pty Ltd', state: 'NSW' }, { source: 'license', name: 'LJ Ellery Roofing Pty Ltd', state: 'NSW' });
 ok(lj.status === 'verified', 'L.J./LJ punctuation variant → name-exact verified');
+// 8e2 · codex R125 guardrail: SAME pair but source='web' → name+state alone must NOT auto-verify
+const ljWeb = matchIdentity({ name: 'L.J. Ellery Roofing Pty Ltd', state: 'NSW' }, { source: 'web', name: 'LJ Ellery Roofing Pty Ltd', state: 'NSW' });
+ok(ljWeb.status !== 'verified', 'web source: name+state alone → NOT auto-verified (source-aware guardrail)');
 // 8f · GUARD: name-exact but DIFFERENT state → NOT auto-verified (state conflict)
 ok(matchIdentity({ name: 'Acme Roofing', state: 'VIC' }, { name: 'Acme Roofing', state: 'QLD' }).status !== 'verified', 'name-exact + different state → not verified');
 // 8g · GUARD: name SUBSET (not exact) → NOT auto-verified (goes to LLM judge later)

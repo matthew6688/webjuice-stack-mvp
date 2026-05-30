@@ -28,6 +28,8 @@
 
 const STATE_RE = /\b(VIC|NSW|QLD|WA|SA|TAS|ACT|NT)\b/i;
 const ABR_SCORE_MIN = 75;
+// codex R125: name-exact+state may auto-verify ONLY for official-registry candidate sources.
+const REGISTRY_SOURCES = new Set(['license', 'licence', 'abr', 'abn']);
 const ABN_WEIGHTS = [10, 1, 3, 5, 7, 9, 11, 13, 15, 17, 19];
 // 目录/社媒/平台域名 —— 不能当"自有域名"定值锚点(很多商家共用)
 const NON_OWNED_DOMAIN = /(^|\.)(facebook|instagram|linktr\.ee|google\.com|google\.com\.au|yelp|yellowpages|truelocal|hotfrog|gumtree|wixsite|wordpress\.com|blogspot|business\.site|wix\.com)/i;
@@ -167,12 +169,12 @@ export function matchIdentity(anchors = {}, candidate = {}, opts = {}) {
   // 4 · phone CONFLICT is a strong negative → discard (rather miss)
   if (hardConflict('phone')) return out('discarded_uncertain', 'conflict:phone');
 
-  // 4.5 · codex R124: a name-EXACT match + same state is a strong verifier on its own — registry/business
-  //       names are ~unique within a state. A registered-office postcode that differs from the trading
-  //       shopfront must NOT veto it (registered address ≠ trading address is the norm). Still requires no
-  //       unique-key conflict (abn/domain/phone already returned above). Fixes the 115 false-discards where
-  //       'Queensland Roofing Pty Ltd' ↔ 'QUEENSLAND ROOFING PTY LTD' was dropped on a postcode conflict.
-  if (nameExact && has('state')) {
+  // 4.5 · codex R124+R125: name-EXACT + same state verifies on its own — registry names are ~unique within a
+  //       state, and a registered-office postcode ≠ the trading shopfront must NOT veto it. BUT (codex R125
+  //       guardrail) this is ONLY safe for OFFICIAL REGISTRY sources (licence/ABR). For web/search/page
+  //       candidates, state is weak/inferred and a trading name can coincidentally equal a different
+  //       registered name → those must NOT be promoted by name+state alone (they go through tier1/tier2 LLM).
+  if (nameExact && has('state') && REGISTRY_SOURCES.has(candidate.source)) {
     return out('verified', 'name_exact+state');
   }
 
