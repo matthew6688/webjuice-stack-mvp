@@ -87,7 +87,9 @@ export function buildAnchors(entity = {}) {
     address: addr || null,
     postcode: postcodes(addr)[0] || L.postcode || null,
     state: L.state || normState(addr) || null,
-    domain: L.website || null,
+    // codex R120: only an OWNED domain is an identity anchor — a GBP website that is a directory/social
+    // page (facebook.com/acme) must NOT become a definitive anchor or it would false-conflict real domains.
+    domain: ownedDomain(L.website) || null,
     name: L.business_name || L.name || null,
   };
 }

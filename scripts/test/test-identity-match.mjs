@@ -85,4 +85,10 @@ ok(buildAnchors(leakEntity).abn === null, 'unverified enrichment ABN NOT used as
 const okEntity = { latest: { business_name: 'X' }, enrichment: { abn: { abn: '69622718361', identity_verified: true } } };
 ok(buildAnchors(okEntity).abn === '69622718361', 'identity_verified enrichment ABN allowed as anchor');
 
+// 14 · codex R120: 实体官网是 facebook 页 → 不当 domain 锚点 → 不会误判真域名为 conflict
+const fbEntity = { latest: { business_name: 'Acme Roofing', website: 'https://facebook.com/acme', state: 'NSW' } };
+ok(buildAnchors(fbEntity).domain === null, 'social/directory website NOT an owned-domain anchor');
+const fbAnchors = buildAnchors(fbEntity);
+ok(matchIdentity(fbAnchors, { name: 'Acme Roofing', domain: 'acmeroofing.com.au' }).reason !== 'conflict:domain', 'facebook anchor does not false-conflict a real domain');
+
 console.log(`identity-match: ${passed} passed, 0 failed`);
