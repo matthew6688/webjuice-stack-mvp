@@ -88,14 +88,13 @@ judgePageIdentity({ entity, page, sourceContext }) → {
 - 选默认: 过红线 + 召回最好 + 成本/延迟最低; **本地若能过红线 → 默认本地**（便宜、不限流）, 云端做升级。
 - **关键安全**: 若某本地模型**过不了红线**, 它仍可当 fallback, 但**只许返回 ambiguous/different, 绝不许 promote `same`**（"有本地兜底"不等于"兜底能造假阳"）。
 
-### dokobot 登录抓取（codex 硬性护栏 · 借 Matthew 本地浏览器会话）
-- **默认关**: `ENABLE_DOKOBOT_SOCIAL_FETCH=1` 才启用。
-- 仅对**搜索已找到的**候选 URL（不开放浏览）· 仅 **allowlist 社媒域名**(FB/IG/LinkedIn)。
-- 仅当 **Tinyfish 抓取失败/太薄/被墙/需登录**时才用（last-resort, 非默认）。
-- **只读** `dokobot read`：不点击/不填表/不发消息/不抓粉丝或成员列表。
-- 限速 **3-6/min**（低于公共抓取 30/min）。
-- 只存 provenance + 薄摘要/信号, 不存无限原始登录态文本; 尽量脱去账号特定内容。
-- **绝不在 CI/无人值守批跑**(需本地设备可用性检查 + ledger 事件)。定性: "operator-assisted retrieval through local session", 不是普通公共抓取源。
+### 登录态抓取（codex R128 · 改用 Playwright 专用 profile · 不占用日常浏览器）
+**主路 = Playwright 专用持久 profile**（不是 dokobot 劫持日常浏览器 · Matthew 要求 + codex 同意）：
+- `launchPersistentContext(AUTH_FETCH_PROFILE_DIR)` —— 一个**独立 Chrome profile**，operator 在里面登录 FB/IG/LinkedIn 一次；自动读用该 profile 的 cookie，headless/后台窗口，**不碰你的活动浏览器**。只读 `page.content()`。
+- **profile 目录 = 本地凭证（secret at rest）**，按 codex 严格姿态：目录在**仓库外**（如 `~/.local/share/google-map-website-v3/social-profile`）· gitignore · 默认拒绝 CI（除非 `ALLOW_AUTH_FETCH_IN_CI=1`）· 私有权限 · **绝不打包/上传/进 fixture/进日志** · 日志里脱去 cookie/headers/storage · 命名显式 `AUTH_FETCH_PROFILE_DIR` · ledger 只记 domain/url/time/status 不记 secret/正文 · 每项目独立 profile（非日常 Chrome）· 删目录即吊销。
+- **R127 护栏全保留**：默认关(env-gate) · allowlist FB/IG/LinkedIn · 仅搜索找到的 URL · 仅 tinyfish 被墙时的 last-resort · 只读(不点击/填表/发消息/抓粉丝) · 3-6/min(带 jitter) · 薄摘要 only。
+- **关键**：登录态抓取产出**只能当弱支持证据**，除非含独立强标识(电话/ABN/自有域名)，**绝不当独立身份证据**。
+- **dokobot 降级**为"手动应急/research-only"备选，非主路（它依赖活动设备、更扰动）。
 
 ### 顺序（codex R127）
 1. 定 page-identity 契约 + prompt + fixture schema + 小标注集。

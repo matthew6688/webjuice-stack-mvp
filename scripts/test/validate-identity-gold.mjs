@@ -18,21 +18,30 @@ const goldPath = (() => { const i = args.indexOf('--gold'); return i >= 0 ? args
 const gold = JSON.parse(fs.readFileSync(path.resolve(goldPath), 'utf8'));
 const pairs = gold.pairs || [];
 
+// codex R128: only deterministic/human-confirmed labels count as benchmark TRUTH. An LLM-only label
+// (label_source:'llm_only') must NOT be benchmark ground truth (circularity) — excluded from the gate.
+const BENCHMARK_OK = (p) => (p.label_source || 'crafted') !== 'llm_only';
+const benchPairs = pairs.filter(BENCHMARK_OK);
+const excluded = pairs.length - benchPairs.length;
+
 let sameTotal = 0, diffTotal = 0, truePos = 0, falseSame = 0;
 const falseSameRows = [], recallMissRows = [];
 const byReason = {};
+const bySlice = {}; // slice → { same, diff, tp, falseSame }
 
-for (const p of pairs) {
+for (const p of benchPairs) {
   const r = verifyCandidate(p.entity, p.candidate);
   const predictedSame = r.status === 'verified';
   const key = `${r.status}:${r.reason}`;
   byReason[key] = (byReason[key] || 0) + 1;
+  const slice = p.slice || (p.expected === 'same' ? 'same:other' : 'diff:other');
+  bySlice[slice] = bySlice[slice] || { same: 0, diff: 0, tp: 0, falseSame: 0 };
   if (p.expected === 'same') {
-    sameTotal++;
-    if (predictedSame) truePos++; else recallMissRows.push(`${p.label} · ${r.status}:${r.reason}`);
+    sameTotal++; bySlice[slice].same++;
+    if (predictedSame) { truePos++; bySlice[slice].tp++; } else recallMissRows.push(`${p.label} · ${r.status}:${r.reason}`);
   } else if (p.expected === 'different') {
-    diffTotal++;
-    if (predictedSame) { falseSame++; falseSameRows.push(`${p.label} · VERIFIED as same! reason=${r.reason}`); }
+    diffTotal++; bySlice[slice].diff++;
+    if (predictedSame) { falseSame++; bySlice[slice].falseSame++; falseSameRows.push(`${p.label} · VERIFIED as same! reason=${r.reason}`); }
   }
 }
 
@@ -43,6 +52,12 @@ console.log(`  precision(same)  : ${truePos + falseSame ? (truePos / (truePos + 
 console.log(`  recall(same)     : ${recall.toFixed(3)}  (${truePos}/${sameTotal} · tunable · LLM tiers raise this)`);
 console.log(`\n  by status:reason:`);
 for (const [k, v] of Object.entries(byReason).sort((a, b) => b[1] - a[1])) console.log(`    ${String(v).padStart(3)}  ${k}`);
+console.log(`\n  by slice (codex R128 · don't let aggregate hide a slice failure):`);
+for (const [s, v] of Object.entries(bySlice).sort()) {
+  const rc = v.same ? (v.tp / v.same).toFixed(2) : '—';
+  console.log(`    ${s.padEnd(26)} same:${v.same} (recall ${rc}) · diff:${v.diff}${v.falseSame ? ` · ❌ FALSE-SAME ${v.falseSame}` : ''}`);
+}
+if (excluded) console.log(`\n  (${excluded} pair(s) excluded from truth: label_source=llm_only)`);
 if (falseSameRows.length) { console.log(`\n  ❌ FALSE-SAME (must be empty):`); falseSameRows.forEach((r) => console.log(`    ${r}`)); }
 if (recallMissRows.length) { console.log(`\n  recall misses (true 'same' not yet verified · for LLM tier / expansion):`); recallMissRows.forEach((r) => console.log(`    ${r}`)); }
 
