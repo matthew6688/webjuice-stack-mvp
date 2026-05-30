@@ -147,16 +147,33 @@ Stage 3 · 付费/慢(只对合格的)
 
 ---
 
-## §6 · 待落地（按 省力×影响 排 · 都先和 codex 过方案）
-1. **同名歧义"身份锚点"交叉验证**(§4方案) — **必须先做**:否则接牌照闸会放大 namesake 风险。加 电话/地址/州 一致性校验 + ABR分阈值 + 最终同一家闸。
-2. **接牌照库进筛选**(§3 A/B) — 高置信inactive→砍 · active→真目标正信号 · 牌照号→建站背书。免费、影响最大。**与 #1 一起做**。
-3. **评论数降级**(§3 E-1) — 与 #2 配对。需在现有 240 实体上跑回归看漏斗变化。
-4. **有网站价值按业主视角重新加权**(§3 E-3)。
-5. **付费意愿显性化**(§3 E-4)。
-6. **master.md 溯源做成机器可读**(verified/inferred 字段 + 多源冲突日志)。
+## §6 · 落地方案（codex Round 116 已裁决 · 2026-05-30）
 
-### 给 codex 的问题
-- 牌照库刷新节奏(快照会过时,当杀闸要定期重导,否则误杀/漏杀)。
-- WA/SA/TAS/ACT/NT 牌照覆盖怎么补(暂用 ABR 全国兜底)。
-- Tinyfish 限流下的批量吞吐策略。
-- 放宽评论门槛后的漏斗回归(240 实体实测)。
+### SSOT — 三个独立写者，职责不重叠（codex 锁定）
+- **`exclusion-filter.js`** = 早期"不是真目标"淘汰的**唯一写者**（不另开并行筛选器）。
+- **`lead-grading.js`** = 审核后的投资决策（D 级 skip）。
+- **`core/enrichment/identity-match.js`（新建）** = enrichment 置信/溯源，**不做任何终局决策**。每个 enrichment adapter 只产出 candidates；identity-match 只把**过了锚点**的 candidate 提升为 canonical（`entity.enrichment.*` / `entity.license`）；低置信的 park 到 candidates/review，**绝不当 verified 渲染**。
+  - codex note：`scripts/cli/pl-license-lookup.js` 已有"弱匹配 park 而非 canonical"的更优写回逻辑 → **提升到共享 enrichment 代码**，别留 CLI-only。
+
+### 落地顺序（codex 裁决：身份锚点必须在数据路径上先生效）
+1. **身份锚点守卫 `identity-match.js`（先做）**：任何 enrich 结果要成 verified，必须命中**至少一个硬锚点**——phone / ABN / 完整地址 / postcode+state / 精确域名或首页证据。**单独 state 太弱**，只能当辅助（除非配 postcode/suburb）。ABR 相似分 <75 → needs_review。多源冲突（同名但 phone/address/ABN 不一致）→ **记日志 + 阻止 canonical 写入**。
+2. **接牌照库**（消费**已锚点核实**的牌照结果）：
+   - `abn_exact + inactive + DB 新鲜` → 可 auto-kill。
+   - `name_exact + inactive` → **不**自动杀，除非锚点过且候选不歧义。
+   - `token_prefix / fts_fuzzy / not_found` → **永不杀**。
+   - ABR-active 与 牌照-inactive 冲突 → needs_review（除非 ABN 精确且该 niche 强制持牌）。
+   - `active` + class 对得上 → 真目标正信号 + 存真牌照号给建站。
+3. **评论数降级**（与 #2 配对）：真伪改用 license-active/ABN-active/近期活跃 + 可达；review_count 只留作付费/规模信号（`>niche_max` 仍是规模闸）。**先在 ~240 实体跑回归 diff**（原 too_few_reviews 砍掉的 / 现在靠 license·ABN·活跃·可达 放进的 / 新引入的误放 / 找回的无网站小客户），**review 过再上线**。
+4. 有网站价值按业主视角加权（§3 E-3）。
+5. 付费意愿显性化（§3 E-4）。
+6. master.md **只把 verified 身份事实当信任背书渲染**；溯源做成机器可读（verified/inferred 字段 + 冲突日志）。
+
+### 牌照库新鲜度（codex 规则 · 杀闸必须带 freshness metadata）
+导入器必须写入 import 时间戳。无时间戳 → inactive 只当 advisory。
+- **≤30 天**：inactive 可杀（严格匹配下）。
+- **31–90 天**：needs_review，不杀。
+- **>90 天 / 未知**：仅 advisory。
+- 刷新：至少月度，能自动化则周度。
+
+### 覆盖空缺
+WA/SA/TAS/ACT/NT 牌照查询结果 = `coverage_unavailable`（**不是 `not_found`**，不扣分），用 ABR 全国兜底。
