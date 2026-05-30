@@ -23,25 +23,36 @@ const DEFAULT_TIMEOUT_MS = 90_000;
 const OLLAMA_URL = process.env.OLLAMA_URL || 'http://localhost:11434';
 
 // SOP-3 §4 · LLM cascade defaults.
-// T0 text backup verified 2026-05-17: deepseek-r1:14b (14GB · 16s · format=json works)
-//   ↑ qwen3.6:27b and qwen3.5:9b both BROKEN with format=json (returns 0 bytes · hangs)
+// T0 TEXT backup = qwen3.6:27b (2026-05-30 · R93 copy-cascade fix per Matthew). REPLACES deepseek-r1:14b,
+//   which ignored the fact-locked copy contract and produced REJECT-grade generic copy (R93 evidence).
+//   The old "qwen broken with format=json (0 bytes/hangs)" note (2026-05-17) was a THINKING-mode bug:
+//   qwen3.x emits <think> tokens that break JSON. Fixed by `think:false` in callOllama (see below).
+//   deepseek-r1 is also worst-for-judging per handoff — now also worst-for-generating; retired from copy.
 // T0 vision backup verified earlier: gemma3:27b (17GB · 31s · multimodal)
 const DEFAULT_COMBOS = {
   'extract_services_from_site': {
     primary: { tier: 'T1b', tool: 'claude', model: 'claude-sonnet-4-5' },
     fallback: { tier: 'T1a', tool: 'codex', model: 'gpt-5-codex' },
-    backup: { tier: 'T0', tool: 'ollama', model: 'deepseek-r1:14b' },
+    backup: { tier: 'T0', tool: 'ollama', model: 'qwen3.6:27b' },
   },
   'extract_about_narrative': {
     primary: { tier: 'T1b', tool: 'claude', model: 'claude-sonnet-4-5' },
     fallback: { tier: 'T1a', tool: 'codex', model: 'gpt-5' },
-    backup: { tier: 'T0', tool: 'ollama', model: 'deepseek-r1:14b' },
+    backup: { tier: 'T0', tool: 'ollama', model: 'qwen3.6:27b' },
   },
   'extract_hero_copy': {
     primary: { tier: 'T1b', tool: 'claude', model: 'claude-sonnet-4-5' },
     fallback: { tier: 'T1a', tool: 'codex', model: 'gpt-5' },
-    backup: { tier: 'T0', tool: 'ollama', model: 'deepseek-r1:14b' },
+    backup: { tier: 'T0', tool: 'ollama', model: 'qwen3.6:27b' },
   },
+  // Persona-POV copy-quality judge (text · Matthew 2026-05-30). Premium/advisory · N-run averaged.
+  'eval_persona_copy': {
+    primary: { tier: 'T1b', tool: 'claude', model: 'claude-sonnet-4-5' },
+    fallback: { tier: 'T1a', tool: 'codex', model: 'gpt-5' },
+    backup: { tier: 'T0', tool: 'ollama', model: 'qwen3.6:27b' },
+  },
+  // NOTE: design_* / fill_fix_matrix backups kept on deepseek-r1:14b (codex review 2026-05-30 · the
+  // qwen3.6 swap is verified for COPY tasks only; design-task backup change is out of scope/unproven).
   'design_page_sections': {
     primary: { tier: 'T1b', tool: 'claude', model: 'claude-sonnet-4-5' },
     fallback: { tier: 'T1b', tool: 'claude', model: 'claude-haiku-4-5' },
@@ -171,7 +182,10 @@ async function callOllama({ prompt, model, imagePath = null, format = 'json', ti
   const start = Date.now();
   // format omitted when falsy: gemma3:27b 500s on long text + format=json (line 26-27),
   // but is reliable in plain mode (returns fenced JSON · extractJson handles the fence).
-  const body = { model, prompt, stream: false, options: { num_predict: 2048 } };
+  // think:false is REQUIRED for qwen3.x backups — with thinking on + format=json they emit <think>
+  // reasoning that breaks/hangs JSON (the 2026-05-17 "qwen broken" symptom). Disabling it makes
+  // qwen3.6:27b return clean JSON (verified 2026-05-30, R93 copy-cascade fix per Matthew).
+  const body = { model, prompt, stream: false, think: false, options: { num_predict: 2048 } };
   if (format) body.format = format;
   if (imagePath && fs.existsSync(imagePath)) {
     body.images = [fs.readFileSync(imagePath).toString('base64')];

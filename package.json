@@ -439,7 +439,8 @@
     "pl:migrate-handoff-v1-to-v2": "node --env-file-if-exists=.env.local scripts/cli/pl-migrate-handoff-v1-to-v2.js",
     "pl:validate-handoff": "node --env-file-if-exists=.env.local scripts/cli/pl-validate-handoff.js",
     "pl:dissect-template": "node --env-file-if-exists=.env.local scripts/cli/pl-dissect-template.js",
-    "pl:audit-reference-parity": "node --env-file-if-exists=.env.local scripts/cli/pl-audit-reference-parity.js"
+    "pl:audit-reference-parity": "node --env-file-if-exists=.env.local scripts/cli/pl-audit-reference-parity.js",
+    "pl:persona-copy-audit": "node --env-file-if-exists=.env.local scripts/cli/pl-persona-copy-audit.js"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.2.4",
