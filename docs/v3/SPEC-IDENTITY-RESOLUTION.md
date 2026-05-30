@@ -71,7 +71,7 @@ resolveIdentity(entity, candidate, opts):
 → `resolveIdentity` 必须**源感知**：只有 `source ∈ {license, abr}` 的候选才允许走 `name_exact+state` 确定性提升；
 `source ∈ {web, search, page}` 的候选**不得**靠 name+state 单独提升，必须走 tier1/tier2 LLM 判官。
 
-## 5.6 · tier2 judgePageIdentity 计划（codex R127 · Matthew 要求：本地兜底/多源搜索/dokobot 登录抓取）
+## 5.6 · tier2 judgePageIdentity 计划（codex R127/R130 · Matthew 决定：本地兜底/多源搜索/OpenCLI 登录态只读抓取）
 
 ### 窄接口（可复用 · 只做"分类是不是同一家", 不拥有搜索/抓取/写入）
 ```js
@@ -88,13 +88,27 @@ judgePageIdentity({ entity, page, sourceContext }) → {
 - 选默认: 过红线 + 召回最好 + 成本/延迟最低; **本地若能过红线 → 默认本地**（便宜、不限流）, 云端做升级。
 - **关键安全**: 若某本地模型**过不了红线**, 它仍可当 fallback, 但**只许返回 ambiguous/different, 绝不许 promote `same`**（"有本地兜底"不等于"兜底能造假阳"）。
 
-### 登录态抓取（codex R128 · 改用 Playwright 专用 profile · 不占用日常浏览器）
-**主路 = Playwright 专用持久 profile**（不是 dokobot 劫持日常浏览器 · Matthew 要求 + codex 同意）：
-- `launchPersistentContext(AUTH_FETCH_PROFILE_DIR)` —— 一个**独立 Chrome profile**，operator 在里面登录 FB/IG/LinkedIn 一次；自动读用该 profile 的 cookie，headless/后台窗口，**不碰你的活动浏览器**。只读 `page.content()`。
-- **profile 目录 = 本地凭证（secret at rest）**，按 codex 严格姿态：目录在**仓库外**（如 `~/.local/share/google-map-website-v3/social-profile`）· gitignore · 默认拒绝 CI（除非 `ALLOW_AUTH_FETCH_IN_CI=1`）· 私有权限 · **绝不打包/上传/进 fixture/进日志** · 日志里脱去 cookie/headers/storage · 命名显式 `AUTH_FETCH_PROFILE_DIR` · ledger 只记 domain/url/time/status 不记 secret/正文 · 每项目独立 profile（非日常 Chrome）· 删目录即吊销。
-- **R127 护栏全保留**：默认关(env-gate) · allowlist FB/IG/LinkedIn · 仅搜索找到的 URL · 仅 tinyfish 被墙时的 last-resort · 只读(不点击/填表/发消息/抓粉丝) · 3-6/min(带 jitter) · 薄摘要 only。
-- **关键**：登录态抓取产出**只能当弱支持证据**，除非含独立强标识(电话/ABN/自有域名)，**绝不当独立身份证据**。
-- **dokobot 降级**为"手动应急/research-only"备选，非主路（它依赖活动设备、更扰动）。
+### 登录态抓取（codex R130 · OpenCLI CLI adapter · 不是 pipeline skill）
+**主路 = OpenCLI CLI 只读 adapter**（替代 R128 Playwright 专用 profile 方案）：
+- 新 adapter: `core/enrichment/fetch/opencli-fetch.js`，只包装 OpenCLI CLI：`opencli --profile <leads> browser navigate <url>` + `browser read`/`browser extract` → `{ url, text, signals, fetch_via:'opencli' }`。
+- **pipeline 只调 CLI**，不调 `opencli-browser` skill。skill 只允许 operator/agent ad-hoc research；Hermes/自动 batch 走 deterministic CLI adapter，避免把 skill 的 click/fill/interact 能力带进生产路径。
+- wrapper 是强制边界：内部命令 allowlist 只包含 `navigate/read/extract`；任何 `click`/`fill`/`type`/`interact`/`eval`/`screenshot`/`tabs`/`cookies`/raw arbitrary args 一律拒绝。调用方不得传完整 OpenCLI 命令，只能传 `{ profile, url, mode }`。
+- fetch cascade: Tinyfish fetch 先跑；OpenCLI **只对 allowlisted 登录墙/薄结果社媒域名**（FB/IG/LinkedIn）且 candidate 已由搜索发现时触发；它是 last-resort，不做发现、不扩链、不浏览 feed。
+- dedicated profile: `AUTH_FETCH_PROFILE` / OpenCLI profile alias 指向一个**独立 Chrome profile**，只登录必要社媒账号，不使用 Matthew daily/full account。默认 env-gated off；CI 默认拒绝；profile/daemon/extension 状态不可用时直接降级。
+- rate/ledger: 3-6/min + jitter；每次写 ledger（domain/url/time/status/profile alias/fetch_via/error class），**不写 cookie/header/storage/secret/正文全文**；输出只存薄摘要/DOM snapshot 中供身份判定的最小文本。
+- **证据等级**：OpenCLI 结果只能作为弱支持证据；除非正文含电话/ABN/自有域名/地址等独立强标识，否则不得单独 promotable `same`。
+- **unattended failure mode**：OpenCLI/Chrome/daemon/extension/profile/session 任何不可用、超时、登录失效、rate limited、blocked → 返回 `{ ok:false, reason }`；batch 不等待人工、不崩溃，tier2 保持 `ambiguous`/丢弃（rather-miss）。
+
+### OpenCLI 启用前安全 review gate（必须过门再 wiring）
+- **版本 pin**：固定 `@jackwener/opencli` 版本 + lockfile/安装来源；禁用自动升级；记录 extension release/version 与 CLI version 配对。升级必须重新 review diff 和跑 smoke。
+- **源码/权限 review**：读 CLI browser adapter、daemon、extension manifest、profile 选择逻辑、network surfaces、local port binding/auth、logging、telemetry/update 行为；确认不会读取/导出 cookies/storage/headers，或若扩展权限允许则确认 wrapper/环境隔离足够承受。
+- **profile blast-radius**：只用 dedicated OpenCLI/Chrome profile；只登录需要的社媒；不保存支付/密码/个人邮箱/日常账号；profile 目录在 repo 外、私有权限、可一键删除吊销。
+- **hard wrapper**：adapter 不能 expose arbitrary subcommand；denylist 之外还要 positive allowlist；单元测试证明 forbidden verbs/args 被拒；生产路径不可 import/调用任何 interaction helper。
+- **domain gate**：exact allowlist + canonical host normalization；拒绝短链、重定向到非 allowlist、data/file/chrome/about URLs、localhost；最多跟随一次安全重定向并重新检查 host。
+- **content minimization**：不保存 screenshots、HTML dumps、cookies、localStorage、headers；DOM text 截断/脱敏后进入 judge；ledger 只记审计元数据。
+- **runtime isolation**：固定 daemon port 或 profile context；仅 localhost；batch concurrency 低；timeouts 短；无人工 session reuse；失败即降级。
+- **provenance/audit**：所有下游 facts 带 `fetch_via:'opencli'` + source URL + timestamp；OpenCLI-sourced `same` 决策必须可追溯到具体 text evidence/conflicts。
+- **legal/ToS posture**：仅读取 operator 已登录后可看的 business profile/page content；不抓私信、followers、私人账号内容、后台管理页，且不做互动。
 
 ### 顺序（codex R127）
 1. 定 page-identity 契约 + prompt + fixture schema + 小标注集。
@@ -103,7 +117,7 @@ judgePageIdentity({ entity, page, sourceContext }) → {
 4. 模型对比（确定性评分 vs 标注）。
 5. 锁定该任务的 provider 策略。
 6. 建 `gatherCandidates(entity)`（真·多源 union: tinyfish search + ddg + …）。
-7. 抓取 cascade: Tinyfish 先 → **Playwright 专用持久 profile** 仅对被墙/太薄的登录社媒（§5.6 · NOT dokobot）。
+7. 抓取 cascade: Tinyfish 先 → **OpenCLI dedicated-profile CLI adapter** 仅对被墙/太薄的登录社媒（§5.6 · NOT skill/dokobot/interaction）。
 8. false-same 门稳了, 才把 tier2 接进 `resolveIdentity`。
 
 ## 6 · 现状（extend, don't rebuild）
