@@ -777,6 +777,15 @@ async function main() {
   } catch { /* no decisions · stay on before/after fallback */ }
   const hasRealProjects = completedProjects.length >= RP_GALLERY_MIN;
 
+  // Gallery grid balance — same rule as reviews/services: adapt columns to the rendered count, never
+  // orphan a lone item. The default 4 before/after pairs in a 3-col grid were a 3+1 orphan (also the
+  // R-BA-6 spec wants 4 pairs as 2×2). 2→2col · 4→2×2 · 3/5/6→3col. (codex wrap-up 2026-05-30)
+  let galleryGridModifier = '';
+  {
+    const n = hasRealProjects ? completedProjects.length : galleryPairs.length;
+    if (n === 2 || (n % 3 === 1 && n % 2 === 0)) galleryGridModifier = 'gallery-grid--2col';
+  }
+
   // Coverage · priority: brief.yaml.suburbs_covered (canonical) > narrative > facts > real_facts
   // Coverage · priority chain (R46):
   //   1. prepared coverage.json (from pl:extract-site-ctx --write-content)
@@ -923,6 +932,7 @@ async function main() {
       real_count: facts.review_count || 0,
     },
     gallery: {
+      grid_modifier: galleryGridModifier,
       ...(_copy.gallery),
       // codex R88: real verified projects win → render single-photo grid, suppress stock before/after.
       // (mutually exclusive arrays · avoids nested-section lookup in the simple Mustache engine)

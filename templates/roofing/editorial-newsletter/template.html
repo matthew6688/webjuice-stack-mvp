@@ -223,6 +223,7 @@ p { color: var(--fg-2); }
 
 /* ---------- gallery · R-BA-6 draggable-slider ---------- */
 .gallery-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-6); }
+.gallery-grid.gallery-grid--2col { grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 920px; margin-inline: auto; }
 @media (max-width: 980px) { .gallery-grid { grid-template-columns: 1fr; } }
 .pair { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
 .ba-slider { position: relative; aspect-ratio: 1 / 1; overflow: hidden; cursor: ew-resize; user-select: none; background: var(--surface-muted); }
@@ -429,7 +430,7 @@ p { color: var(--fg-2); }
       <h2 id="gallery-h">{{gallery.headline}}</h2>
       <p class="lead">{{gallery.subhead}}</p>
     </header>
-    <div class="gallery-grid">
+    <div class="gallery-grid {{gallery.grid_modifier}}">
       {{#gallery.projects}}<article class="pair" data-provenance="verified" data-replace="none">
         <div class="proj-photo"><img src="{{src}}" alt="{{alt}}" loading="lazy" /></div>
         <div class="pair-caption">{{caption}}</div>
