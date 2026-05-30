@@ -62,33 +62,49 @@ team sizes, awards, locations, or licence facts. Fact violations fail determinis
 | enrich-handoff → builder facts (thin entity facts) | n/a | **UNRESOLVED** — only matters for the LLM opt-in path; if flagship copy is used, pass rich facts (suburbs/services/licence) from brief/site-ctx. Deterministic formula already reads brief directly. |
 
 ## 4 · Implementation plan (codex 2026-05-30 · launch-sequenced · STEADY)
+> Progress log appended 2026-05-30 (Rounds 109–112). Steps 1–6 DONE + codex-reviewed. Step 7 spec'd, pending stable cloud tiers.
 
 ### 🚀 Quick launch-enablers (do first)
-1. **Correct this doc** to the reversed architecture (done).
-2. **Rename the deterministic truth gate → `fact-verify`** — extract the identity/fact cross-check out of
-   "copy-audit" branding into a `fact-verify` concept (`core/audit/fact-verify.js` + `pl:fact-verify`),
-   keep backward-compatible script aliases for launch. Gate report: `fact_verify: pass|fail`,
-   `density: pass|fail`, `copy_quality: advisory`.
-3. **Internal launch scorecard** — extend `core/reports/internal-audit-html.js` / `audit-v4` summary with ONE
-   launch panel: fact-verify · density · mobile · performance · persona-copy (advisory) · human-eyes-needed.
-4. **Run existing generation + audits, mark human-eyes items.**
+1. ✅ **Correct this doc** to the reversed architecture (done).
+2. ✅ **Rename the deterministic truth gate → `fact-verify`** — `core/audit/fact-verify.js` + `pl:fact-verify`.
+   Committed 5e87f198. Round 110: license-number check changed from brittle exact-token-match to a
+   CONTAINMENT model (rendered must contain the brief number; a different licence-shaped number still hard-
+   fails; status phrases like "QBCC Licensed" are not number claims). Regression test `npm run test:fact-verify`.
+3. ✅ **Internal launch scorecard** — `scripts/cli/pl-launch-scorecard.js` + `pl:launch-scorecard` (994e9304,
+   hardened 480444ca). ONE operator gate: hard {fact-verify, density, mobile} · info {audit-v4} · advisory
+   {persona-copy, performance} · verdict READY_FOR_SIGNOFF/HUMAN_REVIEW/HOLD + human-eyes list. Fail-closed
+   (missing mobile_gate / refresh failure / missing audit JSON never read as pass).
+4. ✅ **Run existing generation + audits, mark human-eyes (step 4).** 4 clients scored. Surfaced + fixed TWO
+   bugs: (a) audit-v4 was auditing report artifacts (launch-scorecard.html / audit-v4-report.html) as client
+   pages → false mobile veto + P0; fixed by ALLOWLIST page selection (index.html + published-pages.json).
+   (b) fact-verify false positive on a-j (honest "QBCC 1161095") → containment fix above. Final step-4 state:
+   vicwest HUMAN_REVIEW · mark-squire HUMAN_REVIEW · a-j HUMAN_REVIEW (after fix) · abc HOLD (no brief + real
+   32×20px tap-target mobile veto). Recurring buyer gaps → fed into step 5: process/timeline, residential
+   framing, verifiable specifics over praise, real review quotes.
 
 ### ⚙️ Steady layer (persona-aware generation · roofing only)
-5. **Shared persona prompt block** — new `core/handoff/persona-context.js`: loads primary segment from
-   `core/audit/personas/index.js` (roofing default: primary `planned-upgrade`, secondary `urgent-repair`).
-   Block includes ONLY buyer psychology: persona id/name · job-to-be-done · decision triggers · risk
-   concerns/objections · top trust levers · bounce triggers/forbidden signals · information state · voice.
-   Plus the explicit guard: *"Persona context is buyer psychology only. It may shape emphasis, order,
-   objections, vocabulary, CTA framing. It is NOT a source of business facts — do not create claims,
-   credentials, response times, warranty terms, prices, project counts, team sizes, awards, locations, or
-   licence facts from persona data."*
-6. **Inject persona into B1/B2/B3** — block placed BELOW the locked facts, ABOVE the task, explicit LOWER
-   authority than `single-page-brief.yaml`. B1 services: write to the buyer's pain/objections/trust levers.
-   B2 about: answer "why would THIS buyer trust this business?". B3 hero: angle from primary JTBD + bounce
-   triggers. Keep the R93 locked-fact contract verbatim.
-7. **Compare baseline vs persona-aware** on vicwest/a-j/mark-squire; require: fact-verify pass · density pass
-   · no fabricated identity · persona score IMPROVES vs baseline (advisory). Promote to default once the
-   deterministic gate still passes.
+5. ✅ **Shared persona prompt block** — `core/handoff/persona-context.js` (0c17691b, fixes 10e257c0).
+   `resolvePersona()` + `buildPersonaContextBlock()`. Buyer psychology only (JTBD, decision/bounce triggers,
+   risk concerns, trust levers, information state, voice) + section lens + authority-ladder guard verbatim.
+   Emits NO business facts. `time_to_decide`/`comparison_set_size`/`job_value` deliberately EXCLUDED (codex
+   R111: invite fake urgency/price/quote-counts). Test `npm run test:persona-context` (29 pass).
+6. ✅ **Inject persona into B1/B2/B3** (19a84e86) — block placed below each generator's highest-authority
+   facts/source, above its OUTPUT CONTRACT; env-gated `PERSONA_CONTEXT=1`, DEFAULT OFF; R93 contract verbatim;
+   `brief.primary_segment` threaded via `pl-enrich-handoff`. **Finding+fix**: the "process sequence" buyer-need
+   fought the About contract's no-process-paragraph rule (weak model failed validation) → buyer-needs are now
+   SECTION-SPECIFIC (process only in services; About/hero get residential-framing + verifiable-proof). After
+   fix, persona-on B2 passes and beats baseline (0 "largest" boasts · residential-first · 122w · identity correct).
+7. ⏳ **Compare baseline vs persona-aware** (`pl:compare-persona` · codex R112 spec · NOT YET BUILT).
+   For each of vicwest/a-j/mark-squire, both variants: sandbox-copy the handoff dir → generate B1/B2/B3 into the
+   sandbox only → **re-compose the full page → audit the RENDERED index.html** (fact-verify + density + copy-
+   audit + persona-copy-audit). Intermediates preserved for debug but NOT the authoritative gate.
+   Scorecard fields: `default_on_candidate` · exact failure reasons per client/section/variant · rendered word
+   counts by section · identity fields detected (name/address/phone/ABN/licence) · persona delta by section +
+   aggregate · contract violations (separate from soft copy notes) · promotion decision {block|needs_review|candidate}.
+   **Default-on bar (high)**: fact-verify PASS · density PASS · no fabricated identity · no regression in
+   required source facts · no per-section contract violations · no new cross-section repetition · persona score
+   improves MEANINGFULLY (not noise). codex R112: do NOT promote default-on from a single run while cloud tiers
+   are flaky — require a reproducible pass on the real intended tier path (not only the local qwen fallback).
 
 ### 🔭 Deeper (after launch)
 8. Wire `persona_copy_quality` into `pl:audit-v4` as advisory (in reports; never flips ship verdict).
