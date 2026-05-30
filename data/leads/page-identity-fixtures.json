@@ -1,0 +1,29 @@
+{
+  "_note": "Labeled fixtures for tier2 judgePageIdentity (codex R127 step1). Each: entity (target facts) + page (fetched text) + expected status. RED LINE: any 'different'/'ambiguous' predicted as 'same' = false_same (must be 0). 'same' cases require concrete evidence in the page. SEED — expand with real OpenCLI-fetched pages later (human-labeled).",
+  "cases": [
+    { "label": "same-phone", "expected": "same", "concrete": true,
+      "entity": { "latest": { "business_name": "Vicwest Roofing", "phone": "03 5333 1111", "city": "Ballarat", "state": "VIC" } },
+      "page": { "fetch_via": "tinyfish", "url": "https://vicwestroofing.com.au", "text": "Vicwest Roofing — Ballarat's metal roof specialists. Call us on (03) 5333 1111 for a free quote. Colorbond re-roofs across Ballarat and Western Victoria. 10-year workmanship warranty." } },
+    { "label": "same-abn", "expected": "same", "concrete": true,
+      "entity": { "latest": { "business_name": "Apex Roofing", "abn": "51 824 753 556", "state": "NSW" } },
+      "page": { "fetch_via": "tinyfish", "url": "https://apexroofing.com.au/about", "text": "Apex Roofing Pty Ltd · ABN 51 824 753 556. Sydney roof restoration since 2009. Tile and metal roofing, gutter replacement." } },
+    { "label": "same-owned-domain", "expected": "same", "concrete": true,
+      "entity": { "latest": { "business_name": "Northside Roofing", "website": "https://northsideroofing.com.au", "state": "QLD" } },
+      "page": { "fetch_via": "tinyfish", "url": "https://northsideroofing.com.au", "text": "Northside Roofing — Brisbane northside roof repairs and replacements. Family owned. Free quotes." } },
+    { "label": "diff-namesake-city", "expected": "different", "concrete": false,
+      "entity": { "latest": { "business_name": "Summit Roofing", "phone": "07 3000 1234", "city": "Brisbane", "state": "QLD" } },
+      "page": { "fetch_via": "tinyfish", "url": "https://summitroofing.com", "text": "Summit Roofing LLC — Denver, Colorado's trusted roofers since 1998. Call (303) 555-0142. Serving the Front Range." } },
+    { "label": "diff-directory", "expected": "different", "concrete": false,
+      "entity": { "latest": { "business_name": "Coastal Roofing", "city": "Cairns", "state": "QLD" } },
+      "page": { "fetch_via": "tinyfish", "url": "https://hipages.com.au/find/roofing/qld/cairns", "text": "Roofing in Cairns QLD — compare 24 local roofers. Get quotes from Coastal Roofing, Cairns Roof Co, Tropical Roofing, FNQ Roofing and more. hipages connects you with tradies." } },
+    { "label": "diff-industry-same-name", "expected": "different", "concrete": false,
+      "entity": { "latest": { "business_name": "Delta Plumbing", "city": "Perth", "state": "WA" } },
+      "page": { "fetch_via": "tinyfish", "url": "https://deltaplumbingsupplies.com.au", "text": "Delta Plumbing Supplies — wholesale tapware, pipes and fittings distributor. Trade accounts welcome. Warehouse in Melbourne." } },
+    { "label": "ambiguous-name-city-only", "expected": "ambiguous", "concrete": false,
+      "entity": { "latest": { "business_name": "Premier Roofing", "city": "Geelong", "state": "VIC" } },
+      "page": { "fetch_via": "tinyfish", "url": "https://premierroofinggeelong.com.au", "text": "Premier Roofing Geelong — quality roofing services in the Geelong region. Contact us today." } },
+    { "label": "ambiguous-thin", "expected": "ambiguous", "concrete": false,
+      "entity": { "latest": { "business_name": "Bright Spark Electrical", "city": "Bendigo", "state": "VIC" } },
+      "page": { "fetch_via": "tinyfish", "url": "https://example.com/x", "text": "Home. Services. About. Contact. Electrical work done right." } }
+  ]
+}

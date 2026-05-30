@@ -543,3 +543,64 @@ JSON only, no prose:`;
     latency_ms: result.latency_ms,
   };
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// judgePageIdentity · tier2 page-content identity judge (SPEC-IDENTITY-RESOLUTION §5.6 · codex R127/R130)
+// "Is this FETCHED PAGE about THE target business?" Reads page CONTENT (not just a URL/snippet).
+// Narrow + reusable: JUDGE ONLY — does NOT own search/fetch/canonical writes (callers do that).
+// ─────────────────────────────────────────────────────────────────────────────
+const PAGE_IDENTITY_PROMPT_VERSION = 'page-identity.v1';
+let _pageIdentityPrompt = null;
+function pageIdentityPromptTemplate() {
+  if (_pageIdentityPrompt == null) {
+    _pageIdentityPrompt = fs.readFileSync(new URL('../enrichment/identity/prompts/page-identity.v1.md', import.meta.url), 'utf8');
+  }
+  return _pageIdentityPrompt;
+}
+const STRONG_EVIDENCE = /^(phone|abn|owned_domain|address|licence|license)$/i;
+// codex R127: a LOCAL model that has NOT cleared the false_same=0 red line may JUDGE but must NEVER promote
+// `same`. Cloud (codex/claude) is default-trusted; local 'ollama' promotes only if its model is allowlisted
+// here (populated after the gold-set model comparison clears it).
+const REDLINE_CLEARED_LOCAL = new Set((process.env.PAGE_JUDGE_REDLINE_MODELS || '').split(',').map((s) => s.trim()).filter(Boolean));
+function promotionAllowed(provider, model) {
+  if (provider !== 'ollama') return true;
+  return REDLINE_CLEARED_LOCAL.has(model || OLLAMA_MODEL);
+}
+
+export async function judgePageIdentity({ entity, page, sourceContext = {} } = {}, opts = {}) {
+  const base = {
+    status: 'ambiguous', confidence: 0, promotable: false, evidence: [], conflicts: [],
+    provider: null, model: null, prompt_version: PAGE_IDENTITY_PROMPT_VERSION,
+    fetch_via: page?.fetch_via || sourceContext.fetch_via || null, source_url: page?.url || sourceContext.url || null,
+  };
+  const out = (o) => ({ ...base, ...o });
+  if (!entity || !page || !page.text) return out({ reason: 'missing entity or page text' });
+
+  const prompt = pageIdentityPromptTemplate()
+    .replace('{{ENTITY}}', JSON.stringify(entity.latest || entity, null, 2))
+    .replace('{{SOURCE}}', String(page.fetch_via || sourceContext.source || 'web'))
+    .replace('{{URL}}', String(page.url || '(none)'))
+    .replace('{{PAGE_TEXT}}', String(page.text).slice(0, 6000));
+
+  let result;
+  try { result = opts.runner ? await opts.runner(prompt) : await runCascade(prompt); }
+  catch (err) { return out({ reason: `cascade failed: ${String(err.message).slice(0, 120)}` }); }
+
+  const model = result.model || (result.provider === 'ollama' ? OLLAMA_MODEL : 'cli-default');
+  const j = extractJson(result.text);
+  if (!j || !j.status) return out({ provider: result.provider, model, reason: `unparseable (${result.provider})` });
+
+  const status = ['same', 'different', 'ambiguous'].includes(j.status) ? j.status : 'ambiguous';
+  const evidence = Array.isArray(j.evidence) ? j.evidence : [];
+  const conflicts = Array.isArray(j.conflicts) ? j.conflicts : [];
+  const hasStrong = evidence.some((e) => STRONG_EVIDENCE.test(String((e && e.type) || '')));
+  // promotable: codex red line — only `same` + concrete strong evidence + no conflict + a promotion-allowed model.
+  const promotable = status === 'same' && conflicts.length === 0 && hasStrong && promotionAllowed(result.provider, model);
+
+  return out({
+    status,
+    confidence: typeof j.confidence === 'number' ? j.confidence : 0,
+    promotable, evidence, conflicts,
+    provider: result.provider, model,
+  });
+}
