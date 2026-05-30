@@ -441,7 +441,8 @@
     "pl:dissect-template": "node --env-file-if-exists=.env.local scripts/cli/pl-dissect-template.js",
     "pl:audit-reference-parity": "node --env-file-if-exists=.env.local scripts/cli/pl-audit-reference-parity.js",
     "pl:persona-copy-audit": "node --env-file-if-exists=.env.local scripts/cli/pl-persona-copy-audit.js",
-    "pl:fact-verify": "node --env-file-if-exists=.env.local scripts/cli/pl-fact-verify.js"
+    "pl:fact-verify": "node --env-file-if-exists=.env.local scripts/cli/pl-fact-verify.js",
+    "pl:launch-scorecard": "node --env-file-if-exists=.env.local scripts/cli/pl-launch-scorecard.js"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.2.4",
