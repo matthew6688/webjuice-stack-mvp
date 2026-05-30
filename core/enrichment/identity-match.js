@@ -142,7 +142,10 @@ export function matchIdentity(anchors = {}, candidate = {}, opts = {}) {
   // codex R119: use the ABR-SPECIFIC score only (`abrScore`), so a non-ABR adapter's generic confidence
   // score can't accidentally satisfy name corroboration.
   const nA = normName(anchors.name), nC = normName(candidate.name);
-  const nameExact = !!nA && !!nC && nA === nC;
+  // codex R124: tolerate punctuation/spacing variants — "L.J. Ellery" (→"l j ellery") == "LJ Ellery" (→"lj ellery")
+  // via a space-stripped compare. Still EXACT (no subset/fuzzy): "Weatherite" ≠ "Weatherite Enterprises".
+  const compact = (s) => s.replace(/\s+/g, '');
+  const nameExact = !!nA && !!nC && (nA === nC || compact(nA) === compact(nC));
   const abrScoreOk = candidate.abrScore != null && Number(candidate.abrScore) >= scoreMin;
   const nameCorroborated = nameExact || abrScoreOk;
 
@@ -163,6 +166,15 @@ export function matchIdentity(anchors = {}, candidate = {}, opts = {}) {
 
   // 4 · phone CONFLICT is a strong negative → discard (rather miss)
   if (hardConflict('phone')) return out('discarded_uncertain', 'conflict:phone');
+
+  // 4.5 · codex R124: a name-EXACT match + same state is a strong verifier on its own — registry/business
+  //       names are ~unique within a state. A registered-office postcode that differs from the trading
+  //       shopfront must NOT veto it (registered address ≠ trading address is the norm). Still requires no
+  //       unique-key conflict (abn/domain/phone already returned above). Fixes the 115 false-discards where
+  //       'Queensland Roofing Pty Ltd' ↔ 'QUEENSLAND ROOFING PTY LTD' was dropped on a postcode conflict.
+  if (nameExact && has('state')) {
+    return out('verified', 'name_exact+state');
+  }
 
   // 5 · non-unique anchors (phone / postcode+state / address) REQUIRE name corroboration.
   //     codex R119: phone alone is NOT a universal verifier (recycled/shared mobiles, call-tracking,
