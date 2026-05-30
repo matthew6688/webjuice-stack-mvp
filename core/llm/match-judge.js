@@ -576,7 +576,8 @@ function verifiedStrongEvidence(entity, pageText, sourceUrl) {
   const known = _domainOf(L.website);
   if (known && (t.toLowerCase().includes(known) || _domainOf(sourceUrl) === known)) return 'owned_domain';
   const lic = String((L.license && (L.license.number || L.license.licence_number)) || L.licence_number || '').replace(/\s+/g, '').toLowerCase();
-  if (lic.length >= 4 && t.replace(/\s+/g, '').toLowerCase().includes(lic)) return 'licence';
+  // codex R132: require ≥6 chars OR an alpha prefix (e.g. cdb-u65938) — a bare 4-digit collides with postcode/year.
+  if (lic && (lic.length >= 6 || /[a-z]/.test(lic)) && t.replace(/\s+/g, '').toLowerCase().includes(lic)) return 'licence';
   return null; // address-only deterministic match is noisy → not yet a promotion basis (conservative · rather-miss)
 }
 // codex R127/R131: only EXPLICIT providers may promote. cloud codex/claude trusted; local 'ollama' only when
