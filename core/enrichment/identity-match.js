@@ -71,13 +71,19 @@ function streetWords(addr) {
   return new Set(String(addr || '').toLowerCase().replace(/[^a-z ]+/g, ' ').split(/\s+/).filter((t) => t.length >= 3 && !STATE_RE.test(t)));
 }
 
-/** Build trusted anchors from an entity (the facts we already hold · high-trust GBP fields). */
+/**
+ * Build trusted anchors from an entity. ONLY high-trust, directly-observed fields (GBP/latest).
+ * codex R119: an enrichment ABN is NOT used as an anchor unless it was itself already identity-verified
+ * (`entity.enrichment.abn.identity_verified === true`) — otherwise an unguarded prior lookup could
+ * self-confirm a later candidate. Anchors must never be seeded from unguarded prior enrichment.
+ */
 export function buildAnchors(entity = {}) {
   const L = entity.latest || entity || {};
   const addr = L.address || '';
+  const verifiedEnrichAbn = entity.enrichment?.abn?.identity_verified === true ? entity.enrichment.abn.abn : null;
   return {
     phone: L.phone || null,
-    abn: entity.enrichment?.abn?.abn || L.abn || null,
+    abn: L.abn || verifiedEnrichAbn || null,
     address: addr || null,
     postcode: postcodes(addr)[0] || L.postcode || null,
     state: L.state || normState(addr) || null,
@@ -130,11 +136,13 @@ export function matchIdentity(anchors = {}, candidate = {}, opts = {}) {
   const has = (f) => matched.includes(f);
   const hardConflict = (f) => conflicts.some((c) => c.field === f);
 
-  // name corroboration (NEVER a verifier on its own — namesakes share names — only corroborates a geo anchor)
+  // name corroboration (NEVER a verifier on its own — namesakes share names — only corroborates an anchor).
+  // codex R119: use the ABR-SPECIFIC score only (`abrScore`), so a non-ABR adapter's generic confidence
+  // score can't accidentally satisfy name corroboration.
   const nA = normName(anchors.name), nC = normName(candidate.name);
   const nameExact = !!nA && !!nC && nA === nC;
-  const scoreOk = candidate.score != null && Number(candidate.score) >= scoreMin;
-  const nameCorroborated = nameExact || scoreOk;
+  const abrScoreOk = candidate.abrScore != null && Number(candidate.abrScore) >= scoreMin;
+  const nameCorroborated = nameExact || abrScoreOk;
 
   // 1 · truly empty candidate (no identity field — score is NOT an identity field) → not_found
   const ID_FIELDS = ['phone', 'abn', 'address', 'postcode', 'state', 'domain', 'name'];
@@ -151,26 +159,29 @@ export function matchIdentity(anchors = {}, candidate = {}, opts = {}) {
   if (hardConflict('abn')) return out('discarded_uncertain', 'conflict:abn');
   if (hardConflict('domain') && ownedDomain(candidate.domain)) return out('discarded_uncertain', 'conflict:domain');
 
-  // 4 · phone is strong + ~unique → verified on match; conflict → discard (rather miss)
-  if (has('phone')) return out('verified', 'phone');
+  // 4 · phone CONFLICT is a strong negative → discard (rather miss)
   if (hardConflict('phone')) return out('discarded_uncertain', 'conflict:phone');
 
-  // 5 · non-unique geo anchors REQUIRE name corroboration (else a same-area namesake would verify)
+  // 5 · non-unique anchors (phone / postcode+state / address) REQUIRE name corroboration.
+  //     codex R119: phone alone is NOT a universal verifier (recycled/shared mobiles, call-tracking,
+  //     directory numbers) — only ABN(valid) + owned-domain verify without a name.
   const geoOk = has('postcode') && has('state');
-  if ((geoOk || addrMatch) && nameCorroborated) {
-    return out('verified', geoOk ? 'postcode+state+name' : 'address+name');
+  const anchorHit = has('phone') || geoOk || addrMatch;
+  if (anchorHit && nameCorroborated) {
+    const reason = has('phone') ? 'phone+name' : geoOk ? 'postcode+state+name' : 'address+name';
+    return out('verified', reason);
   }
 
   // 6 · hard conflicts beat score for the reason code (observability)
   if (conflicts.length) return out('discarded_uncertain', `conflict:${conflicts[0].field}`);
 
-  // 7 · weak name match with low/absent ABR score → discard
-  if (candidate.score != null && Number(candidate.score) < scoreMin) {
+  // 7 · an anchor hit but no name corroboration, with a low/absent ABR score → discard
+  if (candidate.abrScore != null && Number(candidate.abrScore) < scoreMin) {
     return out('discarded_uncertain', `abr_score_below_${scoreMin}`);
   }
 
-  // 8 · only state / only name / geo-without-name → too weak to trust
-  const reason = (geoOk || addrMatch) ? 'geo_without_name' : has('state') ? 'state_only_too_weak' : 'no_hard_anchor';
+  // 8 · anchor-without-name / only state / only name → too weak to trust
+  const reason = anchorHit ? 'anchor_without_name' : has('state') ? 'state_only_too_weak' : 'no_hard_anchor';
   return out('discarded_uncertain', reason);
 }
 
