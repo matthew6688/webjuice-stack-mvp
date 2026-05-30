@@ -48,6 +48,7 @@ for (let i = 2; i < process.argv.length; i++) {
   else if (a === '--slugs') args.slugs = process.argv[++i].split(',').map((s) => s.trim()).filter(Boolean);
   else if (a === '--runs') args.runs = parseInt(process.argv[++i], 10) || 1;
   else if (a === '--keep') args.keep = true;
+  else if (a === '--rescore') args.rescore = true; // re-audit existing snapshots · no generation/compose/LLM-regen
 }
 const slugs = args.slugs && args.slugs.length ? args.slugs : DEFAULT_SLUGS;
 const personaRuns = args.runs || 1;
@@ -124,21 +125,36 @@ function auditVariant(slug, snapDir, briefPath) {
   const identity = identityFieldsDetected(html, briefFacts);
   const violations = contractViolations(html, words);
 
-  // persona-copy-audit on the SNAPSHOT (advisory · LLM)
+  // persona-copy-audit on the SNAPSHOT (advisory · LLM). In --rescore, reuse a cached persona-copy.json.
   let persona = { score: null, would_contact: null, gaps: [], error: null };
   const pj = path.join(snapDir, 'persona-copy.json');
-  const r = runStep('persona-copy-audit', 'scripts/cli/pl-persona-copy-audit.js',
-    ['--html', htmlPath, '--runs', String(personaRuns), '--json', pj], process.env);
-  if (r.ok && fs.existsSync(pj)) {
+  let haveJson = args.rescore && fs.existsSync(pj);
+  if (!haveJson) {
+    const r = runStep('persona-copy-audit', 'scripts/cli/pl-persona-copy-audit.js',
+      ['--html', htmlPath, '--runs', String(personaRuns), '--json', pj], process.env);
+    haveJson = r.ok && fs.existsSync(pj);
+    if (!haveJson) persona.error = r.error || 'persona-copy-audit produced no json';
+  }
+  if (haveJson) {
     const j = JSON.parse(fs.readFileSync(pj, 'utf8'));
     persona = { score: j.persona_fit_mean ?? null, would_contact: !!j.would_contact, gaps: (j.gaps || []).slice(0, 4), error: null };
-  } else persona.error = r.error || 'persona-copy-audit produced no json';
+  }
 
   return {
     fact_verify: { status: fv.status === 'checked' ? (fv.pass ? 'PASS' : 'FAIL') : fv.status, pass: fv.pass, hardFails: fv.hardFails },
     density, section_words: words, identity_fields_detected: identity,
     contract_violations: violations, persona,
   };
+}
+
+const violKey = (v) => `${v.section}:${v.rule}:${v.detail}`;
+
+function newViolations(baseline, persona) {
+  // Only violations the PERSONA variant introduces OVER baseline count against persona. Violations present
+  // in BOTH are pre-existing page/template content (e.g. a generic sentence in a block B1/B2/B3 don't
+  // regenerate) — not persona's fault. They are reported separately for independent fixing.
+  const base = new Set((baseline?.contract_violations || []).map(violKey));
+  return (persona?.contract_violations || []).filter((v) => !base.has(violKey(v)));
 }
 
 function promotionDecision(baseline, persona) {
@@ -148,14 +164,17 @@ function promotionDecision(baseline, persona) {
   if (persona.fact_verify.status !== 'PASS') reasons.push(`fact-verify ${persona.fact_verify.status}`);
   if (persona.density.status !== 'PASS') reasons.push(`density ${persona.density.status}`);
   if ((persona.fact_verify.hardFails || []).length) reasons.push('fabricated identity');
-  if (persona.contract_violations.length) reasons.push(`${persona.contract_violations.length} contract violation(s)`);
-  if (reasons.length) return { decision: 'block', reasons };
+  const newViol = newViolations(baseline, persona);
+  if (newViol.length) reasons.push(`${newViol.length} NEW contract violation(s) from persona: ${newViol.map(violKey).join(' | ')}`);
+  if (reasons.length) return { decision: 'block', reasons, new_violations: newViol };
 
   const bScore = baseline?.persona?.score, pScore = persona?.persona?.score;
   const delta = (typeof bScore === 'number' && typeof pScore === 'number') ? +(pScore - bScore).toFixed(1) : null;
-  if (delta === null) return { decision: 'needs_review', reasons: ['persona score missing on one variant — re-run with stable tiers'] };
-  if (delta >= PERSONA_DELTA_MIN) return { decision: 'candidate', reasons: [`persona +${delta} (≥${PERSONA_DELTA_MIN}) · all hard gates pass`], delta };
-  return { decision: 'needs_review', reasons: [`persona delta ${delta >= 0 ? '+' : ''}${delta} below the +${PERSONA_DELTA_MIN} meaningful bar`], delta };
+  const preExisting = (persona.contract_violations || []).length;
+  const preNote = preExisting ? ` · note ${preExisting} pre-existing page violation(s) to fix separately` : '';
+  if (delta === null) return { decision: 'needs_review', reasons: ['persona score missing on one variant — re-run with stable tiers'], new_violations: [] };
+  if (delta >= PERSONA_DELTA_MIN) return { decision: 'candidate', reasons: [`persona +${delta} (≥${PERSONA_DELTA_MIN}) · all hard gates pass · no NEW violations${preNote}`], delta, new_violations: [] };
+  return { decision: 'needs_review', reasons: [`persona delta ${delta >= 0 ? '+' : ''}${delta} below the +${PERSONA_DELTA_MIN} meaningful bar${preNote}`], delta, new_violations: [] };
 }
 
 function compareSlug(slug) {
@@ -166,6 +185,24 @@ function compareSlug(slug) {
   if (!fs.existsSync(briefPath)) return { slug, error: 'no single-page-brief.yaml (cannot fact-verify)' };
 
   const cmpRoot = path.join(v2, '_persona-compare');
+  const variantNames = ['baseline', 'persona'];
+
+  // --rescore: re-audit existing snapshots only (no generation/compose/backup) — cheap logic iteration.
+  if (args.rescore) {
+    const results = {};
+    for (const name of variantNames) {
+      const snapDir = path.join(cmpRoot, name);
+      results[name] = fs.existsSync(path.join(snapDir, 'index.html'))
+        ? auditVariant(slug, snapDir, briefPath)
+        : { failed: true, reason: 'no snapshot to rescore (run without --rescore first)' };
+    }
+    const promo = promotionDecision(results.baseline, results.persona);
+    const sc = { slug, persona_runs: personaRuns, rescore: true, variants: results, promotion: promo, default_on_candidate: promo.decision === 'candidate' };
+    fs.writeFileSync(path.join(cmpRoot, 'compare-scorecard.json'), JSON.stringify(sc, null, 2));
+    fs.writeFileSync(path.join(cmpRoot, 'compare-scorecard.md'), renderMd(sc));
+    return sc;
+  }
+
   const backupDir = path.join(cmpRoot, '_backup');
   fs.mkdirSync(backupDir, { recursive: true });
   // back up live content/ + rendered index.html so the live client is never left mutated
@@ -214,11 +251,15 @@ function renderMd(s) {
     : `| ${name} | ${r.fact_verify.status} | ${r.density.status} | ${r.persona.score ?? '—'} / contact:${r.persona.would_contact ? 'Y' : 'N'} | ${r.contract_violations.length} |`;
   const words = (name, r) => r?.failed ? `- ${name}: failed` : `- ${name}: hero ${r.section_words.hero}w · services ${r.section_words.services}w · about ${r.section_words.about}w (max block ${r.section_words.maxBlock}w)`;
   const idf = (r) => r?.failed ? '' : Object.entries(r.identity_fields_detected).filter(([, x]) => x).map(([k]) => k).join(', ');
-  const viol = (name, r) => r?.failed ? '' : (r.contract_violations.length ? `\n**${name} contract violations:**\n${r.contract_violations.map((x) => `- [${x.section}] ${x.rule}: ${x.detail}`).join('\n')}` : '');
+  const newViolKeys = new Set((s.promotion.new_violations || []).map((x) => `${x.section}:${x.rule}:${x.detail}`));
+  const viol = (name, r) => r?.failed ? '' : (r.contract_violations.length
+    ? `\n**${name} contract violations (★ = NEW from persona · others pre-existing in both):**\n${r.contract_violations.map((x) => `- ${newViolKeys.has(`${x.section}:${x.rule}:${x.detail}`) ? '★ ' : ''}[${x.section}] ${x.rule}: ${x.detail}`).join('\n')}`
+    : '');
   return [
     `# Persona comparison · ${s.slug}`,
     ``,
     `**Promotion decision: ${s.promotion.decision.toUpperCase()}** — ${s.promotion.reasons.join(' · ')}`,
+    `NEW violations introduced by persona: ${(s.promotion.new_violations || []).length}`,
     `default_on_candidate: ${s.default_on_candidate} · persona runs: ${s.persona_runs}`,
     ``,
     `| variant | fact-verify | density | persona | contract viol. |`,
