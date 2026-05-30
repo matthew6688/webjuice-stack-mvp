@@ -268,14 +268,6 @@ function formatPhoneDisplay(phoneStr) {
   return phoneStr;
 }
 
-// ─── Roman numeral (for editorial volume / file no) ──────────────────────
-function toRoman(n) {
-  const map = [['M',1000],['CM',900],['D',500],['CD',400],['C',100],['XC',90],['L',50],['XL',40],['X',10],['IX',9],['V',5],['IV',4],['I',1]];
-  let out = ''; let v = n;
-  for (const [r, k] of map) { while (v >= k) { out += r; v -= k; } }
-  return out;
-}
-
 // ─── LocalBusiness JSON-LD builder (uses facts.normalized fields) ────────
 function buildJsonLd(ctx) {
   const c = ctx.client;
@@ -736,6 +728,24 @@ async function main() {
     reviewsIsPlaceholder = false;
   }
 
+  // Reviews grid balance — KEEP ALL real reviews (never drop · codex review 2026-05-30). Pick a column
+  // count that avoids a lone-orphan row (2→2col · 4→2×2 · 3/5/6→3col); CSS centers any residue (e.g. 7).
+  let reviewsGridModifier = '';
+  {
+    const n = reviewsItems.length;
+    if (n === 2 || (n % 3 === 1 && n % 2 === 0)) reviewsGridModifier = 'reviews-grid--2col';
+  }
+
+  // Services = a COMPLETE SET (Matthew 2026-05-30): the layout ADAPTS to the real count — we NEVER
+  // drop a real service or pad with fake ones. Pick a column count that leaves no lone item:
+  // 2→2col · 4→2×2 · 3/5/6→3col (5 = 3+2, no orphan). All services kept.
+  let servicesGridModifier = '';
+  {
+    const n = servicesItems.length;
+    // use 2-col when 3-col would orphan a lone item (n%3===1, e.g. 4) and 2-col tiles cleanly (n even)
+    if (n === 2 || (n % 3 === 1 && n % 2 === 0)) servicesGridModifier = 'story-grid--2col';
+  }
+
   // Gallery (4 before/after pairs · R-BA-6 draggable slider · 2x2 grid balanced · Matthew 2026-05-29)
   const galleryPairs = [
     { idx: 1, before_src: 'assets/stock/gallery-09-cracked-slate-before.jpg', before_alt: 'Cracked slate roof before restoration', after_src: 'assets/stock/gallery-09-restored-slate-after.jpg', after_alt: 'Same slate roof after restoration', caption: `Heritage slate restoration · ${city}` },
@@ -791,12 +801,10 @@ async function main() {
   // Issue (#NN) for editorial framing · derived from year founded for stability (not data hash)
   // Codex R40 3rd-pass: yearsTrading is null when yearFounded unverified · downstream consumers guard
   const yearsTrading = yearFounded ? Math.max(1, new Date().getFullYear() - parseInt(yearFounded, 10)) : null;
-  const issueNo = yearsTrading;  // e.g. 23 yrs = File No. XXIII
-  const volNo = Math.max(1, Math.ceil((yearsTrading || experienceYears || 1) / 8));  // 1 volume per ~8 years
-  // hero eyebrow per profile (editorial = magazine "File No." · direct = simple location chip)
-  const heroEyebrow = templateProfile === 'direct'
-    ? `${city} · ${state}${_licenseVisibleFinal ? ` · ${licAuthority}-licensed` : ''}`
-    : `File No. ${issueNo || experienceYears || 1} · ${city} Roofing Journal · Vol. ${toRoman(volNo).padStart(2, '0')}`;
+  // Hero eyebrow = clear, buyer-useful location + credential (NOT the old "File No. · Journal · Vol."
+  // magazine conceit — old-template residue that read as fake editorial flair to real buyers ·
+  // flagged by pl:persona-copy-audit · Matthew 2026-05-30).
+  const heroEyebrow = `${city} · ${state}${_licenseVisibleFinal ? ` · ${licAuthority}-licensed` : ''}`;
 
   // Build section copy via profile dispatch (codex R40 Q-VV-1 B · Q-VV-5 b)
   // Codex R40 3rd-pass hallucination guards (Q-XX-1, Q-XX-2):
@@ -891,7 +899,7 @@ async function main() {
     // Each profile's builder produces eyebrow/headline/subhead per section · pure fn · fixture-testable.
     // About paragraphs · direct = fact-built 3 paragraphs · editorial = defensive sentence-grouped from narrative.
     // Non-copy data (items/pairs/suburbs/images) spread in below.
-    services: { ...(_copy.services), items: servicesItems },
+    services: { ...(_copy.services), items: servicesItems, grid_modifier: servicesGridModifier },
     about: {
       ...(_copy.about),
       image_src: 'assets/stock/about-worker-surveying.png',
@@ -902,6 +910,7 @@ async function main() {
       // pick subhead variant based on placeholder vs real
       subhead: reviewsIsPlaceholder ? _copy.reviews.subhead_placeholder : _copy.reviews.subhead_real,
       items: reviewsItems,
+      grid_modifier: reviewsGridModifier,
       is_placeholder: reviewsIsPlaceholder ? {} : null,
       real_count: facts.review_count || 0,
     },

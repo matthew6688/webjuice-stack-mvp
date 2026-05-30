@@ -45,9 +45,29 @@ import { load as cheerioLoad } from 'cheerio';
 import { runHeroJudge } from '../../core/audit/hero-judge.js';
 import { runDesignerReview } from '../../core/audit/designer-review.js';
 import { attachComposeFeedback } from '../../core/audit/compose-feedback.js';
+import { checkGridBalance } from '../../core/audit/grid-balance.js';
+
+// Deterministic grid-balance detector (Matthew 2026-05-30): no item-grid may leave a LONE item
+// alone on the last row (4-in-3col = 3+1). Pure rules · applies to services/reviews/gallery/etc.
+function runGridBalance(htmlFiles) {
+  const findings = [];
+  for (const f of htmlFiles) {
+    let html; try { html = fs.readFileSync(f, 'utf8'); } catch { continue; }
+    const { findings: orphans } = checkGridBalance(html);
+    for (const o of orphans) {
+      findings.push({
+        severity: 'P1', dim: 'grid_balance', rule: 'grid_lone_orphan', page: path.basename(f), where: o.grid,
+        what: `${o.grid}: ${o.items} items in ${o.cols}-col grid → 1 lone item on last row`,
+        why: 'A grid row with a single lone item reads as a layout mistake (Matthew 2026-05-30)',
+        fix: o.detail,
+      });
+    }
+  }
+  return { status: 'wired', dim: 'grid_balance', findings };
+}
 
 const REPO = process.cwd();
-const SCRIPT_VERSION = 'pl-audit-v4/0.1.0-skeleton';
+const SCRIPT_VERSION = 'pl-audit-v4/0.2.0-vision-multirun';
 
 // ─── Args ────────────────────────────────────────────────────────────────
 function parseArgs(argv) {
@@ -80,13 +100,19 @@ Usage:
   pl:audit-v4 --site <html-file> [--tier T1|T2|fast|full|premium]
   pl:audit-v4 --json                  output JSON to stdout
   pl:audit-v4 --report                write audit-v4-report.html
+  pl:audit-v4 --vision-runs N         model-judged tiers (T3 vision / T4 designer / hero-judge)
+                                      run N times · composite uses the MEAN · range+stddev recorded
+                                      (default 3 · codex R91 · set 1 for cheap single-shot)
 
 Tiers:
   T1       Hard mechanical PASS/FAIL only (~50ms · $0)
   T2       Brand contract score only (~100ms · $0)
   fast     T1 + T2 only · no LLM       (~150ms · $0)
-  full     T1 + T2 + T3 + T4           (~2min · ~$0.15/page) [default]
-  premium  T1 + T2 + T3 + T4 + T5      (~3min · ~$0.30/page)
+  full     T1 + T2 + T3 + T4           (~2min · ~$0.15/page × --vision-runs) [default]
+  premium  T1 + T2 + T3 + T4 + T5      (~3min · ~$0.30/page × --vision-runs)
+
+  ⚠️  Cost scales linearly with --vision-runs (each run = 1 vision + 1 hero + 1 designer LLM call).
+      Default 3 → ~$0.45/page full · ~$0.90/page premium. Deterministic tiers always run once.
 
 Canonical standard: docs/v3/SOP-AUDIT-STANDARD-V2.md (5-P0 weighted + mobile veto).
 T1..T5 are runtime tier labels · ADR-AUDIT-V4.md is implementation history.
@@ -96,6 +122,11 @@ T1..T5 are runtime tier labels · ADR-AUDIT-V4.md is implementation history.
 
 // ─── Inputs / outputs ────────────────────────────────────────────────────
 const TIER = (args.tier || 'full').toLowerCase();
+// codex R91: model-judged tiers (T3 vision / T4 designer / hero-judge) are noisy across
+// identical-HTML runs (T3 ±9pt · T4 ±14pt on vicwest). Run them N times and feed the MEAN
+// into the composite; record range+stddev so reviewers see when a metric is noisy.
+// Deterministic tiers (T1/T2/T4d/geometry/mobile/etc) always run once. Default 3.
+const VISION_RUNS = Math.max(1, parseInt(args['vision-runs'], 10) || 3);
 const VALID_TIERS = new Set(['t1', 't2', 'fast', 'full', 'premium']);
 if (!VALID_TIERS.has(TIER)) {
   console.error(`Invalid --tier "${args.tier}" · expected one of: T1, T2, fast, full, premium`);
@@ -149,8 +180,12 @@ function resolveInputs() {
     if (fs.existsSync(abs)) { brandSpec = JSON.parse(fs.readFileSync(abs, 'utf8')); break; }
   }
 
+  // codex review 2026-05-30: audit only the PUBLISHABLE page. Exclude derived previews
+  // (preview-annotated / preview-old) — they are post-processed artifacts that can lag the live
+  // index.html and produce stale order/staleness findings. Sort deterministically, index.html first.
   const htmlFiles = fs.readdirSync(outputDir)
-    .filter(f => f.endsWith('.html') && !f.includes('preview-old'))
+    .filter(f => f.endsWith('.html') && !/preview-old|preview-annotated/.test(f))
+    .sort((a, b) => (a === 'index.html' ? -1 : b === 'index.html' ? 1 : a.localeCompare(b)))
     .map(f => path.join(outputDir, f));
   return { mode: 'slug', htmlFiles, slug, facts, factsPath, brandSpec, outputDir };
 }
@@ -1410,6 +1445,80 @@ async function runT5CreativeDirector(htmlFiles, ctx) {
   };
 }
 
+// ─── Vision multi-run averaging (codex R91) ─────────────────────────────
+// Population stddev (n divisor) — at N=3 this is reviewer telemetry, not inference.
+function computeStats(values) {
+  const round2 = (x) => Math.round(x * 100) / 100;
+  // `runs` keeps the FULL per-run array (null = failed/skipped run) so reviewers can see
+  // WHICH run dropped out (codex R91-followup #3). Stats are computed over numeric scores only.
+  const nums = values.filter((v) => typeof v === 'number' && Number.isFinite(v));
+  if (nums.length === 0) {
+    return { n: 0, mean: null, min: null, max: null, range: null, stddev: null, runs: values };
+  }
+  const mean = nums.reduce((a, b) => a + b, 0) / nums.length;
+  const min = Math.min(...nums);
+  const max = Math.max(...nums);
+  const variance = nums.reduce((a, b) => a + (b - mean) ** 2, 0) / nums.length;
+  return {
+    n: nums.length,
+    mean: round2(mean),
+    min,
+    max,
+    range: round2(max - min),
+    stddev: round2(Math.sqrt(variance)),
+    runs: values,
+  };
+}
+
+// Run an async model-judged tier N times, return the representative run (closest to mean)
+// with score_stats attached. Tolerant of null/skipped scores (codex R91 caution #3): stats
+// are computed over numeric scores only; if none are numeric, no mean overwrite happens.
+// Tie-break (codex R91): lower |distance|, then lower score, then earlier run index.
+async function runAveraged(label, n, runFn, getScore, setScore) {
+  const results = [];
+  for (let i = 0; i < n; i++) {
+    if (n > 1) console.log(`[${label}] run ${i + 1}/${n}`);
+    results.push(await runFn());
+  }
+  const stats = computeStats(results.map(getScore));
+
+  // Pick representative run so the kept findings/dims stay coherent with the averaged score.
+  let repIdx = 0;
+  if (stats.mean != null) {
+    let best = Infinity, bestScore = Infinity;
+    results.forEach((r, i) => {
+      const s = getScore(r);
+      if (typeof s !== 'number' || !Number.isFinite(s)) return;
+      const dist = Math.abs(s - stats.mean);
+      if (dist < best || (dist === best && s < bestScore)) { best = dist; bestScore = s; repIdx = i; }
+    });
+  }
+  const rep = results[repIdx];
+
+  // Cost must not undercount (codex R91 caution #2): sum across all runs.
+  // NOTE (R91-followup #1): only T3 vision returns cost_usd today · hero-judge + designer-review
+  // do NOT emit it, so for those tiers this sums to 0 (real spend is logged separately via the
+  // claude-cli theoretical-cost ledger · see scripts/finance/vision-cost-projection.js).
+  const runCosts = results.map((r) => (typeof r?.cost_usd === 'number' ? r.cost_usd : 0));
+  const totalCost = runCosts.reduce((a, b) => a + b, 0);
+
+  rep.vision_runs = n;
+  rep.score_stats = stats;
+  if (stats.mean != null) {
+    rep.single_run_score = getScore(rep);
+    setScore(rep, stats.mean); // mean feeds the existing composite math · field overwritten in place
+  }
+  if (n > 1) {
+    rep.single_run_cost_usd = runCosts[repIdx];
+    rep.cost_usd = Math.round(totalCost * 1e6) / 1e6; // canonical cost = sum of all runs
+    rep.runs_cost_usd = runCosts;
+    // sidecar (_vision-audit-v4.json) is the LAST raw run, not necessarily the rep (codex R91 caution #1)
+    if (rep.vision_report_path) rep.vision_report_note = 'sidecar reflects the last raw run · audit-v4-full.json is canonical · score = mean of all runs';
+    console.log(`[${label}] ${n}-run mean ${stats.mean} · range ${stats.range} · stddev ${stats.stddev} (runs: ${stats.runs.join(', ')})`);
+  }
+  return rep;
+}
+
 // ─── Composite (ADR §3) ──────────────────────────────────────────────────
 function composeFinalScore(tiers, opts = {}) {
   const { T1, T2, T3, T4, T5 } = tiers;
@@ -1519,7 +1628,7 @@ function collectIssues(tiers) {
     }
   }
   // Phase-1 deterministic detector findings (codex R54) · D2.11 facts + D2.9 provenance
-  for (const t of [tiers.FactsCrossCheck, tiers.ProvenanceCheck, tiers.InstructionLeak, tiers.ServiceCardEmptyBody, tiers.UnresolvedPlaceholder, tiers.TrustFieldPresence, tiers.ServiceAccuracy, tiers.HeroRubric, tiers.VisualGeometry, tiers.HeroJudge, tiers.T4]) {
+  for (const t of [tiers.FactsCrossCheck, tiers.ProvenanceCheck, tiers.InstructionLeak, tiers.ServiceCardEmptyBody, tiers.UnresolvedPlaceholder, tiers.TrustFieldPresence, tiers.ServiceAccuracy, tiers.HeroRubric, tiers.GridBalance, tiers.VisualGeometry, tiers.HeroJudge, tiers.T4]) {
     for (const find of (t?.findings || [])) {
       issues.push({
         id: nextId(), tier: t.dim, severity: find.severity, dim: find.dim,
@@ -1582,8 +1691,13 @@ async function main() {
   // Visual geometry (deterministic · render) runs BEFORE T3 so its facts can be
   // injected into the vision audit to suppress fact-conflicting FPs (codex R61).
   if (runT4d) tiers.VisualGeometry = await runVisualGeometry(ctx.htmlFiles, ctx);
-  if (runT3) tiers.T3 = await runT3VisionAudit(ctx.htmlFiles, ctx, tiers.VisualGeometry?.facts || null);
-  if (runT3) tiers.HeroJudge = await runHeroJudge(ctx.htmlFiles, ctx, tiers.VisualGeometry?.facts || null);
+  // codex R91: model-judged tiers run VISION_RUNS times · composite uses the mean · stats recorded.
+  if (runT3) tiers.T3 = await runAveraged('T3', VISION_RUNS,
+    () => runT3VisionAudit(ctx.htmlFiles, ctx, tiers.VisualGeometry?.facts || null),
+    (r) => r.score, (r, v) => { r.score = v; });
+  if (runT3) tiers.HeroJudge = await runAveraged('HeroJudge', VISION_RUNS,
+    () => runHeroJudge(ctx.htmlFiles, ctx, tiers.VisualGeometry?.facts || null),
+    (r) => r.hero_visual_score, (r, v) => { r.hero_visual_score = v; });
   if (runT4d) tiers.T4d = runT4VoiceDeterministic(ctx.htmlFiles, ctx);
   // Phase-1 deterministic detectors (codex R54) · D2.11 facts cross-check + D2.9 provenance
   if (runT1) tiers.FactsCrossCheck = runFactsCrossCheck(ctx.htmlFiles, ctx);
@@ -1594,9 +1708,12 @@ async function main() {
   if (runT1) tiers.TrustFieldPresence = runTrustFieldPresence(ctx.htmlFiles, ctx);
   if (runT1) tiers.ServiceAccuracy = runServiceAccuracy(ctx.htmlFiles, ctx);
   if (runT1) tiers.HeroRubric = runHeroRubric(ctx.htmlFiles, ctx);
+  if (runT1) tiers.GridBalance = runGridBalance(ctx.htmlFiles);
   if (runT4) {
     const knownIds = [tiers.FactsCrossCheck, tiers.ProvenanceCheck, tiers.InstructionLeak, tiers.ServiceCardEmptyBody, tiers.UnresolvedPlaceholder, tiers.TrustFieldPresence, tiers.ServiceAccuracy, tiers.HeroRubric].flatMap(t => (t?.findings || []).map(f => f.rule || f.dim));
-    tiers.T4 = await runDesignerReview(ctx.htmlFiles, ctx, tiers.VisualGeometry?.facts || null, [...new Set(knownIds)]);
+    tiers.T4 = await runAveraged('T4', VISION_RUNS,
+      () => runDesignerReview(ctx.htmlFiles, ctx, tiers.VisualGeometry?.facts || null, [...new Set(knownIds)]),
+      (r) => r.score, (r, v) => { r.score = v; });
   }
   // Content richness deterministic (D2.14 proof variety + D2.11 facts cross-check) · SOP-AUDIT-STANDARD-V2 §9
   if (runT4d) tiers.ContentRichness = runContentRichnessDeterministic(ctx.htmlFiles, ctx);
@@ -1641,6 +1758,7 @@ async function main() {
     mode: ctx.mode,
     output_dir: ctx.outputDir,
     tier: TIER,
+    vision_runs: (runT3 || runT4) ? VISION_RUNS : 1, // codex R91: model-judged tiers averaged over N runs
     pages_audited: ctx.htmlFiles.length,
     generated_at: new Date().toISOString(),
     tier_1: tiers.T1 || null,
@@ -1656,6 +1774,7 @@ async function main() {
     trust_field_presence: tiers.TrustFieldPresence || null,
     service_accuracy: tiers.ServiceAccuracy || null,
     hero_rubric: tiers.HeroRubric || null,
+    grid_balance: tiers.GridBalance || null,
     hero_judge: tiers.HeroJudge || null,
     visual_geometry: tiers.VisualGeometry || null,
     content_richness_deterministic: tiers.ContentRichness || null,

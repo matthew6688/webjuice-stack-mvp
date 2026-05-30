@@ -181,6 +181,12 @@ p { color: var(--fg-2); }
 
 /* ---------- services ---------- */
 .story-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-8); }
+.story-grid.story-grid--2col { grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 880px; margin-inline: auto; }
+/* Safety net (Matthew 2026-05-30): a lone last item in a 3-col grid (e.g. 7th of 7) must never sit
+   alone left-aligned — center it. Composer prefers a balanced column count (4→2×2); this covers residue. */
+.story-grid:not(.story-grid--2col) > *:last-child:nth-child(3n+1):not(:first-child),
+.reviews-grid:not(.reviews-grid--2col) > *:last-child:nth-child(3n+1):not(:first-child),
+.gallery-grid > *:last-child:nth-child(3n+1):not(:first-child) { grid-column: 1 / -1; justify-self: center; width: min(100%, calc(33% - var(--space-6))); }
 @media (max-width: 980px) { .story-grid { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 640px) { .story-grid { grid-template-columns: 1fr; } }
 .story { display: flex; flex-direction: column; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; transition: box-shadow var(--motion-base) var(--ease-standard), transform var(--motion-base) var(--ease-standard); }
@@ -205,7 +211,8 @@ p { color: var(--fg-2); }
 /* ---------- reviews ---------- */
 .reviews-disclaimer { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-muted); letter-spacing: 0.1em; text-transform: uppercase; text-align: center; margin-block-start: var(--space-6); padding: var(--space-3) var(--space-4); background: var(--surface-muted); border: 1px dashed var(--border); border-radius: var(--radius-sm); }
 .reviews-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-8); }
-@media (max-width: 980px) { .reviews-grid { grid-template-columns: 1fr; } }
+.reviews-grid.reviews-grid--2col { grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 880px; margin-inline: auto; }
+@media (max-width: 980px) { .reviews-grid, .reviews-grid.reviews-grid--2col { grid-template-columns: 1fr; } }
 .review { background: var(--surface-muted); border: 1px solid var(--border); border-left: 3px solid var(--brand-accent); border-radius: var(--radius-lg); padding: var(--space-8); display: flex; flex-direction: column; gap: var(--space-5); }
 .review-stars { color: var(--brand-accent); font-family: var(--font-display); letter-spacing: 0.15em; font-size: var(--text-lg); }
 .review blockquote { margin: 0; font-family: var(--font-display); font-size: var(--text-lg); line-height: 1.45; color: var(--fg); font-style: normal; }
@@ -363,7 +370,7 @@ p { color: var(--fg-2); }
       <p class="lead">{{services.subhead}}</p>
     </header>
 
-    <div class="story-grid">
+    <div class="story-grid {{services.grid_modifier}}">
       {{#services.items}}<article class="story">
         <div class="story-img"><img src="{{image_src}}" alt="{{image_alt}}" /></div>
         <div class="story-body">
@@ -403,7 +410,7 @@ p { color: var(--fg-2); }
       <h2 id="reviews-h">{{reviews.headline}}</h2>
       <p class="lead">{{reviews.subhead}}</p>
     </header>
-    <div class="reviews-grid">
+    <div class="reviews-grid {{reviews.grid_modifier}}">
       {{#reviews.items}}<article class="review">
         <div class="review-stars" aria-label="{{stars_aria}}">{{stars_unicode}}</div>
         <blockquote>{{quote}}</blockquote>
