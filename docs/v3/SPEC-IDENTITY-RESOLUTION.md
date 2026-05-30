@@ -71,6 +71,42 @@ resolveIdentity(entity, candidate, opts):
 → `resolveIdentity` 必须**源感知**：只有 `source ∈ {license, abr}` 的候选才允许走 `name_exact+state` 确定性提升；
 `source ∈ {web, search, page}` 的候选**不得**靠 name+state 单独提升，必须走 tier1/tier2 LLM 判官。
 
+## 5.6 · tier2 judgePageIdentity 计划（codex R127 · Matthew 要求：本地兜底/多源搜索/dokobot 登录抓取）
+
+### 窄接口（可复用 · 只做"分类是不是同一家", 不拥有搜索/抓取/写入）
+```js
+judgePageIdentity({ entity, page, sourceContext }) → {
+  status:'same'|'different'|'ambiguous', confidence, promotable, evidence[], conflicts[],
+  provider, model, prompt_version, fetch_via, source_url
+}
+```
+放 `core/llm/match-judge.js`（复用 runCascade+cache）。prompt 版本化 `core/enrichment/identity/prompts/page-identity.v1.md`。搜索/抓取是**调用方**, 判官不碰。可复用于 enrichment / 社媒核实 / 官网确认 / 外部提及 / 未来 audit。
+
+### 模型策略（Matthew 硬规矩 + codex）
+- cascade: claude/codex → **本地 ollama（强制兜底）**。
+- **用 `per-task-lab` 跑模型对比**（codex-cli vs claude-cli vs qwen3.5:9b vs qwen3.6:27b）, 对带标 page 案例按红线 false_same=0 评分。
+- 选默认: 过红线 + 召回最好 + 成本/延迟最低; **本地若能过红线 → 默认本地**（便宜、不限流）, 云端做升级。
+- **关键安全**: 若某本地模型**过不了红线**, 它仍可当 fallback, 但**只许返回 ambiguous/different, 绝不许 promote `same`**（"有本地兜底"不等于"兜底能造假阳"）。
+
+### dokobot 登录抓取（codex 硬性护栏 · 借 Matthew 本地浏览器会话）
+- **默认关**: `ENABLE_DOKOBOT_SOCIAL_FETCH=1` 才启用。
+- 仅对**搜索已找到的**候选 URL（不开放浏览）· 仅 **allowlist 社媒域名**(FB/IG/LinkedIn)。
+- 仅当 **Tinyfish 抓取失败/太薄/被墙/需登录**时才用（last-resort, 非默认）。
+- **只读** `dokobot read`：不点击/不填表/不发消息/不抓粉丝或成员列表。
+- 限速 **3-6/min**（低于公共抓取 30/min）。
+- 只存 provenance + 薄摘要/信号, 不存无限原始登录态文本; 尽量脱去账号特定内容。
+- **绝不在 CI/无人值守批跑**(需本地设备可用性检查 + ledger 事件)。定性: "operator-assisted retrieval through local session", 不是普通公共抓取源。
+
+### 顺序（codex R127）
+1. 定 page-identity 契约 + prompt + fixture schema + 小标注集。
+2. 实现 `judgePageIdentity`（走 cascade + 本地兜底）。
+3. 小集手动验证（抓 prompt/schema 问题）。
+4. 模型对比（确定性评分 vs 标注）。
+5. 锁定该任务的 provider 策略。
+6. 建 `gatherCandidates(entity)`（真·多源 union: tinyfish search + ddg + …）。
+7. 抓取 cascade: Tinyfish 先 → dokobot 仅对被墙/太薄的登录社媒。
+8. false-same 门稳了, 才把 tier2 接进 `resolveIdentity`。
+
 ## 6 · 现状（extend, don't rebuild）
 - ✅ tier0 `core/enrichment/identity-match.js`（codex R121 批准 · 25 测试）→ 将移入/被 `identity/resolve-identity.js` 编排。
 - ✅ tier1 `core/llm/match-judge.js judgeEnrichmentMatches`（Matthew 2026-05-14 spec · yes/maybe/no）。
