@@ -39,6 +39,14 @@ import { buildCopy, normalizeFacts } from '../../core/handoff/copy-builders.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const REPO = path.resolve(__dirname, '../..');
+// Conditional-module render thresholds SSOT (codex R109) — same file pl-audit-v4 GATE 3 reads, so the
+// composer and the audit can never disagree on what counts as enough content to render/ship.
+let _renderPolicy = {};
+try { _renderPolicy = JSON.parse(fs.readFileSync(path.join(REPO, 'core/scoring/module-render-policy.json'), 'utf8')); } catch {}
+const RP = _renderPolicy.conditional_render || {};
+const RP_REVIEWS_MIN = RP.reviews_render_min ?? 3;
+const RP_COVERAGE_MIN = RP.coverage_render_min ?? 3;
+const RP_GALLERY_MIN = RP.gallery_render_min ?? 3;
 
 function parseArgs() {
   const out = {};
@@ -703,7 +711,7 @@ async function main() {
   let reviewsItems;
   let reviewsIsPlaceholder;
 
-  if (_preparedReviews?.length >= 3) {
+  if (_preparedReviews?.length >= RP_REVIEWS_MIN) {
     // R46: prepared reviews.json has real reviews · use directly · no placeholder banner
     reviewsItems = _preparedReviews.slice(0, 4);
     reviewsIsPlaceholder = false;
@@ -767,7 +775,7 @@ async function main() {
       .slice(0, 6)
       .map((f, i) => ({ idx: i + 1, file: f, src: `assets/${f}`, alt: `Completed roofing project in ${city}`, caption: `${city} project` }));
   } catch { /* no decisions · stay on before/after fallback */ }
-  const hasRealProjects = completedProjects.length >= 3;
+  const hasRealProjects = completedProjects.length >= RP_GALLERY_MIN;
 
   // Coverage · priority: brief.yaml.suburbs_covered (canonical) > narrative > facts > real_facts
   // Coverage · priority chain (R46):
@@ -777,7 +785,7 @@ async function main() {
   const realSuburbs = brief?.suburbs_covered || narrative.service_area?.suburbs || facts.service_area || coreExtract?.brief?.real_facts?.suburbs_served || [];
   let suburbsList;
   let coverageByArrangement = null;
-  if (_preparedCoverage?.suburbs?.length >= 3) {
+  if (_preparedCoverage?.suburbs?.length >= RP_COVERAGE_MIN) {
     suburbsList = _preparedCoverage.suburbs.slice(0, 18);
     coverageByArrangement = _preparedCoverage.by_arrangement_text || null;
   } else {

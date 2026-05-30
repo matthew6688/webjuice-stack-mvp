@@ -68,6 +68,13 @@ function runGridBalance(htmlFiles) {
 
 const REPO = process.cwd();
 const SCRIPT_VERSION = 'pl-audit-v4/0.2.0-vision-multirun';
+// Render/content thresholds SSOT (codex R109) — same file the composer reads, so GATE 3 and the
+// composer can never drift again. Defaults guard against a missing/old file.
+let MODULE_RENDER_POLICY = {};
+try { MODULE_RENDER_POLICY = JSON.parse(fs.readFileSync(path.join(REPO, 'core/scoring/module-render-policy.json'), 'utf8')); } catch {}
+const MCS = MODULE_RENDER_POLICY.minimum_content_signal || {};
+const MCS_SERVICES_MIN = MCS.services_min ?? 3;
+const MCS_SUBURBS_MIN = MCS.suburbs_min ?? 3;
 
 // ─── Args ────────────────────────────────────────────────────────────────
 function parseArgs(argv) {
@@ -1059,18 +1066,18 @@ function runContentRichnessDeterministic(htmlFiles, ctx) {
     realReviewBlocks += $('.review, [class*="review"]:not([class*="reviews-disclaimer"]), blockquote').length;
     placeholderBanner = placeholderBanner || $('.reviews-disclaimer, [class*="placeholder"], [class*="preview-banner"]').length > 0;
   }
-  // Threshold tuned per codex R35 + empirical a-j data (3 suburbs · YELLOW · legit thin)
-  // services ≥ 3 (catches abc 0-service empty) · suburbs ≥ 3 (catches abc 2-suburb empty · allows a-j 3) · reviews-or-banner
-  const contentSignalPass = servicesRendered >= 3 && suburbsRendered >= 3 && (realReviewBlocks >= 1 || placeholderBanner);
+  // Thresholds from module-render-policy.json (codex R109 SSOT · same file the composer reads).
+  // suburbs_min = 3 (NOT 5): a-j is a legit thin client with 3 real suburbs; ≥5 would block valid output.
+  const contentSignalPass = servicesRendered >= MCS_SERVICES_MIN && suburbsRendered >= MCS_SUBURBS_MIN && (realReviewBlocks >= 1 || placeholderBanner);
   dims['minimum_content_signal'] = {
     score: contentSignalPass ? 100 : 0,
     services_rendered: servicesRendered,
     suburbs_rendered: suburbsRendered,
     review_blocks: realReviewBlocks,
     placeholder_banner_present: placeholderBanner,
-    threshold: 'services ≥ 3 AND suburbs ≥ 5 AND (reviews ≥ 1 OR banner)',
+    threshold: `services ≥ ${MCS_SERVICES_MIN} AND suburbs ≥ ${MCS_SUBURBS_MIN} AND (reviews ≥ 1 OR banner)`,
     pass: contentSignalPass,
-    note: 'GATE 3 · prevents audit-gaming on thin/empty content · codex R35 Q-PP-2',
+    note: 'GATE 3 · prevents audit-gaming on thin/empty content · codex R35 Q-PP-2 · thresholds from module-render-policy.json (R109)',
   };
 
   // D2.11 · facts cross-check · HTML-extracted vs brief.yaml strict match
@@ -1740,7 +1747,7 @@ async function main() {
     blockReason = `GATE 1 · checkpoint.json verdict = RED (${checkpoint.missing ? checkpoint.missing.slice(0, 3).map(m => m.field || m).join(' · ') : 'see checkpoint.json'})`;
   } else if (tiers.ContentRichness?.dims?.minimum_content_signal && !tiers.ContentRichness.dims.minimum_content_signal.pass) {
     const cs = tiers.ContentRichness.dims.minimum_content_signal;
-    blockReason = `GATE 3 · minimum_content_signal · services ${cs.services_rendered} / suburbs ${cs.suburbs_rendered} / reviews ${cs.review_blocks} · need 3/5/(1 or banner)`;
+    blockReason = `GATE 3 · minimum_content_signal · services ${cs.services_rendered} / suburbs ${cs.suburbs_rendered} / reviews ${cs.review_blocks} · need ${MCS_SERVICES_MIN}/${MCS_SUBURBS_MIN}/(1 or banner)`;
   } else if (tiers.M1Mobile?.pass === false) {
     blockReason = `GATE 4 · M1 mobile veto · ${tiers.M1Mobile.vetos.length} mechanical failure(s) · ${tiers.M1Mobile.vetos.map(v => v.check).join(' · ')}`;
   }

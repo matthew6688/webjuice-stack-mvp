@@ -1,0 +1,25 @@
+{
+  "$schema": "internal://profitslocal/module-render-policy-v1",
+  "version": "2026-05-30-v1",
+  "purpose": "SINGLE SOURCE OF TRUTH for conditional-module render thresholds + grid balance, read by BOTH pl-compose-editorial (what to render) AND pl-audit-v4 (what to require). Closes the suburbs ≥3-vs-≥5 composer/audit drift (codex R109). Fixed skeleton + DATA-driven conditional modules + AI writes content NOT architecture.",
+  "minimum_content_signal": {
+    "_doc": "pl-audit-v4 GATE 3 (anti-empty-gaming) AND composer render gates read these. ONE rule, no drift.",
+    "services_min": 3,
+    "suburbs_min": 3,
+    "_suburbs_note": "3 (NOT 5) is deliberate: a-j-roofing is a LEGITIMATE thin client with 3 real suburbs (YELLOW). Raising to 5 would block valid output, so codex R109 'prefer stricter unless it breaks valid output' resolves to 3. The old audit comments/threshold-string that said '≥5' were wrong — code always used 3.",
+    "reviews_min_or_banner": 1
+  },
+  "conditional_render": {
+    "_doc": "A module renders only when its data clears the threshold (data decides which modules show — codex R109). Never fabricate/drop content to fit; the LAYOUT adapts (see grid_balance).",
+    "reviews_render_min": 3,
+    "coverage_render_min": 3,
+    "coverage_max_display": 18,
+    "gallery_render_min": 3
+  },
+  "grid_balance": {
+    "_doc": "No item-grid may leave a LONE item alone on the last row (items % cols == 1). Composer picks a balanced column count for the real item count; pl-audit-v4 grid_balance flags any residual orphan; a CSS center-last rule handles rare residue (e.g. 7-in-3col). Items are NEVER dropped or fabricated to fit (Matthew 2026-05-30).",
+    "default_cols": 3,
+    "two_col_when": "items == 2 OR (items % 3 == 1 AND items % 2 == 0)",
+    "applies_to": ["reviews-grid", "story-grid", "gallery-grid"]
+  }
+}
