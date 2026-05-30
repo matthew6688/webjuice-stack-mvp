@@ -140,6 +140,31 @@ if (!VALID_TIERS.has(TIER)) {
   process.exit(2);
 }
 
+function readJsonMaybe(file) {
+  try {
+    if (fs.existsSync(file)) return JSON.parse(fs.readFileSync(file, 'utf8'));
+  } catch {}
+  return null;
+}
+
+function publishedPageFiles(outputDir) {
+  const allow = new Set(['index.html']);
+  const manifest = readJsonMaybe(path.join(outputDir, 'published-pages.json'));
+  const pages = Array.isArray(manifest) ? manifest : (Array.isArray(manifest?.pages) ? manifest.pages : []);
+
+  for (const page of pages) {
+    const value = typeof page === 'string' ? page : (page?.file || page?.path || page?.html);
+    if (!value) continue;
+    const clean = String(value).replace(/^\/+/, '');
+    if (clean.endsWith('.html')) allow.add(clean);
+  }
+
+  return [...allow]
+    .sort((a, b) => (a === 'index.html' ? -1 : b === 'index.html' ? 1 : a.localeCompare(b)))
+    .map(f => path.join(outputDir, f))
+    .filter(f => fs.existsSync(f) && fs.statSync(f).isFile());
+}
+
 function resolveInputs() {
   if (args.site) {
     const sitePath = path.resolve(args.site);
@@ -187,17 +212,9 @@ function resolveInputs() {
     if (fs.existsSync(abs)) { brandSpec = JSON.parse(fs.readFileSync(abs, 'utf8')); break; }
   }
 
-  // codex review 2026-05-30: audit only the PUBLISHABLE page. Exclude derived previews
-  // (preview-annotated / preview-old) — they are post-processed artifacts that can lag the live
-  // index.html and produce stale order/staleness findings. Sort deterministically, index.html first.
-  // codex Round 109 (2026-05-30): ALSO exclude report artifacts written INTO this same dir —
-  // launch-scorecard.html and audit-v4-report.html. They have no hero/footer/sticky-CTA and were
-  // being mis-audited as client pages (false M1.2 mobile veto + false t1_hard P0 on vicwest).
-  const REPORT_ARTIFACT = /preview-old|preview-annotated|launch-scorecard|audit-v4/i;
-  const htmlFiles = fs.readdirSync(outputDir)
-    .filter(f => f.endsWith('.html') && !REPORT_ARTIFACT.test(f))
-    .sort((a, b) => (a === 'index.html' ? -1 : b === 'index.html' ? 1 : a.localeCompare(b)))
-    .map(f => path.join(outputDir, f));
+  // Audit only published pages. Reports/previews may also be written into editorial-output/,
+  // so directory-wide *.html discovery is not a safe launch gate input.
+  const htmlFiles = publishedPageFiles(outputDir);
   return { mode: 'slug', htmlFiles, slug, facts, factsPath, brandSpec, outputDir };
 }
 

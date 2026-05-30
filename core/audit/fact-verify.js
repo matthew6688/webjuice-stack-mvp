@@ -37,6 +37,14 @@ function normalizePhone(value) {
   return digits;
 }
 
+function normalizeLicenseNumber(value) {
+  return normalizeTextFact(value);
+}
+
+function uniqueNonEmpty(values) {
+  return [...new Set((values || []).map(v => String(v || '').trim()).filter(Boolean))];
+}
+
 function scalarFromYaml(text, key) {
   const m = String(text).match(new RegExp(`^${key}:\\s*(.+?)\\s*(?:#.*)?$`, 'm'));
   if (!m) return null;
@@ -84,7 +92,7 @@ function extractIdentityClaims(html) {
     .replace(/<br\s*\/?>/gi, ' '));
   const out = {
     abn: [...text.matchAll(/\bABN[\s:#-]*([0-9]{2}[\s.]*[0-9]{3}[\s.]*[0-9]{3}[\s.]*[0-9]{3})\b/gi)].map(m => m[1]),
-    license_number: [...text.matchAll(/\b(?:CDB-U|QBCC|BC|RBP|DB-U|CB-U)[\s:#-]*[A-Z0-9-]{3,12}\b/gi)].map(m => m[0]),
+    license_number: extractLicenseNumberClaims(text),
     license_authority: [],
     phone: [],
     business_name: [],
@@ -102,6 +110,29 @@ function extractIdentityClaims(html) {
   return out;
 }
 
+function extractLicenseNumberClaims(text) {
+  const claims = [];
+  const source = String(text || '');
+
+  // Prefix-style licence numbers, e.g. VBA CDB-U 65938 / DB-U 12345.
+  for (const m of source.matchAll(/\b(?:CDB-U|DB-U|CB-U)[\s:#-]*[A-Z0-9-]{3,12}\b/gi)) {
+    claims.push(m[0]);
+  }
+
+  // Authority + number, e.g. QBCC 1161095. Require the captured value to start
+  // with a digit so status phrases like "QBCC Licensed" are not number claims.
+  for (const m of source.matchAll(/\b(?:QBCC|BC|RBP)[\s:#-]*(\d[A-Z0-9-]{3,12})\b/gi)) {
+    claims.push(m[0]);
+  }
+
+  // "QBCC licence 1161095" / "license number: 1161095" phrasing.
+  for (const m of source.matchAll(/\b(?:QBCC|BC|RBP)?\s*(?:licen[cs]e|licence|registration)(?:\s*(?:no\.?|number|#))?[\s:#-]*(\d[A-Z0-9-]{3,12})\b/gi)) {
+    claims.push(m[0]);
+  }
+
+  return uniqueNonEmpty(claims);
+}
+
 function normalizedMatch(rendered, brief, normalizer, { allowContains = false } = {}) {
   const renderedNorm = normalizer(rendered);
   const briefNorm = normalizer(brief);
@@ -112,7 +143,7 @@ function normalizedMatch(rendered, brief, normalizer, { allowContains = false } 
 }
 
 function compareClaim({ field, rendered, brief, normalizer, severity = 'high', hardFail = null, allowContains = false }) {
-  const renderedValues = [...new Set((rendered || []).map(v => String(v || '').trim()).filter(Boolean))];
+  const renderedValues = uniqueNonEmpty(rendered);
   const briefValue = String(brief || '').trim();
   if (!renderedValues.length) return [];
   if (!briefValue) {
@@ -143,6 +174,43 @@ function compareClaim({ field, rendered, brief, normalizer, severity = 'high', h
     }));
 }
 
+function compareLicenseNumberClaim({ rendered, brief }) {
+  const renderedValues = uniqueNonEmpty(rendered);
+  const briefValue = String(brief || '').trim();
+  if (!renderedValues.length) return [];
+  if (!briefValue) {
+    return renderedValues.map(value => ({
+      section: 'identity',
+      kind: 'copy',
+      owner: 'rewrite_copy',
+      severity: 'critical',
+      labels: ['unlocked_identity_claim'],
+      hardFail: 'fabricated_license_or_identity',
+      reason: `licence number appears on page but is absent from locked brief`,
+      fix: `Remove the licence number claim or lock the verified value in single-page-brief.yaml`,
+      span: value,
+    }));
+  }
+
+  const briefNorm = normalizeLicenseNumber(briefValue);
+  return renderedValues
+    .filter(value => {
+      const valueNorm = normalizeLicenseNumber(value);
+      return !valueNorm || !briefNorm || !(valueNorm.includes(briefNorm) || briefNorm.includes(valueNorm));
+    })
+    .map(value => ({
+      section: 'identity',
+      kind: 'copy',
+      owner: 'rewrite_copy',
+      severity: 'critical',
+      labels: ['fabricated_license_or_identity'],
+      hardFail: 'fabricated_license_or_identity',
+      reason: `licence number "${value}" conflicts with locked brief value "${briefValue}"`,
+      fix: `Render licence number from single-page-brief.yaml only`,
+      span: value,
+    }));
+}
+
 /**
  * Verify the rendered page's identity facts against the locked brief facts.
  * @param {string} html rendered page HTML
@@ -154,11 +222,7 @@ export function identityFindings(html, briefFacts) {
   const claims = extractIdentityClaims(html);
   const findings = [];
   findings.push(...compareClaim({ field: 'ABN', rendered: claims.abn, brief: briefFacts.abn, normalizer: digitsOnly }));
-  findings.push(...compareClaim({
-    field: 'licence number', rendered: claims.license_number, brief: briefFacts.license_number,
-    normalizer: normalizeTextFact, severity: 'critical',
-    hardFail: briefFacts.license_number ? null : 'fabricated_license_or_identity',
-  }));
+  findings.push(...compareLicenseNumberClaim({ rendered: claims.license_number, brief: briefFacts.license_number }));
   findings.push(...compareClaim({
     field: 'licence authority', rendered: claims.license_authority, brief: briefFacts.license_authority,
     normalizer: normalizeTextFact, severity: 'critical',
