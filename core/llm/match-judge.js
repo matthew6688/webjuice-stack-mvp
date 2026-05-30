@@ -557,14 +557,36 @@ function pageIdentityPromptTemplate() {
   }
   return _pageIdentityPrompt;
 }
-const STRONG_EVIDENCE = /^(phone|abn|owned_domain|address|licence|license)$/i;
-// codex R127: a LOCAL model that has NOT cleared the false_same=0 red line may JUDGE but must NEVER promote
-// `same`. Cloud (codex/claude) is default-trusted; local 'ollama' promotes only if its model is allowlisted
-// here (populated after the gold-set model comparison clears it).
+// codex R131 (HIGH): the red line must NOT depend on the model labeling evidence correctly. Before `same`
+// is promotable, DETERMINISTICALLY verify a strong identifier on the page MATCHES A KNOWN TARGET FACT
+// (entity phone / ABN / known website domain / licence number). The model's evidence list is advisory only.
+function _digits(s) { return String(s || '').replace(/\D/g, ''); }
+function _domainOf(v) {
+  if (!v) return '';
+  try { return new URL(/^https?:\/\//i.test(v) ? v : `http://${v}`).hostname.replace(/^www\./i, '').toLowerCase(); }
+  catch { return String(v).replace(/^https?:\/\//i, '').replace(/^www\./i, '').split('/')[0].toLowerCase(); }
+}
+function verifiedStrongEvidence(entity, pageText, sourceUrl) {
+  const L = (entity && (entity.latest || entity)) || {};
+  const t = String(pageText || '');
+  const tDigits = _digits(t);
+  const ph = _digits(L.phone); if (ph.length >= 8 && tDigits.includes(ph)) return 'phone';
+  const abn = _digits((entity && entity.enrichment && entity.enrichment.abn && entity.enrichment.abn.abn) || L.abn);
+  if (abn.length === 11 && tDigits.includes(abn)) return 'abn';
+  const known = _domainOf(L.website);
+  if (known && (t.toLowerCase().includes(known) || _domainOf(sourceUrl) === known)) return 'owned_domain';
+  const lic = String((L.license && (L.license.number || L.license.licence_number)) || L.licence_number || '').replace(/\s+/g, '').toLowerCase();
+  if (lic.length >= 4 && t.replace(/\s+/g, '').toLowerCase().includes(lic)) return 'licence';
+  return null; // address-only deterministic match is noisy → not yet a promotion basis (conservative · rather-miss)
+}
+// codex R127/R131: only EXPLICIT providers may promote. cloud codex/claude trusted; local 'ollama' only when
+// its model cleared the red line (PAGE_JUDGE_REDLINE_MODELS); any UNKNOWN provider → never promote.
+const PROMOTE_CLOUD = new Set(['codex_cli', 'claude_cli']);
 const REDLINE_CLEARED_LOCAL = new Set((process.env.PAGE_JUDGE_REDLINE_MODELS || '').split(',').map((s) => s.trim()).filter(Boolean));
 function promotionAllowed(provider, model) {
-  if (provider !== 'ollama') return true;
-  return REDLINE_CLEARED_LOCAL.has(model || OLLAMA_MODEL);
+  if (PROMOTE_CLOUD.has(provider)) return true;
+  if (provider === 'ollama') return REDLINE_CLEARED_LOCAL.has(model || OLLAMA_MODEL);
+  return false;
 }
 
 export async function judgePageIdentity({ entity, page, sourceContext = {} } = {}, opts = {}) {
@@ -593,14 +615,15 @@ export async function judgePageIdentity({ entity, page, sourceContext = {} } = {
   const status = ['same', 'different', 'ambiguous'].includes(j.status) ? j.status : 'ambiguous';
   const evidence = Array.isArray(j.evidence) ? j.evidence : [];
   const conflicts = Array.isArray(j.conflicts) ? j.conflicts : [];
-  const hasStrong = evidence.some((e) => STRONG_EVIDENCE.test(String((e && e.type) || '')));
-  // promotable: codex red line — only `same` + concrete strong evidence + no conflict + a promotion-allowed model.
-  const promotable = status === 'same' && conflicts.length === 0 && hasStrong && promotionAllowed(result.provider, model);
+  // codex R131: promotion requires a DETERMINISTICALLY-verified strong identifier matching a known target
+  // fact — NOT the model's self-labeled evidence type. The model says 'same'; we independently confirm.
+  const verified = verifiedStrongEvidence(entity, page.text, page.url || sourceContext.url);
+  const promotable = status === 'same' && conflicts.length === 0 && !!verified && promotionAllowed(result.provider, model);
 
   return out({
     status,
     confidence: typeof j.confidence === 'number' ? j.confidence : 0,
-    promotable, evidence, conflicts,
+    promotable, verified_evidence: verified || null, evidence, conflicts,
     provider: result.provider, model,
   });
 }

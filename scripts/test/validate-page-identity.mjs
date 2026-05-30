@@ -55,4 +55,16 @@ for (const r of rows) {
   console.log(`  ${r.label.padEnd(26)} exp:${r.expected.padEnd(9)} got:${String(r.got).padEnd(10)} promotable:${r.promotable} ev:[${r.ev}]${flag}${r.reason ? ' · ' + r.reason : ''}`);
 }
 if (errored === cases.length) { console.log('\n  ⚠️ ALL judge calls failed (no LLM available) — run with codex/claude/ollama up.'); process.exit(1); }
+
+// codex R131 #3: operational red line = promotable false_same=0 (always). CLEARANCE mode (for adding a model
+// to PAGE_JUDGE_REDLINE_MODELS) is STRICTER: also status false_same=0 AND recall ≥ floor, ideally on a big set.
+const clearance = args.includes('--clearance');
+const recallFloor = (() => { const i = args.indexOf('--recall-floor'); return i >= 0 ? Number(args[i + 1]) : 0.9; })();
+const recall = sameTotal ? truePos / sameTotal : 0;
+if (clearance) {
+  const pass = falseSame === 0 && statusFalseSame === 0 && recall >= recallFloor;
+  console.log(`\n  CLEARANCE: ${pass ? '✅ PASS' : '❌ FAIL'} (need promotable=0 [${falseSame}] · status=0 [${statusFalseSame}] · recall≥${recallFloor} [${recall.toFixed(2)}])`);
+  console.log('  NOTE: 8 fixtures = smoke only · real clearance needs the expanded hard page gold set.');
+  process.exit(pass ? 0 : 1);
+}
 process.exit(falseSame > 0 ? 1 : 0);

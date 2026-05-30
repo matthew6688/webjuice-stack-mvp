@@ -447,7 +447,8 @@
     "pl:persona-copy-audit": "node --env-file-if-exists=.env.local scripts/cli/pl-persona-copy-audit.js",
     "pl:fact-verify": "node --env-file-if-exists=.env.local scripts/cli/pl-fact-verify.js",
     "pl:launch-scorecard": "node --env-file-if-exists=.env.local scripts/cli/pl-launch-scorecard.js",
-    "test:identity-gold": "node scripts/test/validate-identity-gold.mjs"
+    "test:identity-gold": "node scripts/test/validate-identity-gold.mjs",
+    "test:page-identity-gate": "node scripts/test/test-page-identity-gate.mjs"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.2.4",
