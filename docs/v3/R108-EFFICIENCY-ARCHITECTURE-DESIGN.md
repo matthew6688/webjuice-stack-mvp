@@ -49,7 +49,7 @@ team sizes, awards, locations, or licence facts. Fact violations fail determinis
 | Structured-fact extraction (name/phone/email/URL) + ABN/licence offline lookup | rules + registries | **deterministic** · keep |
 | ④ `build-single-page-brief` (fact lock · ABN/licence/phone) | deterministic | **deterministic** · keep |
 | ③ B1 services / B2 about / B3 hero (`extract-*.js` via `llm-cascade`) | LLM | **LLM persona-aware DEFAULT** (under R93 fact-lock contract) · `copy-builders` formula = fallback only |
-| ⑤ `compose-editorial` render (Mustache + formula fallback) | deterministic | **deterministic** · keep (formula becomes the primary content source) |
+| ⑤ `compose-editorial` render (Mustache + formula fallback) | deterministic | **deterministic** · keep · renders the LLM-generated sections (B1/B2/B3); `copy-builders` formula is the FALLBACK only |
 | `pl-copy-audit` identity cross-check + density | deterministic | **deterministic GATE** · keep |
 | `pl-copy-audit` generic/puffery passage judge | LLM | →**advisory** · R106 demoted LOW-sev; but HIGH/critical LLM findings + local-fallback `needs_human_review` can STILL flip the verdict today → R108 makes fully advisory |
 | `pl-audit-v4` T1/T2/T4d/grid_balance/facts_cross_check/mobile | deterministic | **deterministic GATE** · keep |

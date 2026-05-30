@@ -1,9 +1,10 @@
 /**
  * core/audit/fact-verify.js · DETERMINISTIC TRUTH CHECK (Matthew 2026-05-30).
  *
- * The zero-tolerance layer: business IDENTITY facts on the rendered page — licence (authority/number/
- * status), ABN, phone, business name, address — MUST match `single-page-brief.yaml` exactly. A mismatch
- * (or a claim absent from the locked brief) is a fabricated-identity HARD FAIL. NO LLM — pure cross-check.
+ * The zero-tolerance layer. ENFORCED (exact cross-check vs `single-page-brief.yaml`, HARD FAIL on mismatch
+ * or a claim absent from the locked brief): **licence authority, licence number, ABN, phone, and detected
+ * street address**. NOT enforced yet (do not claim otherwise): licence *status*, and *wrong* business-name
+ * detection (business name is only presence-checked as a match, not flagged when wrong). NO LLM — pure cross-check.
  *
  * This is NOT "copy" auditing (style/quality) — it is fact verification, and it cannot be wrong. It was
  * extracted out of pl-copy-audit so the truth-check has its own name (`fact-verify` · `pl:fact-verify`).

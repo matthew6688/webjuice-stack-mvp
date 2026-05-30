@@ -48,13 +48,15 @@ const pass = r.status === 'checked' && hardFails.length === 0;
 
 const rel = path.relative(REPO, htmlPath);
 if (r.status === 'skipped') {
-  console.log(`[fact-verify] ${rel} · SKIPPED · ${r.warning}`);
-} else {
-  console.log(`[fact-verify] ${rel} · ${pass ? 'PASS ✅' : 'FAIL ❌'} · ${r.findings.length} identity finding(s)${hardFails.length ? ' · HARD FAILS: ' + hardFails.join(',') : ''}`);
-  for (const f of r.findings) console.log(`  · [${f.severity}] ${f.reason}${f.hardFail ? ` (${f.hardFail})` : ''}`);
+  // codex review 2026-05-30: a zero-tolerance truth gate cannot pass without a brief to verify against.
+  // Missing brief = cannot verify = FAIL-CLOSED (exit 2). (Embedded/advisory callers use the module directly.)
+  console.error(`[fact-verify] ${rel} · CANNOT VERIFY ❌ · ${r.warning} — provide --brief or a --slug with single-page-brief.yaml`);
+  process.exit(2);
 }
+console.log(`[fact-verify] ${rel} · ${pass ? 'PASS ✅' : 'FAIL ❌'} · ${r.findings.length} identity finding(s)${hardFails.length ? ' · HARD FAILS: ' + hardFails.join(',') : ''}`);
+for (const f of r.findings) console.log(`  · [${f.severity}] ${f.reason}${f.hardFail ? ` (${f.hardFail})` : ''}`);
 if (args.json) {
   fs.writeFileSync(args.json, JSON.stringify({ file: rel, pass, status: r.status, hardFails, findings: r.findings, brief_facts: briefFacts }, null, 2));
   console.log(`  → ${args.json}`);
 }
-process.exit(pass ? 0 : (r.status === 'skipped' ? 0 : 1));
+process.exit(pass ? 0 : 1);
