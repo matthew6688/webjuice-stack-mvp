@@ -11,12 +11,27 @@
    - Talk to Matthew in 人话 (plain language); codex/agents can be technical.
 6. Codex rounds this session: R89 (design), R90 (strap-honesty), R91 (repo hygiene), R93/R94/R95 (copy auditor), R96 (stale-data), R97 (dup retirement), R98 (next-move = bake-off). Numbering continues from R98.
 
-## ⚠️ THE NEXT MOVE (codex R98 ratified) · R93 copy bake-off · vicwest-only
-**Why**: copy quality is Matthew's stated ship-blocker ("文案太差 → 还没到上线标准"). The auditor (the gate)
-is built + calibrated. Fix the copy before any GTM outreach (outreach on weak copy tests a defective version).
+## ✅ R93 COPY BAKE-OFF — DONE (2026-05-30 · committed + pushed `phase1-audit-detectors`)
+Full record: **`docs/v3/HANDOFF-SESSION-2026-05-30-copy-quality.md`** + INVENTORY §10 (2026-05-30 entry).
+vicwest now ships: `pl:audit-v4 --tier fast` = **91/A/SHIP** · `pl:copy-audit --slug vicwest-roofing` =
+**APPROVE** · `--validate` CALIBRATED 3/3 · `pl:persona-copy-audit` 71-74/100 YES. About rewritten (no wall,
+real facts). Copy gate recalibrated to demo-honesty (deterministic identity+density gate; marketing advisory).
+Built: grid-balance audit, persona-POV copy-quality audit, module-render-policy SSOT.
 
-**The auditor is ready**: `npm run pl:copy-audit -- --slug vicwest-roofing` → REJECTs current copy (2
-fake_verified_claim hardFails + About-wall density). `--validate` calibration passes. Use it as the judge.
+## ⚠️ THE NEXT MOVE (Matthew deciding) — pick one tranche:
+1. **R108 efficiency arch** (codex-favoured next · drafted `/tmp/codex-round-108-...`): make `copy-builders`
+   the DEFAULT (LLM=flagship opt-in), audit deterministic-first, LLM judge advisory. NOT ratified.
+2. **Lead pipeline (task 2)** — outline ready (cost/speed tiers + license-in-initial-screen; only new
+   primitive = url-probe). Matthew to approve scope first.
+3. **enrich-handoff → rich facts** (pass suburbs/services/licence into B1/B2/B3 for reproducible copy on
+   OTHER clients) — codex says hold until R108 confirms architecture.
+4. **GitHub secret-scanning** flagged a PRE-EXISTING branch secret on push (not from this session) —
+   investigate which commit + rotate/clean (separate task).
+
+---
+### (historical) R93 starting context — the auditor was ready, current copy REJECTed:
+`pl:copy-audit --slug vicwest-roofing` originally REJECTed (2 fake_verified_claim hardFails + About-wall).
+The bake-off's finding: the fact-locked CONTRACT fixed the copy, not the generation strategy.
 
 **8 steps (codex R98)**:
 1. Freeze vicwest current live copy as baseline.
