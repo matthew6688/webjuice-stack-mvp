@@ -18,9 +18,11 @@ const goldPath = (() => { const i = args.indexOf('--gold'); return i >= 0 ? args
 const gold = JSON.parse(fs.readFileSync(path.resolve(goldPath), 'utf8'));
 const pairs = gold.pairs || [];
 
-// codex R128: only deterministic/human-confirmed labels count as benchmark TRUTH. An LLM-only label
-// (label_source:'llm_only') must NOT be benchmark ground truth (circularity) — excluded from the gate.
-const BENCHMARK_OK = (p) => (p.label_source || 'crafted') !== 'llm_only';
+// codex R128/R129: only deterministic/human-confirmed labels count as benchmark TRUTH. ANY LLM-confirmed
+// source ('llm_only', 'opus-confirmed', or anything matching /llm|gpt|opus|claude|codex|qwen/i) must NOT be
+// benchmark ground truth (circularity / naming-drift) — excluded from the gate until a human confirms it.
+const LLM_LABEL = /llm|gpt|opus|claude|codex|qwen|ollama/i;
+const BENCHMARK_OK = (p) => !LLM_LABEL.test(p.label_source || 'crafted');
 const benchPairs = pairs.filter(BENCHMARK_OK);
 const excluded = pairs.length - benchPairs.length;
 

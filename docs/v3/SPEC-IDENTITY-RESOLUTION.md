@@ -103,7 +103,7 @@ judgePageIdentity({ entity, page, sourceContext }) → {
 4. 模型对比（确定性评分 vs 标注）。
 5. 锁定该任务的 provider 策略。
 6. 建 `gatherCandidates(entity)`（真·多源 union: tinyfish search + ddg + …）。
-7. 抓取 cascade: Tinyfish 先 → dokobot 仅对被墙/太薄的登录社媒。
+7. 抓取 cascade: Tinyfish 先 → **Playwright 专用持久 profile** 仅对被墙/太薄的登录社媒（§5.6 · NOT dokobot）。
 8. false-same 门稳了, 才把 tier2 接进 `resolveIdentity`。
 
 ## 6 · 现状（extend, don't rebuild）
