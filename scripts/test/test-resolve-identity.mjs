@@ -50,6 +50,17 @@ ok(r5.status === 'ambiguous' && r5.promotable === false, 'web name+state, no pag
 const r6 = await resolveIdentity({});
 ok(r6.status === 'ambiguous' && r6.write_allowed === false, 'no entity → ambiguous, write_allowed false');
 
+// 6b · tier1 URL triage (codex R135): injectable runner returns a JSON ARRAY of verdicts. NEVER promotes.
+const arr = (matches) => async () => ({ text: JSON.stringify([{ url: 'https://x.com', matches, confidence: 0.9, reason: 'r' }]), provider: 'codex_cli', model: 'cli' });
+const t1yes = await resolveIdentity({ entity: { latest: { business_name: 'Acme', state: 'NSW' } }, candidate: { source: 'web', name: 'Acme', url: 'https://x.com' } }, { runner: arr('yes') });
+ok(t1yes.status === 'same' && t1yes.promotable === false && t1yes.tier_used === 'search_llm', 'tier1 yes → same but NOT promotable (needs page)');
+const t1no = await resolveIdentity({ entity: { latest: { business_name: 'Acme', state: 'NSW' } }, candidate: { source: 'web', name: 'Acme', url: 'https://x.com' } }, { runner: arr('no') });
+ok(t1no.status === 'different' && t1no.promotable === false, 'tier1 no → different');
+const t1maybe = await resolveIdentity({ entity: { latest: { business_name: 'Acme', state: 'NSW' } }, candidate: { source: 'web', name: 'Acme', url: 'https://x.com' } }, { runner: arr('maybe') });
+ok(t1maybe.status === 'ambiguous' && t1maybe.promotable === false, 'tier1 maybe → ambiguous');
+const t1err = await resolveIdentity({ entity: { latest: { business_name: 'Acme', state: 'NSW' } }, candidate: { source: 'web', name: 'Acme', url: 'https://x.com' } }, { runner: async () => { throw new Error('judge down'); } });
+ok(t1err.status === 'ambiguous' && t1err.promotable === false, 'tier1 judge failure → ambiguous (graceful)');
+
 // 7 · STRUCTURAL: every verdict has write_allowed=false (already checked) + module imports NO canonical writer
 const src = fs.readFileSync(new URL('../../core/enrichment/identity/resolve-identity.js', import.meta.url), 'utf8');
 const FORBIDDEN_IMPORT = /(discovery-store|writeEntity|entity-store|upsertDiscovery|setEntityPhase|saveCoreExtract|build-master-md)/;

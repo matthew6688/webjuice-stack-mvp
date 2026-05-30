@@ -19,8 +19,11 @@ function verdict(o) {
   return {
     status: 'ambiguous', promotable: false, tier_used: 'deterministic', confidence: 0,
     reasons: [], evidence: [], conflicts: [], source_policy: 'unknown', model: null, prompt_version: null,
-    write_allowed: false, // codex R134: canonical writes are NOT reachable from this module
+    verified_evidence: null,
     ...o,
+    // codex R134/R135: write_allowed is forced false AFTER the spread — a caller/internal verdict() can NEVER
+    // set it true. Canonical writes are a separate clearance-gated step outside this module.
+    write_allowed: false,
   };
 }
 
@@ -52,14 +55,15 @@ export async function resolveIdentity({ entity, candidate = {}, page = null, sou
     reasons.push(`tier2:${t2.status}:${t2.reason || ''}`);
     return verdict({
       status: t2.status, promotable: t2.promotable, tier_used: 'page_llm', confidence: t2.confidence,
-      reasons, evidence: t2.evidence, conflicts: t2.conflicts, source_policy, model: t2.model, prompt_version: t2.prompt_version,
+      reasons, evidence: t2.evidence, conflicts: t2.conflicts, source_policy, model: t2.model,
+      prompt_version: t2.prompt_version, verified_evidence: t2.verified_evidence,
     });
   }
 
   // ── tier1 · URL/snippet triage (if a URL but no page) — routes only, NEVER promotes (needs page confirm) ──
   if (candidate.url) {
     let tier1;
-    try { tier1 = await judgeEnrichmentMatches({ entity: entity.latest || entity, candidates: [{ url: candidate.url, title: candidate.title || candidate.name || '' }] }); }
+    try { tier1 = await judgeEnrichmentMatches({ entity: entity.latest || entity, candidates: [{ url: candidate.url, title: candidate.title || candidate.name || '' }] }, opts); }
     catch (e) { return verdict({ status: 'ambiguous', tier_used: 'search_llm', reasons: [...reasons, `tier1 error: ${String(e.message).slice(0, 80)}`], source_policy }); }
     const v = (tier1 && tier1[0]) || {};
     reasons.push(`tier1:${v.matches}:${(v.reason || '').slice(0, 60)}`);

@@ -430,7 +430,7 @@ JSON only:`;
  * @param {Array}  input.candidates · [{ type, url, title, snippet? }]
  * @returns {Promise<Array>} per candidate: { url, matches, confidence, reason }
  */
-export async function judgeEnrichmentMatches({ entity, candidates }) {
+export async function judgeEnrichmentMatches({ entity, candidates }, opts = {}) {
   if (!candidates?.length) return [];
   const prompt = `You are a data quality verifier for a lead enrichment pipeline.
 
@@ -463,8 +463,10 @@ Return JSON array · one entry per candidate:
 
 JSON only:`;
 
-  const result = await runCascade(prompt);
-  const j = extractJson(result.text);
+  const result = opts.runner ? await opts.runner(prompt) : await runCascade(prompt);
+  // codex R135: extractJson only matches {...}; this judge returns a JSON ARRAY → parse arrays robustly.
+  let j = null;
+  { const m = String(result.text || '').match(/\[[\s\S]*\]/); if (m) { try { j = JSON.parse(m[0]); } catch { j = null; } } }
   if (!Array.isArray(j)) {
     // LLM didn't return array · fallback: mark all as maybe (operator review)
     return candidates.map((c) => ({
