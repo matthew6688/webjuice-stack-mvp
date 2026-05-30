@@ -44,12 +44,17 @@ const mtime = (p) => { try { return fs.statSync(p).mtimeMs; } catch { return 0; 
 const htmlMtime = mtime(htmlPath);
 const isStale = (p) => mtime(p) > 0 && mtime(p) < htmlMtime - 1000; // artifact older than the live page
 
-// optional --refresh: run the cheap deterministic audit (fact-verify is computed directly below)
+// optional --refresh: run the cheap deterministic audit (fact-verify is computed directly below).
+// codex Round 109: refresh failures must NOT be swallowed — a failed refresh that leaves stale/old
+// artifacts in place could otherwise still emit a passing-looking verdict. Track + escalate.
+const refreshFailures = [];
 if (args.refresh) {
-  try { execFileSync('node', ['scripts/cli/pl-audit-v4.js', '--slug', args.slug, '--tier', 'fast'], { cwd: REPO, stdio: 'ignore', timeout: 240000 }); } catch {}
+  try { execFileSync('node', ['scripts/cli/pl-audit-v4.js', '--slug', args.slug, '--tier', 'fast'], { cwd: REPO, stdio: 'ignore', timeout: 240000 }); }
+  catch (e) { refreshFailures.push(`audit-v4 refresh failed (${e.code || e.message || 'error'}) — mobile/issues gates may be stale`); }
 }
 if (args.includeLlm) {
-  try { execFileSync('node', ['scripts/cli/pl-persona-copy-audit.js', '--slug', args.slug, '--runs', '2', '--json', path.join(OUT, 'persona-copy.json')], { cwd: REPO, stdio: 'ignore', timeout: 300000 }); } catch {}
+  try { execFileSync('node', ['scripts/cli/pl-persona-copy-audit.js', '--slug', args.slug, '--runs', '2', '--json', path.join(OUT, 'persona-copy.json')], { cwd: REPO, stdio: 'ignore', timeout: 300000 }); }
+  catch (e) { refreshFailures.push(`persona-copy refresh failed (${e.code || e.message || 'error'}) — advisory only`); }
 }
 
 const html = fs.readFileSync(htmlPath, 'utf8');
@@ -65,32 +70,54 @@ const factVerify = briefFacts
 if (factVerify.status !== 'PASS') humanEyes.push(`fact-verify: ${factVerify.status}${fvHard.length ? ' · ' + fvHard.join(',') : ''}`);
 
 // ── HARD GATE 2 · density wall (deterministic · computed fresh) ──
+// codex Round 109: the old check only inspected About and PASSed when #about-h was absent — it could
+// not see a hero/services wall. Now check every prose block: about ≤320 total / any single block ≤90.
 const $ = cheerioLoad(html);
 const wc = (s) => String(s || '').trim().split(/\s+/).filter(Boolean).length;
-let aboutTotal = 0, aboutMaxPara = 0;
+let aboutTotal = 0, aboutMaxPara = 0, globalMaxBlock = 0;
 const am = html.match(/id="about-h"[\s\S]*?<\/header>([\s\S]*?)<\/section>/);
+const aboutFound = !!am;
 if (am) for (const p of am[1].matchAll(/<p[^>]*>([\s\S]*?)<\/p>/g)) {
   const n = wc(p[1].replace(/<[^>]+>/g, ' ')); if (n > 5) { aboutTotal += n; aboutMaxPara = Math.max(aboutMaxPara, n); }
 }
-const densityPass = aboutTotal <= 320 && aboutMaxPara <= 90;
-const density = { status: densityPass ? 'PASS' : 'FAIL', hard: true, about_total_words: aboutTotal, about_max_para_words: aboutMaxPara, budget: '≤320 total / ≤90 per para' };
-if (!densityPass) humanEyes.push(`density: about ${aboutTotal}w / max para ${aboutMaxPara}w (wall)`);
+// hero subhead + service-card bodies — any single block >90 words is a wall
+const heroSub = wc($('p.lead').first().text());
+globalMaxBlock = Math.max(aboutMaxPara, heroSub);
+$('h3').each((_, el) => { const body = wc($(el).nextAll('p').first().text()); globalMaxBlock = Math.max(globalMaxBlock, body); });
+const densityPass = aboutTotal <= 320 && globalMaxBlock <= 90;
+const density = { status: densityPass ? 'PASS' : 'FAIL', hard: true, about_total_words: aboutTotal, about_max_para_words: aboutMaxPara, max_block_words: globalMaxBlock, about_section_found: aboutFound, budget: '≤320 about total / ≤90 any block' };
+if (!densityPass) humanEyes.push(`density: about ${aboutTotal}w / max block ${globalMaxBlock}w (wall)`);
+if (!aboutFound) humanEyes.push('density: no About section detected (#about-h) — verify section rendered');
 
 // ── HARD GATE 3 · mobile veto (from audit-v4-full) ──
 const v4full = readJson(path.join(OUT, 'audit-v4-full.json'));
 const v4summary = readJson(path.join(OUT, 'audit-v4-summary.json'));
 const v4issues = readJson(path.join(OUT, 'audit-v4-issues.json'));
 const v4stale = isStale(path.join(OUT, 'audit-v4-full.json'));
+// codex Round 109: a launch gate cannot infer mobile PASS from absence. Require mobile_gate.pass === true;
+// a missing audit-v4 OR a missing/indeterminate mobile_gate = CANNOT_VERIFY (hard) → HOLD, never PASS.
 let mobile;
 if (!v4full) { mobile = { status: 'MISSING', hard: true }; humanEyes.push('mobile: no audit-v4 output (run pl:audit-v4)'); }
-else { const mg = v4full.mobile_gate; const pass = mg?.pass !== false; mobile = { status: pass ? 'PASS' : 'FAIL', hard: true, stale: v4stale, vetos: mg?.vetos?.length || 0 };
-  if (!pass) humanEyes.push(`mobile: ${mg?.vetos?.length || 0} veto(s)`); if (v4stale) humanEyes.push('mobile/audit-v4: STALE (older than the live page — re-run)'); }
+else {
+  const mg = v4full.mobile_gate;
+  if (mg?.pass === true) mobile = { status: 'PASS', hard: true, stale: v4stale, vetos: mg?.vetos?.length || 0 };
+  else if (mg?.pass === false) { mobile = { status: 'FAIL', hard: true, stale: v4stale, vetos: mg?.vetos?.length || 0 }; humanEyes.push(`mobile: ${mg?.vetos?.length || 0} veto(s)`); }
+  else { mobile = { status: 'CANNOT_VERIFY', hard: true, stale: v4stale }; humanEyes.push('mobile: audit-v4 has no mobile_gate result — cannot verify'); }
+  if (v4stale) humanEyes.push('mobile/audit-v4: STALE (older than the live page — re-run)');
+}
 
 // ── INFO · audit-v4 composite ──
+// codex Round 109: missing summary/issues can hide P0/P1 review items — never merely informational.
 const countSev = (sev) => (v4issues?.issues || []).filter(i => i.severity === sev).length;
 const auditV4 = v4summary
-  ? { composite: v4summary.composite, grade: v4summary.grade, ship_verdict: v4summary.ship_verdict, P0: countSev('P0'), P1: countSev('P1'), P2: countSev('P2'), stale: v4stale }
+  ? { composite: v4summary.composite, grade: v4summary.grade, ship_verdict: v4summary.ship_verdict, P0: countSev('P0'), P1: countSev('P1'), P2: countSev('P2'), issues_present: !!v4issues, stale: v4stale }
   : { status: 'MISSING' };
+if (!v4summary || !v4issues) {
+  const what = !v4summary && !v4issues ? 'summary+issues' : !v4summary ? 'summary' : 'issues';
+  humanEyes.push(`audit-v4: missing ${what} JSON — cannot count P0/P1 (run pl:audit-v4)`);
+  if (args.refresh) refreshFailures.push(`audit-v4 ${what} JSON not produced after --refresh`);
+}
+if (auditV4.P0 > 0) humanEyes.push(`audit-v4: ${auditV4.P0} P0 issue(s) — blocker-level, review`);
 if (auditV4.P1 > 0) humanEyes.push(`audit-v4: ${auditV4.P1} P1 issue(s) to review`);
 
 // ── ADVISORY · persona-copy quality ──
@@ -107,25 +134,30 @@ const performance = (v4full && (v4full.performance || v4full.lighthouse))
   : { status: 'MISSING', note: 'no performance/Lighthouse field (not blocking this step)' };
 
 // ── OVERALL VERDICT ──
+// codex Round 109: SHIP renamed READY_FOR_SIGNOFF — it means "tooling found no blockers and no review
+// items", NOT "deploy without Matthew". Human sign-off stays required for v1. A failed refresh of a
+// hard-gate input = HOLD (we may be reading stale artifacts). Advisory persona gaps can force HUMAN_REVIEW.
 const hardGates = [factVerify, density, mobile];
 const anyHardFail = hardGates.some(g => g.status === 'FAIL' || g.status === 'CANNOT_VERIFY' || g.status === 'MISSING');
 const anyStale = v4stale || persona.stale;
+const hardRefreshFailure = refreshFailures.some(f => !/advisory/i.test(f));
+for (const f of refreshFailures) humanEyes.push(`refresh: ${f}`);
 let verdict;
-if (anyHardFail) verdict = 'HOLD';
+if (anyHardFail || hardRefreshFailure) verdict = 'HOLD';
 else if (humanEyes.length || anyStale) verdict = 'HUMAN_REVIEW';
-else verdict = 'SHIP';
+else verdict = 'READY_FOR_SIGNOFF';
 
 const report = {
   slug: args.slug, generated_for_html_mtime: new Date(htmlMtime).toISOString(),
   verdict, hard_gates: { fact_verify: factVerify, density, mobile }, audit_v4: auditV4,
   persona_copy: persona, performance, human_eyes_needed: humanEyes,
-  inputs: { audit_v4_present: !!v4summary, audit_v4_stale: v4stale, persona_present: persona.status !== 'MISSING' },
+  inputs: { audit_v4_present: !!v4summary, audit_v4_issues_present: !!v4issues, audit_v4_stale: v4stale, persona_present: persona.status !== 'MISSING', refresh_failures: refreshFailures },
 };
 fs.writeFileSync(path.join(OUT, 'launch-scorecard.json'), JSON.stringify(report, null, 2));
 
 // ── HTML ──
-const badge = (s) => `<span class="b ${/(PASS|SHIP|present)/.test(s) ? 'ok' : /(HUMAN_REVIEW)/.test(s) ? 'warn' : /(MISSING)/.test(s) ? 'miss' : 'bad'}">${s}</span>`;
-const vColor = verdict === 'SHIP' ? 'ok' : verdict === 'HUMAN_REVIEW' ? 'warn' : 'bad';
+const badge = (s) => `<span class="b ${/(PASS|present)/.test(s) ? 'ok' : /(HUMAN_REVIEW)/.test(s) ? 'warn' : /(MISSING|CANNOT_VERIFY)/.test(s) ? 'miss' : 'bad'}">${s}</span>`;
+const vColor = verdict === 'READY_FOR_SIGNOFF' ? 'ok' : verdict === 'HUMAN_REVIEW' ? 'warn' : 'bad';
 const htmlOut = `<!doctype html><meta charset="utf-8"><title>Launch scorecard · ${args.slug}</title>
 <style>body{font:15px/1.5 -apple-system,system-ui,sans-serif;max-width:860px;margin:32px auto;padding:0 20px;color:#1a1a1a}
 h1{font-size:22px}h2{font-size:15px;text-transform:uppercase;letter-spacing:.08em;color:#666;margin:24px 0 8px;border-bottom:1px solid #eee;padding-bottom:4px}
@@ -138,7 +170,7 @@ ul{margin:4px 0;padding-left:20px}li{margin:3px 0}.muted{color:#888;font-size:13
 <p class="muted">Generated for page rendered ${new Date(htmlMtime).toLocaleString()} · ${args.refresh ? 'refreshed deterministic gates' : 'read existing outputs'}${args.includeLlm ? ' + LLM' : ''}.</p>
 <h2>Hard gates (must pass to ship)</h2><table>
 <tr><td>Fact verify (identity)</td><td>${badge(factVerify.status)} ${factVerify.findings ? `· ${factVerify.findings} finding(s)` : ''} ${factVerify.note || ''}</td></tr>
-<tr><td>Density (no wall)</td><td>${badge(density.status)} · about ${density.about_total_words}w / max para ${density.about_max_para_words}w <span class="muted">(${density.budget})</span></td></tr>
+<tr><td>Density (no wall)</td><td>${badge(density.status)} · about ${density.about_total_words}w / max block ${density.max_block_words}w <span class="muted">(${density.budget})</span></td></tr>
 <tr><td>Mobile veto</td><td>${badge(mobile.status)} ${mobile.vetos ? `· ${mobile.vetos} veto(s)` : ''} ${mobile.stale ? '· <b>STALE</b>' : ''}</td></tr>
 </table>
 <h2>Site quality (audit-v4)</h2><table>
