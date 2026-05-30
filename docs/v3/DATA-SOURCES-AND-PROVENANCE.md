@@ -147,7 +147,29 @@ Stage 3 · 付费/慢(只对合格的)
 
 ---
 
-## §6 · 落地方案（codex Round 116 已裁决 · 2026-05-30）
+## §6 · 落地方案（codex Round 116 + Matthew 全自动原则 · 2026-05-30）
+
+### §6.0 · 运行原则（Matthew 2026-05-30 · 凌驾于一切人工复核之上）
+**全自动 · 零人工介入 · 人绝不是 bottleneck。** 不确定就**自动丢/跳过**，**绝不挂起等人判断**——宁可错过一些好客户，也不要人工 hold-off 流程。精确优先、召回其次。
+- **把所有 `needs_review`（挂人）改成自动决策**：不确定的数据 → **自动丢弃、不当 verified**；丢完之后这条线索靠**剩下的 verified 信号**自动决定去留（够 → 继续；不够 → 自动 drop）。**任何环节都不挂人。**
+  - 注意：这与 codex 的"模糊匹配永不杀"**不冲突**——模糊/查不到 = 牌照不当 verified 用、线索靠其它信号(ABN/可达)自动走，不是杀、也不挂人。被改成自动的只是原来要"挂人复核"的那几档（ABR 冲突 / name_exact+inactive 歧义 / ABR 分低）→ 一律"自动丢该数据 + 靠剩余 verified 自动定去留"。
+- **牌照库新鲜度不纠结**（Matthew）：一个 niche 扫一遍就换下一个、不反复回炒同一 niche → 快照过期不是反复问题。**扫某 niche 前导一次库即可**，**取消 ≤30/31-90/>90 天的分档与复核**；库在就用，扫前刷新。
+- 人工的唯一位置（可选）：**最终建好的网站**给人看一眼（不在筛选链里）。
+
+### §6.0b · 全自动最终规则（codex Round 117 锁定）
+- **`needs_review` 状态彻底取消**。`identity-match` 只输出三态：`verified` / `discarded_uncertain` / `not_found`。
+- **无网站线索"自动保留"规则**（codex 推荐 · 别要求 ABN 和牌照都有，否则误杀正当个体户）：
+  ```
+  business_status 非 closed/permanently_closed
+  AND 可达 = true（verified 电话 或 verified 邮箱 · 不算猜的/纯社媒）
+  AND ( ABN-active verified  OR  牌照-active verified )
+  ```
+  持牌强制的 niche 可收紧为 `可达 AND 牌照-active AND ABN 非已知注销`；但 `licence_not_found` **不杀**，除非该 niche 政策明定必须持牌。
+- **三写者职责（去掉人工后）**：`identity-match` 只管置信(verified/discarded/not_found)；`lead-grading` 只消费 verified 信号(discarded 仅作 telemetry)；`exclusion-filter` 只做硬确定性淘汰(停业/排除类目/必达不可达/持牌强制时的 inactive)。
+- **SSOT 决策字段**：`decision` · `decision_reason` · `verified_signals[]` · `discarded_signals[]` · `pipeline_health_flags[]`。
+- **可观测性 = 强制基建**（codex 红线）：每个 drop 必须带**原因码** + 每批**计数器**(dropped_no_verified_identity / dropped_unreachable / dropped_licence_inactive / discarded_low_confidence_data) + **异常阈值告警**(drop 率突增就报警)。否则"精确优先"会变成"我们把漏斗删空了、一个月后才发现"。**这不是人工介入,是离线监控**——绝不挂起任何单条线索。
+
+
 
 ### SSOT — 三个独立写者，职责不重叠（codex 锁定）
 - **`exclusion-filter.js`** = 早期"不是真目标"淘汰的**唯一写者**（不另开并行筛选器）。
@@ -159,21 +181,19 @@ Stage 3 · 付费/慢(只对合格的)
 1. **身份锚点守卫 `identity-match.js`（先做）**：任何 enrich 结果要成 verified，必须命中**至少一个硬锚点**——phone / ABN / 完整地址 / postcode+state / 精确域名或首页证据。**单独 state 太弱**，只能当辅助（除非配 postcode/suburb）。ABR 相似分 <75 → needs_review。多源冲突（同名但 phone/address/ABN 不一致）→ **记日志 + 阻止 canonical 写入**。
 2. **接牌照库**（消费**已锚点核实**的牌照结果）：
    - `abn_exact + inactive + DB 新鲜` → 可 auto-kill。
-   - `name_exact + inactive` → **不**自动杀，除非锚点过且候选不歧义。
-   - `token_prefix / fts_fuzzy / not_found` → **永不杀**。
-   - ABR-active 与 牌照-inactive 冲突 → needs_review（除非 ABN 精确且该 niche 强制持牌）。
+   - `name_exact + inactive` → 锚点过且候选不歧义才杀；否则**牌照数据自动丢弃**（不挂人），线索靠剩余 verified 信号自动定去留。
+   - `token_prefix / fts_fuzzy / not_found` → **永不杀**（牌照不当 verified，线索靠其它信号自动走）。
+   - ABR-active 与 牌照-inactive 冲突 → **自动丢弃这条牌照声明**（不当 verified、不杀线索、不挂人）。
    - `active` + class 对得上 → 真目标正信号 + 存真牌照号给建站。
 3. **评论数降级**（与 #2 配对）：真伪改用 license-active/ABN-active/近期活跃 + 可达；review_count 只留作付费/规模信号（`>niche_max` 仍是规模闸）。**先在 ~240 实体跑回归 diff**（原 too_few_reviews 砍掉的 / 现在靠 license·ABN·活跃·可达 放进的 / 新引入的误放 / 找回的无网站小客户），**review 过再上线**。
 4. 有网站价值按业主视角加权（§3 E-3）。
 5. 付费意愿显性化（§3 E-4）。
 6. master.md **只把 verified 身份事实当信任背书渲染**；溯源做成机器可读（verified/inferred 字段 + 冲突日志）。
 
-### 牌照库新鲜度（codex 规则 · 杀闸必须带 freshness metadata）
-导入器必须写入 import 时间戳。无时间戳 → inactive 只当 advisory。
-- **≤30 天**：inactive 可杀（严格匹配下）。
-- **31–90 天**：needs_review，不杀。
-- **>90 天 / 未知**：仅 advisory。
-- 刷新：至少月度，能自动化则周度。
+### 牌照库新鲜度（Matthew 简化 · 取代 codex 的分档复核）
+**不做 per-lead 新鲜度分档、不挂人复核。** 因为一个 niche 扫一遍就换、不反复回炒 → 快照过期不是反复问题。
+- 规则：**扫某 niche 前，刷新一次牌照库**；扫的过程中直接用该快照。
+- 唯一保险：库存在即用；若库明显过旧（如距上次导入很久）→ 扫前重导。无 30/90 天的逐条判定。
 
 ### 覆盖空缺
 WA/SA/TAS/ACT/NT 牌照查询结果 = `coverage_unavailable`（**不是 `not_found`**，不扣分），用 ABR 全国兜底。
