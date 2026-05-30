@@ -28,8 +28,11 @@
 
 const STATE_RE = /\b(VIC|NSW|QLD|WA|SA|TAS|ACT|NT)\b/i;
 const ABR_SCORE_MIN = 75;
-// codex R125: name-exact+state may auto-verify ONLY for official-registry candidate sources.
-const REGISTRY_SOURCES = new Set(['license', 'licence', 'abr', 'abn']);
+// codex R125/R126: name-exact+state may auto-verify ONLY for official-registry candidate sources.
+// Normalize casing/aliases so 'ABR', 'csv-qbcc', 'csv-vba', 'FairTrading' (what license-lookup/abr emit) all count.
+function isRegistrySource(src) {
+  return /^(licen[cs]e|abr|abn)$|^csv-|qbcc|vba|fair.?trading/i.test(String(src || '').trim());
+}
 const ABN_WEIGHTS = [10, 1, 3, 5, 7, 9, 11, 13, 15, 17, 19];
 // 目录/社媒/平台域名 —— 不能当"自有域名"定值锚点(很多商家共用)
 const NON_OWNED_DOMAIN = /(^|\.)(facebook|instagram|linktr\.ee|google\.com|google\.com\.au|yelp|yellowpages|truelocal|hotfrog|gumtree|wixsite|wordpress\.com|blogspot|business\.site|wix\.com)/i;
@@ -174,7 +177,7 @@ export function matchIdentity(anchors = {}, candidate = {}, opts = {}) {
   //       guardrail) this is ONLY safe for OFFICIAL REGISTRY sources (licence/ABR). For web/search/page
   //       candidates, state is weak/inferred and a trading name can coincidentally equal a different
   //       registered name → those must NOT be promoted by name+state alone (they go through tier1/tier2 LLM).
-  if (nameExact && has('state') && REGISTRY_SOURCES.has(candidate.source)) {
+  if (nameExact && has('state') && isRegistrySource(candidate.source)) {
     return out('verified', 'name_exact+state');
   }
 

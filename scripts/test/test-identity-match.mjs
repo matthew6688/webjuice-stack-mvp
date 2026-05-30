@@ -74,6 +74,9 @@ ok(lj.status === 'verified', 'L.J./LJ punctuation variant → name-exact verifie
 // 8e2 · codex R125 guardrail: SAME pair but source='web' → name+state alone must NOT auto-verify
 const ljWeb = matchIdentity({ name: 'L.J. Ellery Roofing Pty Ltd', state: 'NSW' }, { source: 'web', name: 'LJ Ellery Roofing Pty Ltd', state: 'NSW' });
 ok(ljWeb.status !== 'verified', 'web source: name+state alone → NOT auto-verified (source-aware guardrail)');
+// 8e3 · codex R126: real licence-row source alias 'csv-qbcc' is normalized → takes the registry shortcut
+const csvSrc = matchIdentity({ name: 'Queensland Roofing Pty Ltd', state: 'QLD' }, { source: 'csv-qbcc', name: 'QUEENSLAND ROOFING PTY LTD', state: 'QLD' });
+ok(csvSrc.status === 'verified' && csvSrc.reason === 'name_exact+state', "registry source alias 'csv-qbcc' normalized → verified");
 // 8f · GUARD: name-exact but DIFFERENT state → NOT auto-verified (state conflict)
 ok(matchIdentity({ name: 'Acme Roofing', state: 'VIC' }, { name: 'Acme Roofing', state: 'QLD' }).status !== 'verified', 'name-exact + different state → not verified');
 // 8g · GUARD: name SUBSET (not exact) → NOT auto-verified (goes to LLM judge later)
