@@ -7,6 +7,8 @@ description: Use when auditing or improving local-business website copy before O
 
 Audit and improve local-business website copy before it reaches a demo, outreach email, Open Design, or production site. The goal is not prettier writing. The goal is copy that helps a real visitor understand the business, trust the offer, and contact the business without leaking fake claims or internal workflow language.
 
+R105 demo-honesty policy: these sites are demos shown to prospects. The customer edits placeholder proof before go-live. The only honesty hard fail is fabricated or wrong licence/identity information: licence authority/number/status, business name, ABN, phone, or address.
+
 ## Use When
 
 - Reviewing an Open Design output for weak or generic copy.
@@ -55,17 +57,22 @@ Primary dimensions:
 
 ## Hard Fail Rules
 
-Return `hard_fail` if any of these are true:
+Return `hard_fail` only if this is true:
 
-- Wrong business name, phone, email, address, or URL.
+- Fabricated or wrong legal/identity information: licence authority/number/status, business name, ABN, phone, or address.
+
+Other issues can still require revision, but are not honesty hard fails:
+
 - No contact path or CTA.
 - Visitor cannot identify the business category within 5 seconds.
-- Copy claims fake reviews, licences, awards, years, guarantees, prices, or exact project counts as real.
 - Internal workflow language appears in customer-facing copy: audit, artifact, Open Design, prompt, generated, placeholder, readiness, lead ops.
-- Copy conflicts with preserved evidence.
+- Copy conflicts with preserved evidence outside the Tier A identity fields.
 - Page is mostly generic filler and could fit any industry.
+- Unsupported guarantees or commitment-style promises, such as guaranteed response times, when source supports only a target.
 
-AI-generated review, testimonial, FAQ, process, or proof copy is allowed only as demo/reference content when clearly tracked in metadata or notes and not presented internally as verified customer proof. Before production launch, replace it with real Google/customer proof or remove the claim.
+Project/job counts, review counts, years-in-business estimates, AI-generated testimonials, and other soft marketing stats are allowed as demo placeholders. Flag them as `demo_placeholder` at low severity when useful, and require provenance/customer replacement before production. A marked placeholder can still be approved. If a placeholder is dressed as verified proof ("we have completed 500 roofs", "verified 120 reviews") revise the framing or provenance, but do not hard-fail unless it fabricates licence/identity.
+
+AI-generated review, testimonial, FAQ, process, or proof copy is allowed as demo/reference content when clearly tracked in metadata or notes. Before production launch, replace it with real Google/customer proof or remove the claim.
 
 ## Decision
 
@@ -166,4 +173,3 @@ Open Design should receive:
 - forbidden internal terms and unsupported claims.
 
 Do not over-constrain microcopy when the design direction needs room to breathe. Constrain facts, intent, conversion path, and claim safety; let Open Design shape final line breaks and layout copy.
-

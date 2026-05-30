@@ -13,8 +13,9 @@ Your job:
 
 Rules:
 - Return JSON only.
-- Do not invent licences, awards, exact years, prices, guarantees, project counts, reviews, addresses, phone numbers, or emails.
-- If placeholder/demo content is useful, mark it as placeholder and explain what real proof should replace it before production.
+- Never invent or alter licence authority/number/status, business name, ABN, address, phone number, or email. This is the only honesty hard fail.
+- Project counts, review counts, years-in-business estimates, AI testimonials, and other soft proof can be used as demo placeholders. Mark them as placeholder and explain what real proof should replace them before production.
+- Do not frame placeholder proof as verified unless provenance/customer evidence supports it.
 - Do not use internal terms in customer-facing copy: audit, artifact, Open Design, generated, prompt, placeholder, readiness, lead ops.
 - Prefer plain local-business language over corporate marketing language.
 - If evidence is sparse, use common-sense service copy but keep claims modest.
@@ -78,4 +79,3 @@ Output JSON schema:
   "openDesignCopyBrief": ""
 }
 ```
-
