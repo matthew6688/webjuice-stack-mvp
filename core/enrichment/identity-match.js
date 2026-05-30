@@ -1,28 +1,42 @@
 /**
- * core/enrichment/identity-match.js · 身份锚点守门员 (codex Round 116/117 · 2026-05-30)
+ * core/enrichment/identity-match.js · 身份锚点守门员 (codex Round 116/117/118 · 2026-05-30)
  *
  * 防"认错人": 按公司名查来的 enrichment 结果(牌照行 / ABR 匹配 / 外部提及)可能是同名的别家
  * (美国/加拿大同名, 或澳洲同名不同址)。本守门员在任何结果被当成 canonical/verified 之前, 用
  * 已知"锚点"(电话/ABN/地址/postcode+州/域名)交叉验证。
  *
  * 全自动 · 零人工: 只输出三态 — 不存在 needs_review。
- *   - 'verified'            至少命中一个硬锚点 且 无硬冲突 → 可写入 entity.enrichment / entity.license
+ *   - 'verified'            命中可信锚点 且 无硬冲突 → 可写入 entity.enrichment / entity.license
  *   - 'discarded_uncertain' 锚点不够 / 有硬冲突 / 相似分过低 → 丢弃这条数据(不当 verified · 不挂人)
  *   - 'not_found'           候选本身没有可比对的身份字段(空结果)
  * 调用方据此让线索靠"剩余 verified 信号"自动定去留, 任何单条线索都不挂起等人。
  *
- * 硬锚点(codex): phone · ABN · 完整地址 · postcode+州 · 精确域名。单独"州"太弱 → 仅辅助。
- * 定值锚点(唯一键): ABN 精确 / 域名精确 → 命中即 verified(覆盖其它字段冲突, 因为 ABN/域名是唯一标识)。
+ * 锚点强度(codex R118):
+ *   - 定值唯一键: 合法 ABN(校验位通过) / 自有域名(非目录/社媒) → 命中即 verified。
+ *   - 强: phone 精确(电话基本唯一一家) → verified。
+ *   - 非唯一(需名字佐证): postcode+州 / 真实街号+街名 —— 单独不够(同区同名才该信), 必须叠加
+ *     名字佐证(名字归一相等 或 ABR 相似分≥75)才 verified。单独"州"/单独名字 → 太弱, 丢弃。
+ *   - 硬冲突(present-both-differ)的原因码优先于分数原因码(可观测性)。
+ *
+ * 调用方契约(codex R118): adapter 只产出 normalized candidate, 不预先 promote;
+ *   candidate = { source, name?, score?, abn?, phone?, address?, postcode?, state?, domain?, sourceUrl?, observedAt? }
+ *   只有 verifyCandidate(...).status === 'verified' 才能影响 canonical / 牌照资格;
+ *   'discarded_uncertain' 必须带 reason 落日志, 但 **绝不可当作对该实体的反向证据**。
+ * 注意: anchors 取自 entity.latest(GBP 抓取) —— 调用方应保证锚点来自高可信字段, 不要拿"上一轮未守卫的
+ *   enrichment"当锚点(否则会自我印证)。ABN 锚点应来自已核实 provenance。
  */
 
 const STATE_RE = /\b(VIC|NSW|QLD|WA|SA|TAS|ACT|NT)\b/i;
-const ABR_SCORE_MIN = 75; // ABR 相似分 < 75 → 不采信 (codex R116)
+const ABR_SCORE_MIN = 75;
+const ABN_WEIGHTS = [10, 1, 3, 5, 7, 9, 11, 13, 15, 17, 19];
+// 目录/社媒/平台域名 —— 不能当"自有域名"定值锚点(很多商家共用)
+const NON_OWNED_DOMAIN = /(^|\.)(facebook|instagram|linktr\.ee|google\.com|google\.com\.au|yelp|yellowpages|truelocal|hotfrog|gumtree|wixsite|wordpress\.com|blogspot|business\.site|wix\.com)/i;
 
 const digitsOnly = (v) => String(v || '').replace(/\D/g, '');
 function normPhone(v) {
   const d = digitsOnly(v);
   if (!d) return '';
-  if (d.startsWith('61')) return `0${d.slice(2)}`; // +61 → 0
+  if (d.startsWith('61')) return `0${d.slice(2)}`;
   return d;
 }
 function normDomain(v) {
@@ -30,11 +44,10 @@ function normDomain(v) {
   try {
     const h = new URL(/^https?:\/\//i.test(v) ? v : `http://${v}`).hostname;
     return h.replace(/^www\./i, '').toLowerCase();
-  } catch { return String(v).replace(/^www\./i, '').toLowerCase().trim(); }
+  } catch { return String(v).replace(/^https?:\/\//i, '').replace(/^www\./i, '').split('/')[0].toLowerCase().trim(); }
 }
 function normState(v) { const m = String(v || '').match(STATE_RE); return m ? m[1].toUpperCase() : ''; }
 function postcodes(v) {
-  // AU postcodes are 4 digits 0200-7999 (rough). Return the set found in a string.
   return [...String(v || '').matchAll(/\b(\d{4})\b/g)].map((m) => m[1]).filter((p) => +p >= 200 && +p <= 7999);
 }
 function normName(v) {
@@ -42,11 +55,23 @@ function normName(v) {
     .replace(/\bpty\s*\.?\s*ltd\.?\b/g, '').replace(/\b(limited|inc|corp|company|co)\.?\b/g, '')
     .replace(/&/g, ' and ').replace(/[^a-z0-9 ]+/g, ' ').replace(/\s+/g, ' ').trim();
 }
-function addressTokens(v) {
-  return new Set(String(v || '').toLowerCase().replace(/[^a-z0-9 ]+/g, ' ').split(/\s+/).filter((t) => t.length >= 3));
+function validAbn(v) {
+  const d = digitsOnly(v);
+  if (d.length !== 11) return false;
+  const ds = d.split('').map(Number);
+  ds[0] -= 1;
+  return ds.reduce((s, n, i) => s + n * ABN_WEIGHTS[i], 0) % 89 === 0;
+}
+function ownedDomain(v) { const d = normDomain(v); return d && !NON_OWNED_DOMAIN.test(d) ? d : ''; }
+function streetNumbers(addr, pcSet) {
+  // real street numbers: 1-4 digit tokens that are NOT postcodes (handles "3/31" → 3 and 31)
+  return [...String(addr || '').matchAll(/\b(\d{1,4})\b/g)].map((m) => m[1]).filter((n) => !pcSet.has(n));
+}
+function streetWords(addr) {
+  return new Set(String(addr || '').toLowerCase().replace(/[^a-z ]+/g, ' ').split(/\s+/).filter((t) => t.length >= 3 && !STATE_RE.test(t)));
 }
 
-/** Build trusted anchors from an entity (the facts we already hold). */
+/** Build trusted anchors from an entity (the facts we already hold · high-trust GBP fields). */
 export function buildAnchors(entity = {}) {
   const L = entity.latest || entity || {};
   const addr = L.address || '';
@@ -62,11 +87,8 @@ export function buildAnchors(entity = {}) {
 }
 
 /**
- * Compare a normalized candidate against anchors.
- * @param {object} anchors  from buildAnchors()
- * @param {object} candidate { phone?, abn?, address?, postcode?, state?, domain?, name?, score? }
- * @param {object} [opts] { scoreMin = 75 }
- * @returns {{ status, matched: string[], conflicts: object[], reason: string, definitive: boolean }}
+ * Compare a normalized candidate against anchors. Fully automated · 3 states · no needs_review.
+ * @returns {{ status, matched: string[], conflicts: object[], reason, definitive, name_corroborated }}
  */
 export function matchIdentity(anchors = {}, candidate = {}, opts = {}) {
   const scoreMin = opts.scoreMin ?? ABR_SCORE_MIN;
@@ -75,19 +97,18 @@ export function matchIdentity(anchors = {}, candidate = {}, opts = {}) {
 
   const compare = (field, normFn) => {
     const a = anchors[field], c = candidate[field];
-    if (a == null || a === '' || c == null || c === '') return; // missing on either side → not comparable
+    if (a == null || a === '' || c == null || c === '') return;
     const an = normFn(a), cn = normFn(c);
     if (!an || !cn) return;
     if (an === cn) matched.push(field);
     else conflicts.push({ field, anchor: an, candidate: cn });
   };
-
   compare('phone', normPhone);
   compare('abn', digitsOnly);
   compare('domain', normDomain);
   compare('state', normState);
 
-  // postcode: set intersection (handles "VIC 3356" style)
+  // postcode set intersection
   const aPC = new Set([...(anchors.postcode ? [String(anchors.postcode)] : []), ...postcodes(anchors.address)]);
   const cPC = new Set([...(candidate.postcode ? [String(candidate.postcode)] : []), ...postcodes(candidate.address)]);
   if (aPC.size && cPC.size) {
@@ -95,58 +116,68 @@ export function matchIdentity(anchors = {}, candidate = {}, opts = {}) {
     else conflicts.push({ field: 'postcode', anchor: [...aPC].join(','), candidate: [...cPC].join(',') });
   }
 
-  // address token overlap (supporting): shares street number + ≥1 street word
+  // real street-address overlap: shared street NUMBER (not postcode) + shared street WORD
+  let addrMatch = false;
   if (anchors.address && candidate.address) {
-    const at = addressTokens(anchors.address), ct = addressTokens(candidate.address);
-    const overlap = [...at].filter((t) => ct.has(t));
-    const sharesNumber = overlap.some((t) => /^\d/.test(t));
-    if (sharesNumber && overlap.length >= 2) matched.push('address');
+    const aNums = new Set(streetNumbers(anchors.address, aPC));
+    const cNums = streetNumbers(candidate.address, cPC);
+    const sharedNum = cNums.some((n) => aNums.has(n));
+    const aW = streetWords(anchors.address), cW = streetWords(candidate.address);
+    const sharedWord = [...aW].some((w) => cW.has(w));
+    if (sharedNum && sharedWord) { addrMatch = true; matched.push('address'); }
   }
 
   const has = (f) => matched.includes(f);
   const hardConflict = (f) => conflicts.some((c) => c.field === f);
 
-  // 1 · truly empty candidate (no identity-ish field at all) → not_found
-  const candidateHasField = ['phone', 'abn', 'address', 'postcode', 'state', 'domain', 'name', 'score']
-    .some((f) => candidate[f] != null && candidate[f] !== '');
-  if (!candidateHasField) {
-    return { status: 'not_found', matched, conflicts, reason: 'no_comparable_identity_fields', definitive: false };
+  // name corroboration (NEVER a verifier on its own — namesakes share names — only corroborates a geo anchor)
+  const nA = normName(anchors.name), nC = normName(candidate.name);
+  const nameExact = !!nA && !!nC && nA === nC;
+  const scoreOk = candidate.score != null && Number(candidate.score) >= scoreMin;
+  const nameCorroborated = nameExact || scoreOk;
+
+  // 1 · truly empty candidate (no identity field — score is NOT an identity field) → not_found
+  const ID_FIELDS = ['phone', 'abn', 'address', 'postcode', 'state', 'domain', 'name'];
+  if (!ID_FIELDS.some((f) => candidate[f] != null && candidate[f] !== '')) {
+    return { status: 'not_found', matched, conflicts, reason: 'no_comparable_identity_fields', definitive: false, name_corroborated: false };
   }
+  const out = (status, reason, definitive = false) => ({ status, matched, conflicts, reason, definitive, name_corroborated: nameCorroborated });
 
-  // 2 · definitive unique-key match → verified (ABN / domain uniquely identify one business)
-  if (has('abn')) return { status: 'verified', matched, conflicts, reason: 'abn_exact', definitive: true };
-  if (has('domain')) return { status: 'verified', matched, conflicts, reason: 'domain_exact', definitive: true };
+  // 2 · definitive unique-key match → verified (only when the key is valid/owned)
+  if (has('abn') && validAbn(candidate.abn)) return out('verified', 'abn_exact', true);
+  if (has('domain') && ownedDomain(candidate.domain)) return out('verified', 'domain_exact', true);
 
-  // 3 · hard conflict on a unique key but no definitive match → different business → discard
-  if (hardConflict('abn')) return { status: 'discarded_uncertain', matched, conflicts, reason: 'conflict:abn', definitive: false };
-  if (hardConflict('domain')) return { status: 'discarded_uncertain', matched, conflicts, reason: 'conflict:domain', definitive: false };
+  // 3 · unique-key CONFLICT (different ABN/owned-domain) → different business → discard
+  if (hardConflict('abn')) return out('discarded_uncertain', 'conflict:abn');
+  if (hardConflict('domain') && ownedDomain(candidate.domain)) return out('discarded_uncertain', 'conflict:domain');
 
-  // 4 · strong anchor (phone / postcode+state / address+state) → verified.
-  //     Checked BEFORE the score gate: a real phone/geo match overrides a weak name-similarity score.
-  const phoneOk = has('phone') && !hardConflict('phone');
+  // 4 · phone is strong + ~unique → verified on match; conflict → discard (rather miss)
+  if (has('phone')) return out('verified', 'phone');
+  if (hardConflict('phone')) return out('discarded_uncertain', 'conflict:phone');
+
+  // 5 · non-unique geo anchors REQUIRE name corroboration (else a same-area namesake would verify)
   const geoOk = has('postcode') && has('state');
-  const addrOk = has('address') && has('state');
-  if (phoneOk || geoOk || addrOk) {
-    // a phone conflict alongside a geo match is suspicious → discard (rather miss)
-    if (hardConflict('phone') && !phoneOk) {
-      return { status: 'discarded_uncertain', matched, conflicts, reason: 'conflict:phone', definitive: false };
-    }
-    return { status: 'verified', matched, conflicts, reason: phoneOk ? 'phone' : geoOk ? 'postcode+state' : 'address+state', definitive: false };
+  if ((geoOk || addrMatch) && nameCorroborated) {
+    return out('verified', geoOk ? 'postcode+state+name' : 'address+name');
   }
 
-  // 5 · no hard anchor: an ABR-style similarity score below threshold → discard (name match too weak)
+  // 6 · hard conflicts beat score for the reason code (observability)
+  if (conflicts.length) return out('discarded_uncertain', `conflict:${conflicts[0].field}`);
+
+  // 7 · weak name match with low/absent ABR score → discard
   if (candidate.score != null && Number(candidate.score) < scoreMin) {
-    return { status: 'discarded_uncertain', matched, conflicts, reason: `abr_score_below_${scoreMin}`, definitive: false };
+    return out('discarded_uncertain', `abr_score_below_${scoreMin}`);
   }
 
-  // 6 · only weak signal (state alone / name-only) or contradictions → not enough to trust
-  const reason = conflicts.length ? `conflict:${conflicts[0].field}` : (has('state') ? 'state_only_too_weak' : 'no_hard_anchor');
-  return { status: 'discarded_uncertain', matched, conflicts, reason, definitive: false };
+  // 8 · only state / only name / geo-without-name → too weak to trust
+  const reason = (geoOk || addrMatch) ? 'geo_without_name' : has('state') ? 'state_only_too_weak' : 'no_hard_anchor';
+  return out('discarded_uncertain', reason);
 }
 
 /**
- * Convenience: verify a candidate against an entity. Adds a stable reason code for observability.
- * @returns {{ status, matched, conflicts, reason, anchors }}
+ * Convenience: verify a candidate against an entity. Adds anchors + reason code for observability.
+ * Only `status === 'verified'` may promote a candidate to canonical / affect licence eligibility.
+ * `discarded_uncertain` must be logged but NEVER used as negative proof against the entity.
  */
 export function verifyCandidate(entity, candidate, opts = {}) {
   const anchors = buildAnchors(entity);

@@ -30,8 +30,16 @@ ok(matchIdentity(anchors, { domain: 'www.vicwestroofing.com.au' }).status === 'v
 // 3 · 电话匹配(+61 归一) → verified
 ok(matchIdentity(anchors, { phone: '+61 403 554 592' }).status === 'verified', 'phone (+61) → verified');
 
-// 4 · postcode+州 匹配 → verified
-ok(matchIdentity(anchors, { address: '12 Other St, Ballarat VIC 3356', state: 'VIC' }).status === 'verified', 'postcode+state → verified');
+// 4 · postcode+州 + 名字佐证 → verified
+ok(matchIdentity(anchors, { name: 'Vicwest Roofing', address: '12 Other St, Ballarat VIC 3356', state: 'VIC' }).status === 'verified', 'postcode+state+name → verified');
+
+// 4b · codex R118: postcode+州 但**没有名字佐证** → 不够(同区同名才该信) → discarded
+const geoNoName = matchIdentity(anchors, { address: '99 Random St, Ballarat VIC 3356', state: 'VIC' });
+ok(geoNoName.status === 'discarded_uncertain' && geoNoName.reason === 'geo_without_name', 'postcode+state without name → discarded');
+
+// 4c · codex R118: 目录/社媒域名(facebook)不算"自有域名"定值锚点 → 不 verified
+const dirDomain = matchIdentity(anchors, { name: 'Vicwest Roofing', domain: 'facebook.com/vicwest' });
+ok(dirDomain.status !== 'verified', 'directory/social domain → NOT definitive verify');
 
 // 5 · 同名的美国公司: 没有 ABN/电话/postcode 命中, 州不同 → discarded
 const usNamesake = matchIdentity(anchors, { name: 'Vicwest Roofing', phone: '+1 212 555 0100', state: 'TX', postcode: '7500X' });
