@@ -90,6 +90,7 @@
     "test:cycle26": "node scripts/test/run-cycle26-tests.mjs",
     "test:fact-verify": "node scripts/test/test-fact-verify-license.mjs",
     "test:persona-context": "node scripts/test/test-persona-context.mjs",
+    "pl:compare-persona": "node scripts/cli/pl-compare-persona.js",
     "pl:cleanup-archived-threads": "node --env-file=.env.local scripts/cli/pl-cleanup-archived-threads.js",
     "pl:rename-stale-thread-titles": "node --env-file=.env.local scripts/cli/pl-rename-stale-thread-titles.js",
     "pl:ingest-image": "node --env-file-if-exists=.env.local scripts/cli/pl-ingest-image.js",
