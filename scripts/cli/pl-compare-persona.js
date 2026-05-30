@@ -24,6 +24,7 @@
  */
 import fs from 'fs';
 import path from 'path';
+import crypto from 'crypto';
 import { fileURLToPath } from 'url';
 import { execFileSync } from 'child_process';
 import { load as cheerioLoad } from 'cheerio';
@@ -118,6 +119,7 @@ function auditVariant(slug, snapDir, briefPath) {
   const htmlPath = path.join(snapDir, 'index.html');
   if (!fs.existsSync(htmlPath)) return { failed: true, reason: 'no rendered index.html (compose failed)' };
   const html = fs.readFileSync(htmlPath, 'utf8');
+  const rendered_md5 = crypto.createHash('md5').update(html).digest('hex');
   const briefFacts = loadBriefFacts(briefPath);
   const fv = verifyFacts(html, briefPath);
   const words = sectionWordCounts(html);
@@ -126,7 +128,7 @@ function auditVariant(slug, snapDir, briefPath) {
   const violations = contractViolations(html, words);
 
   // persona-copy-audit on the SNAPSHOT (advisory · LLM). In --rescore, reuse a cached persona-copy.json.
-  let persona = { score: null, would_contact: null, gaps: [], error: null };
+  let persona = { score: null, would_contact: null, gaps: [], criteria: null, error: null };
   const pj = path.join(snapDir, 'persona-copy.json');
   let haveJson = args.rescore && fs.existsSync(pj);
   if (!haveJson) {
@@ -137,13 +139,14 @@ function auditVariant(slug, snapDir, briefPath) {
   }
   if (haveJson) {
     const j = JSON.parse(fs.readFileSync(pj, 'utf8'));
-    persona = { score: j.persona_fit_mean ?? null, would_contact: !!j.would_contact, gaps: (j.gaps || []).slice(0, 4), error: null };
+    persona = { score: j.persona_fit_mean ?? null, would_contact: !!j.would_contact, gaps: (j.gaps || []).slice(0, 4), criteria: j.criteria_mean || null, error: null };
   }
 
   return {
+    rendered_md5,
     fact_verify: { status: fv.status === 'checked' ? (fv.pass ? 'PASS' : 'FAIL') : fv.status, pass: fv.pass, hardFails: fv.hardFails },
     density, section_words: words, identity_fields_detected: identity,
-    contract_violations: violations, persona,
+    contract_violations: violations, page_contract_clean: violations.length === 0, persona,
   };
 }
 
@@ -157,32 +160,74 @@ function newViolations(baseline, persona) {
   return (persona?.contract_violations || []).filter((v) => !base.has(violKey(v)));
 }
 
-function promotionDecision(baseline, persona) {
-  // block if the persona variant is unsafe or failed; candidate only if it clears the high bar AND improves.
-  if (!persona || persona.failed) return { decision: 'block', reasons: ['persona variant failed to render/audit'] };
-  const reasons = [];
-  if (persona.fact_verify.status !== 'PASS') reasons.push(`fact-verify ${persona.fact_verify.status}`);
-  if (persona.density.status !== 'PASS') reasons.push(`density ${persona.density.status}`);
-  if ((persona.fact_verify.hardFails || []).length) reasons.push('fabricated identity');
-  const newViol = newViolations(baseline, persona);
-  if (newViol.length) reasons.push(`${newViol.length} NEW contract violation(s) from persona: ${newViol.map(violKey).join(' | ')}`);
-  if (reasons.length) return { decision: 'block', reasons, new_violations: newViol };
+// Buyer-critical persona criteria that must NOT regress >1pt (codex R113).
+const BUYER_CRITICAL = ['clarity_next_step', 'trust_levers', 'decision_enablement'];
 
-  const bScore = baseline?.persona?.score, pScore = persona?.persona?.score;
-  const delta = (typeof bScore === 'number' && typeof pScore === 'number') ? +(pScore - bScore).toFixed(1) : null;
-  const preExisting = (persona.contract_violations || []).length;
-  const preNote = preExisting ? ` · note ${preExisting} pre-existing page violation(s) to fix separately` : '';
-  if (delta === null) return { decision: 'needs_review', reasons: ['persona score missing on one variant — re-run with stable tiers'], new_violations: [] };
-  if (delta >= PERSONA_DELTA_MIN) return { decision: 'candidate', reasons: [`persona +${delta} (≥${PERSONA_DELTA_MIN}) · all hard gates pass · no NEW violations${preNote}`], delta, new_violations: [] };
-  return { decision: 'needs_review', reasons: [`persona delta ${delta >= 0 ? '+' : ''}${delta} below the +${PERSONA_DELTA_MIN} meaningful bar${preNote}`], delta, new_violations: [] };
+function criterionRegressions(baseline, persona) {
+  const b = baseline?.persona?.criteria, p = persona?.persona?.criteria;
+  if (!b || !p) return [];
+  const out = [];
+  for (const k of BUYER_CRITICAL) {
+    if (typeof b[k] === 'number' && typeof p[k] === 'number' && (b[k] - p[k]) > 1) {
+      out.push(`${k} ${b[k]}→${p[k]}`);
+    }
+  }
+  return out;
+}
+
+function promotionDecision(baseline, persona) {
+  // Evidence verdict for PERSONA_CONTEXT promotion. Separate from page-release cleanliness (page_contract_clean).
+  const newViol = newViolations(baseline, persona);
+  const delta = (typeof baseline?.persona?.score === 'number' && typeof persona?.persona?.score === 'number')
+    ? +(persona.persona.score - baseline.persona.score).toFixed(1) : null;
+  const base = (d, reasons) => ({ decision: d, reasons, delta, new_violations: newViol });
+
+  if (!persona || persona.failed) return base('block', [`persona variant failed: ${persona?.reason || 'render/audit error'}`]);
+  // codex R113: a broken/non-comparable baseline makes any delta meaningless.
+  if (!baseline || baseline.failed) return base('block', [`baseline variant failed (non-comparable): ${baseline?.reason || 'render/audit error'}`]);
+
+  // codex R113 P0: if the two rendered pages are byte-identical, the regenerated content was NOT consumed —
+  // the comparison is invalid (auditor noise), not evidence. This is a HARNESS error, not a persona verdict.
+  if (baseline.rendered_md5 && persona.rendered_md5 && baseline.rendered_md5 === persona.rendered_md5) {
+    return base('needs_review', ['HARNESS: baseline and persona rendered HTML are IDENTICAL — regenerated content not consumed; comparison invalid (check the content→od-package bridge)']);
+  }
+
+  // persona safety gates (its own render must be sound + introduce no new violations)
+  const safety = [];
+  if (persona.fact_verify.status !== 'PASS') safety.push(`fact-verify ${persona.fact_verify.status}`);
+  if (persona.density.status !== 'PASS') safety.push(`density ${persona.density.status}`);
+  if ((persona.fact_verify.hardFails || []).length) safety.push('fabricated identity');
+  if (newViol.length) safety.push(`${newViol.length} NEW contract violation(s): ${newViol.map(violKey).join(' | ')}`);
+  if (safety.length) return base('block', safety);
+
+  if (delta === null) return base('needs_review', ['persona score missing on one variant — re-run with stable tiers']);
+  const regressions = criterionRegressions(baseline, persona);
+  if (regressions.length) return base('needs_review', [`buyer-critical criterion regression >1pt: ${regressions.join(', ')} (delta ${delta >= 0 ? '+' : ''}${delta})`]);
+
+  const preNote = persona.contract_violations.length ? ` · ${persona.contract_violations.length} pre-existing page violation(s) (fix separately · does NOT block persona)` : '';
+  if (delta >= PERSONA_DELTA_MIN) {
+    // codex R113: a single-run +delta is provisional — the authoritative gate is repeated paired runs across
+    // ≥2/3 clients on the real cloud tier path. Flag single-run candidacy as provisional.
+    return base('candidate', [`persona +${delta} (≥${PERSONA_DELTA_MIN}) · no NEW violations · no buyer-critical regression${preNote} · PROVISIONAL (single run — confirm across repeated runs + ≥2/3 clients on stable tiers)`]);
+  }
+  return base('needs_review', [`persona delta ${delta >= 0 ? '+' : ''}${delta} below the +${PERSONA_DELTA_MIN} bar${preNote}`]);
 }
 
 function compareSlug(slug) {
   const v2 = path.join(REPO, 'clients', slug, 'v2');
   const contentDir = path.join(v2, 'handoff', 'content');
+  // codex R113 P0: the composer renders from od-package/content, NOT handoff/content. enrich-handoff writes
+  // handoff/content; pl-assemble-handoff (copyRec, line ~180) bridges it into od-package/content. The harness
+  // must replicate that bridge or the regenerated copy never reaches the rendered page.
+  const odContentDir = path.join(v2, 'handoff', 'od-package', 'content');
   const indexPath = path.join(v2, 'editorial-output', 'index.html');
   const briefPath = path.join(v2, 'single-page-brief.yaml');
   if (!fs.existsSync(briefPath)) return { slug, error: 'no single-page-brief.yaml (cannot fact-verify)' };
+  const CONTENT_FILES = ['services.json', 'about.md', 'hero-copy.json'];
+  const bridgeContent = () => {
+    if (!fs.existsSync(odContentDir)) fs.mkdirSync(odContentDir, { recursive: true });
+    for (const f of CONTENT_FILES) { const src = path.join(contentDir, f); if (fs.existsSync(src)) fs.cpSync(src, path.join(odContentDir, f)); }
+  };
 
   const cmpRoot = path.join(v2, '_persona-compare');
   const variantNames = ['baseline', 'persona'];
@@ -197,7 +242,8 @@ function compareSlug(slug) {
         : { failed: true, reason: 'no snapshot to rescore (run without --rescore first)' };
     }
     const promo = promotionDecision(results.baseline, results.persona);
-    const sc = { slug, persona_runs: personaRuns, rescore: true, variants: results, promotion: promo, default_on_candidate: promo.decision === 'candidate' };
+    const pClean = results.persona && !results.persona.failed ? results.persona.page_contract_clean : false;
+    const sc = { slug, persona_runs: personaRuns, rescore: true, variants: results, promotion: promo, persona_context_candidate: promo.decision === 'candidate', page_contract_clean: pClean };
     fs.writeFileSync(path.join(cmpRoot, 'compare-scorecard.json'), JSON.stringify(sc, null, 2));
     fs.writeFileSync(path.join(cmpRoot, 'compare-scorecard.md'), renderMd(sc));
     return sc;
@@ -205,8 +251,9 @@ function compareSlug(slug) {
 
   const backupDir = path.join(cmpRoot, '_backup');
   fs.mkdirSync(backupDir, { recursive: true });
-  // back up live content/ + rendered index.html so the live client is never left mutated
+  // back up live content/ + od-package/content/ + rendered index.html so the live client is never left mutated
   if (fs.existsSync(contentDir)) fs.cpSync(contentDir, path.join(backupDir, 'content'), { recursive: true });
+  if (fs.existsSync(odContentDir)) fs.cpSync(odContentDir, path.join(backupDir, 'od-content'), { recursive: true });
   if (fs.existsSync(indexPath)) fs.cpSync(indexPath, path.join(backupDir, 'index.html'));
 
   const variants = [
@@ -219,6 +266,7 @@ function compareSlug(slug) {
       const env = { ...process.env };
       if (v.persona) env.PERSONA_CONTEXT = '1'; else delete env.PERSONA_CONTEXT;
       const gen = runStep(`enrich-handoff(${v.name})`, 'scripts/cli/pl-enrich-handoff.js', ['--slug', slug, '--only', 'B1,B2,B3'], env);
+      if (gen.ok) bridgeContent(); // codex R113 P0: push regenerated content into od-package/content before compose
       const comp = gen.ok ? runStep(`compose(${v.name})`, 'scripts/cli/pl-compose-editorial.js', ['--slug', slug, '--skip-checkpoint'], env) : { ok: false, error: gen.error };
       const snapDir = path.join(cmpRoot, v.name);
       fs.rmSync(snapDir, { recursive: true, force: true });
@@ -229,18 +277,18 @@ function compareSlug(slug) {
       results[v.name] = auditVariant(slug, snapDir, briefPath);
     }
   } finally {
-    // ALWAYS restore the live client
+    // ALWAYS restore the live client (handoff/content + od-package/content + rendered index.html)
     if (fs.existsSync(path.join(backupDir, 'content'))) { fs.rmSync(contentDir, { recursive: true, force: true }); fs.cpSync(path.join(backupDir, 'content'), contentDir, { recursive: true }); }
+    if (fs.existsSync(path.join(backupDir, 'od-content'))) { fs.rmSync(odContentDir, { recursive: true, force: true }); fs.cpSync(path.join(backupDir, 'od-content'), odContentDir, { recursive: true }); }
     if (fs.existsSync(path.join(backupDir, 'index.html'))) fs.cpSync(path.join(backupDir, 'index.html'), indexPath);
-    // re-compose once more from the restored content so editorial-output matches the restored live state
-    runStep('restore-compose', 'scripts/cli/pl-compose-editorial.js', ['--slug', slug, '--skip-checkpoint'], process.env);
   }
 
   const promo = promotionDecision(results.baseline, results.persona);
-  const scorecard = { slug, generated_at_note: 'timestamp stamped by caller', persona_runs: personaRuns, variants: results, promotion: promo, default_on_candidate: promo.decision === 'candidate' };
+  const pClean = results.persona && !results.persona.failed ? results.persona.page_contract_clean : false;
+  const scorecard = { slug, persona_runs: personaRuns, variants: results, promotion: promo, persona_context_candidate: promo.decision === 'candidate', page_contract_clean: pClean };
   fs.writeFileSync(path.join(cmpRoot, 'compare-scorecard.json'), JSON.stringify(scorecard, null, 2));
   fs.writeFileSync(path.join(cmpRoot, 'compare-scorecard.md'), renderMd(scorecard));
-  if (!args.keep) { for (const v of variants) { /* keep snapshots; only drop the _backup */ } fs.rmSync(backupDir, { recursive: true, force: true }); }
+  if (!args.keep) fs.rmSync(backupDir, { recursive: true, force: true });
   return scorecard;
 }
 
@@ -258,9 +306,10 @@ function renderMd(s) {
   return [
     `# Persona comparison · ${s.slug}`,
     ``,
-    `**Promotion decision: ${s.promotion.decision.toUpperCase()}** — ${s.promotion.reasons.join(' · ')}`,
-    `NEW violations introduced by persona: ${(s.promotion.new_violations || []).length}`,
-    `default_on_candidate: ${s.default_on_candidate} · persona runs: ${s.persona_runs}`,
+    `**PERSONA_CONTEXT promotion: ${s.promotion.decision.toUpperCase()}** — ${s.promotion.reasons.join(' · ')}`,
+    `persona_context_candidate: ${s.persona_context_candidate} · page_contract_clean: ${s.page_contract_clean} (separate concern · pre-existing page issues do NOT block persona)`,
+    `NEW violations introduced by persona: ${(s.promotion.new_violations || []).length} · rendered HTML md5 baseline=${v.baseline?.rendered_md5?.slice(0, 8) || '—'} persona=${v.persona?.rendered_md5?.slice(0, 8) || '—'}${v.baseline?.rendered_md5 && v.baseline.rendered_md5 === v.persona?.rendered_md5 ? ' ⚠️ IDENTICAL — content not consumed' : ''}`,
+    `persona runs: ${s.persona_runs}`,
     ``,
     `| variant | fact-verify | density | persona | contract viol. |`,
     `|---|---|---|---|---|`,
@@ -289,12 +338,13 @@ for (const slug of slugs) {
   const r = compareSlug(slug);
   all.push(r);
   if (r.error) { console.log(`  SKIP: ${r.error}`); continue; }
-  console.log(`  promotion: ${r.promotion.decision.toUpperCase()} — ${r.promotion.reasons.join(' · ')}`);
+  console.log(`  PERSONA_CONTEXT: ${r.promotion.decision.toUpperCase()} — ${r.promotion.reasons.join(' · ')}`);
   const b = r.variants.baseline, p = r.variants.persona;
-  const ps = (x) => x?.failed ? `FAILED(${x.reason})` : `fv:${x.fact_verify.status} density:${x.density.status} persona:${x.persona.score ?? '—'} viol:${x.contract_violations.length}`;
+  const ps = (x) => x?.failed ? `FAILED(${x.reason})` : `fv:${x.fact_verify.status} density:${x.density.status} persona:${x.persona.score ?? '—'} viol:${x.contract_violations.length} md5:${x.rendered_md5?.slice(0, 8)}`;
   console.log(`  baseline · ${ps(b)}`);
   console.log(`  persona  · ${ps(p)}`);
+  console.log(`  page_contract_clean: ${r.page_contract_clean} (separate from persona promotion)`);
   console.log(`  → clients/${slug}/v2/_persona-compare/compare-scorecard.{md,json}`);
 }
-const candidates = all.filter((r) => r.default_on_candidate).map((r) => r.slug);
-console.log(`\n[compare-persona] ${slugs.length} client(s) · default_on candidates: ${candidates.length ? candidates.join(', ') : 'none'}`);
+const candidates = all.filter((r) => r.persona_context_candidate).map((r) => r.slug);
+console.log(`\n[compare-persona] ${slugs.length} client(s) · persona_context candidates: ${candidates.length ? candidates.join(', ') : 'none'}`);
