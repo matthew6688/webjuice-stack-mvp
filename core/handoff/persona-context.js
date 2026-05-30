@@ -31,13 +31,17 @@ export function resolvePersona(facts = {}, brief = {}) {
     primaryId = defaultPrimary();
     fallback = true;
   }
-  const rawSecondaries = (Array.isArray(brief.secondary_segments) && brief.secondary_segments.length
+  // codex Round 111: a provided-but-invalid secondary list must fall back to the canonical default
+  // (urgent-repair), not collapse to empty. Validate the chosen source, then fall back if it collapses.
+  const cleanSecondaries = (list) =>
+    [...new Set((Array.isArray(list) ? list : []).filter((id) => SEGMENT_IDS.includes(id) && id !== primaryId))];
+  const candidate = (Array.isArray(brief.secondary_segments) && brief.secondary_segments.length)
     ? brief.secondary_segments
-    : Array.isArray(facts.secondary_segments) && facts.secondary_segments.length
+    : (Array.isArray(facts.secondary_segments) && facts.secondary_segments.length)
       ? facts.secondary_segments
-      : defaultSecondaries())
-    .filter((id) => SEGMENT_IDS.includes(id) && id !== primaryId);
-  const secondaryIds = [...new Set(rawSecondaries)];
+      : defaultSecondaries();
+  let secondaryIds = cleanSecondaries(candidate);
+  if (!secondaryIds.length) secondaryIds = cleanSecondaries(defaultSecondaries());
   return {
     primary: getSegment(primaryId),
     secondaries: secondaryIds.map((id) => getSegment(id)),
@@ -90,7 +94,7 @@ export function buildPersonaContextBlock(facts = {}, opts = {}) {
   const buyerNeeds = [
     'A concrete PROCESS / what-happens-next sequence (call → inspection/quote → timeline → cleanup → warranty) — ONLY using steps present in the locked facts/source.',
     'Plain residential framing for a homeowner — avoid corporate-scale boasts ("largest", "large-scale") that make a single home feel too small.',
-    'Specifics the buyer can verify over vague praise — name the checkable thing (written quote, named materials, warranty) instead of adjectives like "superior" or "quality".',
+    'Specifics the buyer can verify over vague praise — name a checkable thing ONLY when it appears in the locked facts/source; otherwise use a neutral, non-claiming sentence rather than adjectives like "superior" or "quality".',
   ];
 
   return [

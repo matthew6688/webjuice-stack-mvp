@@ -29,6 +29,13 @@ ok(r3.fallback === true, 'unknown segment flagged fallback');
 const r4 = resolvePersona({ primary_segment: 'commercial-maintenance' }, {});
 ok(r4.primaryId === 'commercial-maintenance', 'facts.primary_segment used when brief silent');
 
+// 4b · codex R111: invalid secondary list must fall back to canonical default, not collapse to empty
+const r4b = resolvePersona({}, { primary_segment: 'planned-upgrade', secondary_segments: ['made-up', 'also-fake'] });
+ok(r4b.secondaryIds.length === 1 && r4b.secondaryIds[0] === 'urgent-repair', 'invalid secondaries fall back to canonical urgent-repair');
+// 4c · when primary IS the default secondary, empty secondaries is correct (no self-duplication)
+const r4c = resolvePersona({}, { primary_segment: 'urgent-repair', secondary_segments: ['garbage'] });
+ok(r4c.secondaryIds.length === 0, 'no secondary duplicates the primary');
+
 // 5 · block builds for each section and contains the guard + psychology, NOT business facts
 for (const section of ['about', 'services', 'hero']) {
   const block = buildPersonaContextBlock({}, { brief: { primary_segment: 'planned-upgrade' }, section });
